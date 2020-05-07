@@ -1,3 +1,13 @@
 .main-container {
     height: 100vh;
+    display: flex;
+    flex-direction: row;
+}
+
+.delivery-payment-section {
+    width: 70%;
+}
+
+.summary-section {
+    
 }
