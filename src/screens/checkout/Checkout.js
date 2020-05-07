@@ -13,19 +13,18 @@ import Tab from "@material-ui/core/Tab";
 import AppBar from "@material-ui/core/AppBar";
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import IconButton from "@material-ui/core/IconButton";
 
 class Checkout extends Component {
     constructor() {
         super();
         this.state = {
             activeStep: 0,
-            activeTabValue: 'existing_address'
+            activeTabValue: 'existing_address',
+            selectedAddressId: undefined
         }
     }
-
-    /*componentDidMount() {
-        this.fetchAddress();
-    }*/
 
     render() {
         return <Fragment>
@@ -47,7 +46,8 @@ class Checkout extends Component {
                                 </div>
                                 <div id='existing-address-display' className='display-block'>
                                     <GridList style={{flexWrap: 'nowrap'}} cols={3} cellHeight='auto'>
-                                        <GridListTile>
+                                        <GridListTile
+                                            className={this.state.selectedAddressId === '1' ? 'grid-list-tile-selected-address' : 'grid-list-tile'}>
                                             <div>
                                                 <p>#307</p>
                                                 <p>Shravanthi Graces, Timappa Reddy Layout, Hulimavu</p>
@@ -55,17 +55,30 @@ class Checkout extends Component {
                                                 <p>Karnataka</p>
                                                 <p>560076</p>
                                             </div>
+                                            <div className='select-address-icon-container'>
+                                                <IconButton id='select-address-button-1' className='select-address-icon'
+                                                            onClick={this.selectAddress}>
+                                                    <CheckCircleIcon id='select-address-icon-1'
+                                                                     className={this.state.selectedAddressId === '1' ? 'display-green-icon' : 'display-grey-icon'}/>
+                                                </IconButton>
+                                            </div>
                                         </GridListTile>
-                                        <GridListTile>
+                                        <GridListTile className='grid-list-tile'>
                                             <div>
                                                 <p>#308</p>
-                                                <p>Shravanthi Graces, Timappa Reddy Layout, Near Matru Nursing Home, Hulimavu, Bannerghatta Main Road,</p>
+                                                <p>Shravanthi Graces, Timappa Reddy Layout, Near Matru Nursing Home,
+                                                    Hulimavu, Bannerghatta Main Road,</p>
                                                 <p>Bangalore</p>
                                                 <p>Karnataka</p>
                                                 <p>560076</p>
                                             </div>
+                                            <div className='select-address-icon-container'>
+                                                <IconButton className='select-address-icon'>
+                                                    <CheckCircleIcon className='display-grey-icon'/>
+                                                </IconButton>
+                                            </div>
                                         </GridListTile>
-                                        <GridListTile>
+                                        <GridListTile className='grid-list-tile'>
                                             <div>
                                                 <p>#309</p>
                                                 <p>Shravanthi Graces, Timappa Reddy Layout, Hulimavu</p>
@@ -73,14 +86,24 @@ class Checkout extends Component {
                                                 <p>Karnataka</p>
                                                 <p>560076</p>
                                             </div>
+                                            <div className='select-address-icon-container'>
+                                                <IconButton className='select-address-icon'>
+                                                    <CheckCircleIcon/>
+                                                </IconButton>
+                                            </div>
                                         </GridListTile>
-                                        <GridListTile>
+                                        <GridListTile className='grid-list-tile'>
                                             <div>
                                                 <p>#310</p>
                                                 <p>Shravanthi Graces, Timappa Reddy Layout, Hulimavu</p>
                                                 <p>Bangalore</p>
                                                 <p>Karnataka</p>
                                                 <p>560076</p>
+                                            </div>
+                                            <div className='select-address-icon-container'>
+                                                <IconButton className='select-address-icon'>
+                                                    <CheckCircleIcon/>
+                                                </IconButton>
                                             </div>
                                         </GridListTile>
                                     </GridList>
@@ -123,12 +146,15 @@ class Checkout extends Component {
         this.setState({activeTabValue: value})
     }
 
-    /*fetchAddress = () => {
-        let url = 'http://localhost:8080/api/address/customer';
-        let accessToken = 'eyJraWQiOiJkOTE5YjNkZS05ZGI4LTQ1MzYtYjQ4My1kNDIxODAxMjE5MzgiLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiIxYTlhZDRjYS04MmMwLTQ3YzQtYTNjZS1kZTcwZTRiZWZjNWEiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU4ODg5MCwiaWF0IjoxNTg4ODYxfQ.bILQoopdMx9Tn7BzgbzgE7toPBXHsmRUJtnw9QSZQpHPhd2F_81d9M7d-PNt-9nytMF62Sz9yZRyJuHiSZ3BCg';
-        let response = get(url, accessToken);
-        console.log(response);
-    }*/
+    selectAddress = (e) => {
+        let elementId = e.target.id;
+        if (elementId.startsWith('select-address-icon-')) {
+            this.setState({selectedAddressId: elementId.split('select-address-icon-')[1]});
+        }
+        if (elementId.startsWith('select-address-button-')) {
+            this.setState({selectedAddressId: elementId.split('select-address-button-')[1]})
+        }
+    }
 }
 
 export default Checkout;
