@@ -8,6 +8,11 @@
     width: 70%;
 }
 
+.existing-address-grid-list {
+    flex-wrap: nowrap;
+    transform: translateZ(0);
+}
+
 .summary-section {
-    
+
 }
