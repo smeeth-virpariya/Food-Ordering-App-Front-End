@@ -10,6 +10,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import Modal from 'react-modal';
 
 import './Header.css';
 
@@ -59,6 +60,22 @@ const theme = createMuiTheme({
 });
 
 class Header extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            modalIsOpen: false
+        }
+    }
+
+    openModalHandler = () => {
+        this.setState({ modalIsOpen: true });
+    }
+
+    closeModalHandler = () => {
+        this.setState({ modalIsOpen: false });
+    }
+
     render() {
         const { classes } = this.props;
         return (
@@ -88,10 +105,16 @@ class Header extends Component {
                         </div>
                         <div className={classes.grow} />
                         <div className={classes.headerLoginBtn}>
-                            <Button variant="contained" color="default" startIcon={<AccountCircle />}>Login</Button>
+                            <Button variant="contained" color="default" startIcon={<AccountCircle />} onClick={this.openModalHandler}>Login</Button>
                         </div>
                     </Toolbar>
                 </AppBar>
+                <Modal 
+                    ariaHideApp={false} 
+                    isOpen={this.state.modalIsOpen} 
+                    contentLabel="Login" 
+                    onRequestClose={this.closeModalHandler}>
+                </Modal>
             </div>
         );
     }
