@@ -1,0 +1,34 @@
+.tabs {
+    margin-bottom: 20px;
+}
+
+.MuiFormControl-root {
+    width: 80%;
+}
+
+.dispNone {
+    display: none;
+}
+
+.dispBlock {
+    display: block;
+}
+
+.red {
+    color: red;
+} 
+
+#error-msg-div {
+    display: flex;
+    font-size: 1vw;
+}
+
+#error-msg {
+    width: 80%;
+    margin: auto;
+    text-align: left;
+}
+
+#customer-profile {
+    color: white;
+}
