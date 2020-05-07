@@ -8,12 +8,16 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import StepContent from "@material-ui/core/StepContent";
 import Button from "@material-ui/core/Button";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import AppBar from "@material-ui/core/AppBar";
 
 class Checkout extends Component {
     constructor() {
         super();
         this.state = {
-            activeStep: 0
+            activeStep: 0,
+            activeTabValue: 'existing_address'
         }
     }
 
@@ -25,7 +29,17 @@ class Checkout extends Component {
                         <Step key='Delivery'>
                             <StepLabel>Delivery</StepLabel>
                             <StepContent>
-                                <div className='address-tabs'>
+                                <div>
+                                    <AppBar position={"relative"}>
+                                        <Tabs value={this.state.activeTabValue} variant='standard'>
+                                            <Tab value='existing_address' label='EXISTING ADDRESS'
+                                                 onClick={() => this.changeActiveTab('existing_address')}></Tab>
+                                            <Tab value='new_address' label='NEW ADDRESS'
+                                                 onClick={() => this.changeActiveTab('new_address')}></Tab>
+                                        </Tabs>
+                                    </AppBar>
+                                </div>
+                                <div>
                                     <Button style={{margin: 5}} disabled={this.state.activeStep === 0}>Back</Button>
                                     <Button style={{margin: 5}} className='button' variant="contained" color="primary"
                                             onClick={this.incrementActiveStep}>Next</Button>
@@ -57,6 +71,10 @@ class Checkout extends Component {
     decrementActiveStep = () => {
         let activeState = this.state.activeStep - 1;
         this.setState({activeStep: activeState})
+    }
+
+    changeActiveTab = (value) => {
+        this.setState({activeTabValue: value})
     }
 }
 
