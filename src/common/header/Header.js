@@ -398,7 +398,7 @@ class Header extends Component {
                         <TabContainer>
                             <FormControl required>
                                 <InputLabel htmlFor="contactno">Contact No</InputLabel>
-                                <Input id="contactno" type="text" contactno={this.state.loginContactNo} onChange={this.inputLoginContactNoChangeHandler} />
+                                <Input id="contactno" type="text" value={this.state.loginContactNo} contactno={this.state.loginContactNo} onChange={this.inputLoginContactNoChangeHandler} />
                                 <FormHelperText className={this.state.loginContactNoRequired}>
                                     <span className="red">{this.state.loginContactNoRequiredMessage}</span>
                                 </FormHelperText>
@@ -406,7 +406,7 @@ class Header extends Component {
                             <br /><br />
                             <FormControl required>
                                 <InputLabel htmlFor="password">Password</InputLabel>
-                                <Input id="password" type="password" password={this.state.password} onChange={this.inputLoginPasswordChangeHandler} />
+                                <Input id="password" type="password" value={this.state.loginPassword} password={this.state.loginPassword} onChange={this.inputLoginPasswordChangeHandler} />
                                 <FormHelperText className={this.state.loginPasswordRequired}>
                                     <span className="red">{this.state.loginPasswordRequiredMessage}</span>
                                 </FormHelperText>
@@ -421,7 +421,7 @@ class Header extends Component {
                         <TabContainer>
                             <FormControl required>
                                 <InputLabel htmlFor="firstname">First Name</InputLabel>
-                                <Input id="firstname" type="text" firstname={this.state.signupFirstname} onChange={this.inputSignupFirstNameChangeHandler} />
+                                <Input id="firstname" type="text" value={this.state.signupFirstname} firstname={this.state.signupFirstname} onChange={this.inputSignupFirstNameChangeHandler} />
                                 <FormHelperText className={this.state.signupFirstnameRequired}>
                                     <span className="red">required</span>
                                 </FormHelperText>
@@ -429,12 +429,12 @@ class Header extends Component {
                             <br /><br />
                             <FormControl>
                                 <InputLabel htmlFor="lastname">Last Name</InputLabel>
-                                <Input id="lastname" type="text" lastname={this.state.singupLastname} onChange={this.inputSignupLastNameChangeHandler} />
+                                <Input id="lastname" type="text" value={this.state.singupLastname} lastname={this.state.singupLastname} onChange={this.inputSignupLastNameChangeHandler} />
                             </FormControl>
                             <br /><br />
                             <FormControl required>
                                 <InputLabel htmlFor="email">Email</InputLabel>
-                                <Input id="email" type="text" email={this.state.signupEmail} onChange={this.inputSignupEmailChangeHandler} />
+                                <Input id="email" type="text" value={this.state.signupEmail} email={this.state.signupEmail} onChange={this.inputSignupEmailChangeHandler} />
                                 <FormHelperText className={this.state.signupEmailRequired}>
                                     <span className="red">{this.state.signupEmailRequiredMessage}</span>
                                 </FormHelperText>
@@ -442,7 +442,7 @@ class Header extends Component {
                             <br /><br />
                             <FormControl required>
                                 <InputLabel htmlFor="signupPassword">Password</InputLabel>
-                                <Input id="signupPassword" type="password" registerpassword={this.state.signupPassword} onChange={this.inputSignupPasswordChangeHandler} />
+                                <Input id="signupPassword" type="password" value={this.state.signupPassword} signupPassword={this.state.signupPassword} onChange={this.inputSignupPasswordChangeHandler} />
                                 <FormHelperText className={this.state.signupPasswordRequired}>
                                     <span className="red">{this.state.signupPasswordRequiredMessage}</span>
                                 </FormHelperText>
@@ -450,7 +450,7 @@ class Header extends Component {
                             <br /><br />
                             <FormControl required>
                                 <InputLabel htmlFor="signupContactNo">Contact No.</InputLabel>
-                                <Input id="signupContactNo" type="text" contact={this.state.signupContactNo} onChange={this.inputSignupContactNoChangeHandler} />
+                                <Input id="signupContactNo" type="text" value={this.state.signupContactNo} contact={this.state.signupContactNo} onChange={this.inputSignupContactNoChangeHandler} />
                                 <FormHelperText className={this.state.signupContactNoRequired}>
                                     <span className="red">{this.state.signupContactNoRequiredMessage}</span>
                                 </FormHelperText>
