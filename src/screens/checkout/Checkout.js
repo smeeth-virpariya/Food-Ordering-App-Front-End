@@ -20,6 +20,10 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormLabel from "@material-ui/core/FormLabel";
+import Radio from "@material-ui/core/Radio";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 class Checkout extends Component {
     constructor() {
@@ -116,22 +120,22 @@ class Checkout extends Component {
                                 </div>
                                 <div id='new-address-display'
                                      className={this.state.activeTabValue === 'new_address' ? 'display-block' : 'display-none'}>
-                                    <FormControl style={{minWidth:300}}>
+                                    <FormControl style={{minWidth: 300}}>
                                         <InputLabel htmlFor='flat'>Flat/Building No</InputLabel>
                                         <Input id='flat' name='flat' type='text'/>
                                     </FormControl>
                                     <br/>
-                                    <FormControl style={{minWidth:300}}>
+                                    <FormControl style={{minWidth: 300}}>
                                         <InputLabel htmlFor='locality'>Locality</InputLabel>
                                         <Input id='locality' name='locality' type='text'/>
                                     </FormControl>
                                     <br/>
-                                    <FormControl style={{minWidth:300}}>
+                                    <FormControl style={{minWidth: 300}}>
                                         <InputLabel htmlFor='city'>City</InputLabel>
                                         <Input id='city' name='city' type='text'/>
                                     </FormControl>
                                     <br/>
-                                    <FormControl style={{minWidth:300}}>
+                                    <FormControl style={{minWidth: 300}}>
                                         <InputLabel htmlFor='state'>State</InputLabel>
                                         <Select id='state' name='state'>
                                             <MenuItem value='1'>Karnataka</MenuItem>
@@ -139,13 +143,13 @@ class Checkout extends Component {
                                         </Select>
                                     </FormControl>
                                     <br/>
-                                    <FormControl style={{minWidth:300}}>
+                                    <FormControl style={{minWidth: 300}}>
                                         <InputLabel htmlFor='pincode'>Pincode</InputLabel>
                                         <Input id='pincode' name='pincode' type='text'/>
                                     </FormControl>
                                     <br/>
                                     <br/>
-                                    <FormControl style={{minWidth:150}}>
+                                    <FormControl style={{minWidth: 150}}>
                                         <Button variant='contained' color='secondary'>SAVE ADDRESS</Button>
                                     </FormControl>
                                 </div>
@@ -159,6 +163,16 @@ class Checkout extends Component {
                         <Step key='Payment'>
                             <StepLabel>Payment</StepLabel>
                             <StepContent>
+                                <div id='payment-modes'>
+                                    <FormControl>
+                                        <FormLabel>Select Mode of Payment</FormLabel>
+                                        <RadioGroup>
+                                            <FormControlLabel value="payment-id-01" control={<Radio/>} label="COD"/>
+                                            <FormControlLabel value="payment-id-02" control={<Radio/>}
+                                                              label="Wallet"/>
+                                        </RadioGroup>
+                                    </FormControl>
+                                </div>
                                 <Button style={{margin: 5}} onClick={this.decrementActiveStep}>Back</Button>
                                 <Button style={{margin: 5}} variant="contained" color="primary"
                                         onClick={this.incrementActiveStep}>Finish</Button>
