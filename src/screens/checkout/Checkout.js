@@ -44,7 +44,8 @@ class Checkout extends Component {
                                         </Tabs>
                                     </AppBar>
                                 </div>
-                                <div id='existing-address-display' className='display-block'>
+                                <div id='existing-address-display'
+                                     className={this.state.activeTabValue === 'existing_address' ? 'display-block' : 'display-none'}>
                                     <GridList style={{flexWrap: 'nowrap'}} cols={3} cellHeight='auto'>
                                         <GridListTile
                                             className={this.state.selectedAddressId === '1' ? 'grid-list-tile-selected-address' : 'grid-list-tile'}>
@@ -107,6 +108,9 @@ class Checkout extends Component {
                                             </div>
                                         </GridListTile>
                                     </GridList>
+                                </div>
+                                <div id='new-address-display' className={this.state.activeTabValue === 'new_address' ? 'display-block' : 'display-none'}>
+
                                 </div>
                                 <div>
                                     <Button style={{margin: 5}} disabled={this.state.activeStep === 0}>Back</Button>
