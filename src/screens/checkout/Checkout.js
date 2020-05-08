@@ -15,6 +15,9 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import IconButton from "@material-ui/core/IconButton";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Input from "@material-ui/core/Input";
 
 class Checkout extends Component {
     constructor() {
@@ -109,8 +112,32 @@ class Checkout extends Component {
                                         </GridListTile>
                                     </GridList>
                                 </div>
-                                <div id='new-address-display' className={this.state.activeTabValue === 'new_address' ? 'display-block' : 'display-none'}>
-
+                                <div id='new-address-display'
+                                     className={this.state.activeTabValue === 'new_address' ? 'display-block' : 'display-none'}>
+                                    <FormControl>
+                                        <InputLabel htmlFor='flat'>Flat/Building No</InputLabel>
+                                        <Input id='flat' name='flat' type='text'/>
+                                    </FormControl>
+                                    <br/>
+                                    <FormControl>
+                                        <InputLabel htmlFor='locality'>Locality</InputLabel>
+                                        <Input id='locality' name='locality' type='text'/>
+                                    </FormControl>
+                                    <br/>
+                                    <FormControl>
+                                        <InputLabel htmlFor='city'>City</InputLabel>
+                                        <Input id='city' name='city' type='text'/>
+                                    </FormControl>
+                                    <br/>
+                                    <FormControl>
+                                        <InputLabel htmlFor='pincode'>Pincode</InputLabel>
+                                        <Input id='pincode' name='pincode' type='text'/>
+                                    </FormControl>
+                                    <br/>
+                                    <br/>
+                                    <FormControl>
+                                        <Button variant='contained' color='secondary'>SAVE ADDRESS</Button>
+                                    </FormControl>
                                 </div>
                                 <div>
                                     <Button style={{margin: 5}} disabled={this.state.activeStep === 0}>Back</Button>
