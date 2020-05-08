@@ -19,6 +19,7 @@ import 'typeface-roboto';
 import PropTypes from 'prop-types';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import validator from 'validator';
+import { Snackbar } from '@material-ui/core';
 
 import './Header.css';
 
@@ -27,11 +28,11 @@ const styles = theme => ({
         flexGrow: 1,
     },
     appBar: {
-        backgroundColor: 'darkGrey',
+        backgroundColor: '#263238',
         boxShadow: 'none',
     },
     headerTools: {
-        '@media(max-width: 526px)': {
+        [theme.breakpoints.only('xs')]: {
             flexDirection: 'column',
             alignItems: 'flex-start',
         },
@@ -42,7 +43,7 @@ const styles = theme => ({
         },
     },
     searchBox: {
-        '@media(max-width: 526px)': {
+        [theme.breakpoints.only('xs')]: {
             marginBottom: theme.spacing(1.5),
         },
     },
@@ -53,13 +54,13 @@ const styles = theme => ({
         width: '30ch',
     },
     headerLoginBtn: {
-        '@media(max-width: 526px)': {
+        [theme.breakpoints.only('xs')]: {
             marginBottom: theme.spacing(1.5),
         },
     },
     customerProifleBtn: {
         color: 'white',
-        '@media(max-width: 526px)': {
+        [theme.breakpoints.only('xs')]: {
             marginBottom: theme.spacing(1.5),
         },
     }
@@ -109,7 +110,8 @@ class Header extends Component {
             loginPasswordRequired: "dispNone",
             loginPassword: "",
             loginPasswordRequiredMessage: "required",
-            loggedIn: sessionStorage.getItem("access-token") == null ? false : true
+            loggedIn: sessionStorage.getItem("access-token") == null ? false : true,
+            openLoginSnackBar: false
         }
     }
 
@@ -204,6 +206,7 @@ class Header extends Component {
                 sessionStorage.setItem("first-name", loginResponse.first_name)
                 that.setState({
                     loggedIn: true,
+                    openLoginSnackBar: true
                 });
                 that.closeModalHandler();
             }
@@ -223,6 +226,15 @@ class Header extends Component {
 
     inputPasswordChangeHandler = (e) => {
         this.setState({ loginPassword: e.target.value });
+    }
+
+    loginSnackBarCloseHandler = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({
+            openLoginSnackBar: false
+        });
     }
 
     render() {
@@ -297,6 +309,17 @@ class Header extends Component {
                         </TabContainer>
                     }
                 </Modal>
+                {/* login snackbar to display the message if customer login is successful  */}
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    open={this.state.openLoginSnackBar}
+                    autoHideDuration={5000}
+                    onClose={this.loginSnackBarCloseHandler}
+                    message="Logged in successfully!"
+                />
             </div>
         );
     }
