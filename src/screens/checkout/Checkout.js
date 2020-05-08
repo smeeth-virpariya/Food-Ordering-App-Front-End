@@ -145,7 +145,7 @@ class Checkout extends Component {
                                     </FormControl>
                                     <br/>
                                     <br/>
-                                    <FormControl style={{minWidth:300}}>
+                                    <FormControl style={{minWidth:150}}>
                                         <Button variant='contained' color='secondary'>SAVE ADDRESS</Button>
                                     </FormControl>
                                 </div>
