@@ -20,7 +20,7 @@
 
 #error-msg-div {
     display: flex;
-    font-size: 1vw;
+    font-size: smaller;
 }
 
 #error-msg {
@@ -31,4 +31,10 @@
 
 #customer-profile {
     color: white;
+}
+
+@media screen and (max-width: 600px) {
+    #error-msg-div {
+        font-size: x-small;
+    }
 }
