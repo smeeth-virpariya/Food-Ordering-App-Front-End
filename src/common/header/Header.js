@@ -111,7 +111,19 @@ class Header extends Component {
             loginPassword: "",
             loginPasswordRequiredMessage: "required",
             loggedIn: sessionStorage.getItem("access-token") == null ? false : true,
-            openLoginSnackBar: false
+            openLoginSnackBar: false,
+            signupFirstname: "",
+            signupFirstnameRequired: "dispNone",
+            singupLastname: "",
+            signupEmail: "",
+            signupEmailRequired: "",
+            signupPassword: "",
+            signupPasswordRequired: "dispNone",
+            signupContactNo: "",
+            signupContactNoRequired: "dispNone",
+            signupEmailRequiredMessage: "required",
+            signupPasswordRequiredMessage: "required",
+            signupContactNoRequiredMessage: "required",
         }
     }
 
@@ -125,6 +137,15 @@ class Header extends Component {
             loginPassword: "",
             loginErroMessage: "",
             loginErroMessageRequired: "dispNone",
+            signupFirstname: "",
+            signupFirstnameRequired: "dispNone",
+            singupLastname: "",
+            signupEmail: "",
+            signupEmailRequired: "dispNone",
+            signupPassword: "",
+            signupPasswordRequired: "dispNone",
+            signupContactNo: "",
+            signupContactNoRequired: "dispNone",
         });
     }
 
@@ -217,14 +238,13 @@ class Header extends Component {
         xhrLogin.setRequestHeader("Content-Type", "application/json");
         xhrLogin.setRequestHeader("Cache-Control", "no-cache");
         xhrLogin.send(loginData);
-        console.log(this.state.customerFirstName);
     }
 
-    inputContactNoChangeHandler = (e) => {
+    inputLoginContactNoChangeHandler = (e) => {
         this.setState({ loginContactNo: e.target.value });
     }
 
-    inputPasswordChangeHandler = (e) => {
+    inputLoginPasswordChangeHandler = (e) => {
         this.setState({ loginPassword: e.target.value });
     }
 
@@ -235,6 +255,95 @@ class Header extends Component {
         this.setState({
             openLoginSnackBar: false
         });
+    }
+
+    signupClickHandler = () => {
+
+        this.state.signupFirstname === "" ? this.setState({ signupFirstnameRequired: "dispBlock" }) : this.setState({ signupFirstnameRequired: "dispNone" });
+
+        let signupEmailRequired = false;
+        if (this.state.signupEmail === "") {
+            this.setState({
+                signupEmailRequiredMessage: "required",
+                signupEmailRequired: "dispBlock"
+            });
+            signupEmailRequired = true;
+        } else {
+            this.setState({ signupEmailRequired: "dispNone" });
+        }
+
+        let signupPasswordRequired = false;
+        if (this.state.signupPassword === "") {
+            this.setState({
+                signupPasswordRequiredMessage: "required",
+                signupPasswordRequired: "dispBlock"
+            });
+            signupPasswordRequired = true;
+        } else {
+            this.setState({ signupPasswordRequired: "dispNone" });
+        }
+
+        let signupContactNoRequired = false;
+        if (this.state.signupContactNo === "") {
+            this.setState({
+                signupContactNoRequiredMessage: "required",
+                signupContactNoRequired: "dispBlock"
+            });
+            signupContactNoRequired = true;
+        } else {
+            this.setState({ signupContactNoRequired: "dispNone" });
+        }
+
+        const isValidEmail = validator.isEmail(this.state.signupEmail);
+        if (signupEmailRequired === false && !isValidEmail) {
+            this.setState({
+                signupEmailRequiredMessage: "Invalid Email",
+                signupEmailRequired: "dispBlock"
+            });
+            return;
+        }
+
+        const isValidPassword = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{4,}$');
+        if (signupPasswordRequired === false && !isValidPassword.test(this.state.signupPassword)) {
+            this.setState({
+                signupPasswordRequiredMessage: "Password must contain at least one capital letter, one small letter, one number, and one special character",
+                signupPasswordRequired: "dispBlock"
+            });
+            return;
+        }
+
+        if (signupContactNoRequired) {
+            return;
+        }
+
+        const isvalidContactNo = validator.isMobilePhone(this.state.signupContactNo);
+        if ((signupContactNoRequired === false && !isvalidContactNo) || this.state.loginContactNo.length !== 10) {
+            this.setState({
+                signupContactNoRequiredMessage: "Contact No. must contain only numbers and must be 10 digits long",
+                signupContactNoRequired: "dispBlock"
+            });
+            return;
+        }
+    }
+
+    inputSignupFirstNameChangeHandler = (e) => {
+        this.setState({ signupFirstname: e.target.value });
+    }
+
+    inputSignupLastNameChangeHandler = (e) => {
+        this.setState({ singupLastname: e.target.value });
+    }
+
+    inputSignupEmailChangeHandler = (e) => {
+        this.setState({ signupEmail: e.target.value });
+    }
+
+    inputSignupPasswordChangeHandler = (e) => {
+        this.setState({ signupPassword: e.target.value });
+    }
+
+    inputSignupContactNoChangeHandler = (e) => {
+        this.setState({ signupContactNo: e.target.value });
     }
 
     render() {
@@ -289,7 +398,7 @@ class Header extends Component {
                         <TabContainer>
                             <FormControl required>
                                 <InputLabel htmlFor="contactno">Contact No</InputLabel>
-                                <Input id="contactno" type="text" contactno={this.state.loginContactNo} onChange={this.inputContactNoChangeHandler} />
+                                <Input id="contactno" type="text" contactno={this.state.loginContactNo} onChange={this.inputLoginContactNoChangeHandler} />
                                 <FormHelperText className={this.state.loginContactNoRequired}>
                                     <span className="red">{this.state.loginContactNoRequiredMessage}</span>
                                 </FormHelperText>
@@ -297,7 +406,7 @@ class Header extends Component {
                             <br /><br />
                             <FormControl required>
                                 <InputLabel htmlFor="password">Password</InputLabel>
-                                <Input id="password" type="password" password={this.state.password} onChange={this.inputPasswordChangeHandler} />
+                                <Input id="password" type="password" password={this.state.password} onChange={this.inputLoginPasswordChangeHandler} />
                                 <FormHelperText className={this.state.loginPasswordRequired}>
                                     <span className="red">{this.state.loginPasswordRequiredMessage}</span>
                                 </FormHelperText>
@@ -306,6 +415,48 @@ class Header extends Component {
                             <div id="error-msg-div" className={this.state.loginErroMessageRequired}><span id="error-msg" className="red">{this.state.loginErroMessage}</span></div>
                             <br />
                             <Button variant="contained" color="primary" onClick={this.loginClickHandler}>LOGIN</Button>
+                        </TabContainer>
+                    }
+                    {this.state.value === 1 &&
+                        <TabContainer>
+                            <FormControl required>
+                                <InputLabel htmlFor="firstname">First Name</InputLabel>
+                                <Input id="firstname" type="text" firstname={this.state.signupFirstname} onChange={this.inputSignupFirstNameChangeHandler} />
+                                <FormHelperText className={this.state.signupFirstnameRequired}>
+                                    <span className="red">required</span>
+                                </FormHelperText>
+                            </FormControl>
+                            <br /><br />
+                            <FormControl>
+                                <InputLabel htmlFor="lastname">Last Name</InputLabel>
+                                <Input id="lastname" type="text" lastname={this.state.singupLastname} onChange={this.inputSignupLastNameChangeHandler} />
+                            </FormControl>
+                            <br /><br />
+                            <FormControl required>
+                                <InputLabel htmlFor="email">Email</InputLabel>
+                                <Input id="email" type="text" email={this.state.signupEmail} onChange={this.inputSignupEmailChangeHandler} />
+                                <FormHelperText className={this.state.signupEmailRequired}>
+                                    <span className="red">{this.state.signupEmailRequiredMessage}</span>
+                                </FormHelperText>
+                            </FormControl>
+                            <br /><br />
+                            <FormControl required>
+                                <InputLabel htmlFor="signupPassword">Password</InputLabel>
+                                <Input id="signupPassword" type="password" registerpassword={this.state.signupPassword} onChange={this.inputSignupPasswordChangeHandler} />
+                                <FormHelperText className={this.state.signupPasswordRequired}>
+                                    <span className="red">{this.state.signupPasswordRequiredMessage}</span>
+                                </FormHelperText>
+                            </FormControl>
+                            <br /><br />
+                            <FormControl required>
+                                <InputLabel htmlFor="signupContactNo">Contact No.</InputLabel>
+                                <Input id="signupContactNo" type="text" contact={this.state.signupContactNo} onChange={this.inputSignupContactNoChangeHandler} />
+                                <FormHelperText className={this.state.signupContactNoRequired}>
+                                    <span className="red">{this.state.signupContactNoRequiredMessage}</span>
+                                </FormHelperText>
+                            </FormControl>
+                            <br /><br />
+                            <Button variant="contained" color="primary" onClick={this.signupClickHandler}>SIGNUP</Button>
                         </TabContainer>
                     }
                 </Modal>
