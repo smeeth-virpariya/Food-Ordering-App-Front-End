@@ -54,6 +54,7 @@ class Checkout extends Component {
             pincodeRequired: false,
             pincodeValid: true,
             selectedAddressId: undefined,
+            displayChaange: 'display-none',
             placeOrderMessage: undefined,
             placeOrderMessageOpen: false,
             orderItems: {
@@ -222,6 +223,12 @@ class Checkout extends Component {
                             </StepContent>
                         </Step>
                     </Stepper>
+                    <div className={this.state.displayChaange}>
+                        <Typography style={{marginLeft: 40}} variant='h5'>
+                            View the summary and place your order now!
+                        </Typography>
+                        <Button style={{marginLeft: 40, marginTop: 20}} onClick={this.resetActiveStep}>CHANGE</Button>
+                    </div>
                 </div>
                 <div className='summary-section'>
                     <Card variant='elevation' className='summary-card'>
@@ -250,13 +257,18 @@ class Checkout extends Component {
     }
 
     incrementActiveStep = () => {
-        if(this.state.activeStep === 0 && this.state.selectedAddressId === undefined){
+        if (this.state.activeStep === 0 && this.state.selectedAddressId === undefined) {
             //Do nothing as it is mandatory to select an address
-        }else if (this.state.activeStep === 1 && this.state.paymentId === '') {
+        } else if (this.state.activeStep === 1 && this.state.paymentId === '') {
             //Do nothing, Because user has to select payment to proceed further.
         } else {
+
             let activeState = this.state.activeStep + 1;
-            this.setState({activeStep: activeState})
+            let changeAddressPayment = 'display-none';
+            if (activeState === 2) {
+                changeAddressPayment = 'display-block';
+            }
+            this.setState({activeStep: activeState, displayChaange: changeAddressPayment})
         }
     }
 
@@ -265,6 +277,9 @@ class Checkout extends Component {
         this.setState({activeStep: activeState})
     }
 
+    resetActiveStep = () => {
+        this.setState({activeStep: 0, displayChaange: 'display-none'})
+    }
     changeActiveTab = (value) => {
         this.setState({activeTabValue: value})
         if (value === 'existing_address') {
