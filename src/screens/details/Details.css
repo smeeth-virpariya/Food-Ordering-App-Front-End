@@ -1,0 +1,76 @@
+.restaurant-details-container{
+    height: 200px;
+    width: auto;
+    background-color: lightgray;
+    padding: 25px 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.restaurant-image{
+  height: 100%;
+  width: 100%;
+}
+
+.restaurant-left-container{
+
+    flex: 25%;
+    height: 200px;
+    width: 250px;
+  
+}
+.restaurant-right-container{
+    flex: 75%;
+    padding-left: 20px;
+}
+
+.rating-section{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.rating-section-left{
+    flex: 50%;
+}
+
+.rating-section-right{
+    flex: 50%;
+}
+
+.category-items-cart-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.category-items-container{
+    width: 40%;
+    padding-left: 50px;
+    padding-top: 25px;
+}
+
+.category{
+    padding-top: 20px;
+}
+
+.item{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-top: 10px;
+}
+
+.cart-container{
+    padding-left: 150px ;
+    padding-top: 25px;
+    height: 1000px;
+    width : 500px;
+    
+}
+.CardContent{
+    padding : 10px
+}
