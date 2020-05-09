@@ -141,23 +141,26 @@ class Header extends Component {
                             <FastfoodIcon />
                         </IconButton>
                         <div className={classes.grow} />
-                        <div className={classes.searchBox}>
-                            <ThemeProvider theme={theme}>
-                                <InputLabel htmlFor="search-box-input" />
-                                <Input id="search-box-input"
-                                    startAdornment={
-                                        <InputAdornment position="start">
-                                            <SearchIcon />
-                                        </InputAdornment>
-                                    }
-                                    placeholder="Search by Restaurant Name"
-                                    classes={{
-                                        root: classes.inputRoot,
-                                        input: classes.inputInput,
-                                    }}
-                                />
-                            </ThemeProvider>
-                        </div>
+                        {this.props.showSearchBox ?
+                            <div className={classes.searchBox}>
+                                <ThemeProvider theme={theme}>
+                                    <InputLabel htmlFor="search-box-input" />
+                                    <Input id="search-box-input"
+                                        startAdornment={
+                                            <InputAdornment position="start">
+                                                <SearchIcon />
+                                            </InputAdornment>
+                                        }
+                                        placeholder="Search by Restaurant Name"
+                                        classes={{
+                                            root: classes.inputRoot,
+                                            input: classes.inputInput,
+                                        }}
+                                    />
+                                </ThemeProvider>
+                            </div>
+                            : null
+                        }
                         <div className={classes.grow} />
                         {!this.state.loggedIn ?
                             <div className={classes.headerLoginBtn}>
