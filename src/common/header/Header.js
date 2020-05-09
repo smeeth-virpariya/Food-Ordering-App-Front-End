@@ -175,6 +175,7 @@ class Header extends Component {
                                             root: classes.inputRoot,
                                             input: classes.inputInput,
                                         }}
+                                        onChange={this.props.searchHandler}
                                     />
                                 </ThemeProvider>
                             </div>
