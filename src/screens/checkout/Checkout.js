@@ -92,30 +92,38 @@ class Checkout extends Component {
                                 </div>
                                 <div id='existing-address-display'
                                      className={this.state.activeTabValue === 'existing_address' ? 'display-block' : 'display-none'}>
-                                    <GridList style={{flexWrap: 'nowrap'}} cols={3} cellHeight='auto'>
-                                        {
-                                            (this.state.addresses || []).map((address, index) => (
-                                                <GridListTile key={address.id}
-                                                              className={this.state.selectedAddressId === address.id ? 'grid-list-tile-selected-address' : 'grid-list-tile'}>
-                                                    <div>
-                                                        <p>{address.flat_building_name}</p>
-                                                        <p>{address.locality}</p>
-                                                        <p>{address.city}</p>
-                                                        <p>{address.state.state_name}</p>
-                                                        <p>{address.pincode}</p>
-                                                    </div>
-                                                    <div className='select-address-icon-container'>
-                                                        <IconButton id={'select-address-button-' + address.id}
-                                                                    className='select-address-icon'
-                                                                    onClick={this.selectAddress}>
-                                                            <CheckCircleIcon id={'select-address-icon-' + address.id}
-                                                                             className={this.state.selectedAddressId === address.id ? 'display-green-icon' : 'display-grey-icon'}/>
-                                                        </IconButton>
-                                                    </div>
-                                                </GridListTile>
-                                            ))
-                                        }
-                                    </GridList>
+                                    {this.state.addresses === undefined || this.state.addresses.length === 0 ?
+                                        <Typography style={{margin: 10, marginBottom: 200}} color='textSecondary'
+                                                    component='p'>
+                                            There are no saved addresses! You can save an address using the 'New
+                                            Address' tab or using your ‘Profile’ menu option.
+                                        </Typography> :
+                                        <GridList style={{flexWrap: 'nowrap'}} cols={3} cellHeight='auto'>
+                                            {
+                                                (this.state.addresses || []).map((address, index) => (
+                                                    <GridListTile key={address.id}
+                                                                  className={this.state.selectedAddressId === address.id ? 'grid-list-tile-selected-address' : 'grid-list-tile'}>
+                                                        <div>
+                                                            <p>{address.flat_building_name}</p>
+                                                            <p>{address.locality}</p>
+                                                            <p>{address.city}</p>
+                                                            <p>{address.state.state_name}</p>
+                                                            <p>{address.pincode}</p>
+                                                        </div>
+                                                        <div className='select-address-icon-container'>
+                                                            <IconButton id={'select-address-button-' + address.id}
+                                                                        className='select-address-icon'
+                                                                        onClick={this.selectAddress}>
+                                                                <CheckCircleIcon
+                                                                    id={'select-address-icon-' + address.id}
+                                                                    className={this.state.selectedAddressId === address.id ? 'display-green-icon' : 'display-grey-icon'}/>
+                                                            </IconButton>
+                                                        </div>
+                                                    </GridListTile>
+                                                ))
+                                            }
+                                        </GridList>
+                                    }
                                 </div>
                                 <div id='new-address-display'
                                      className={this.state.activeTabValue === 'new_address' ? 'display-block' : 'display-none'}>
@@ -225,7 +233,6 @@ class Checkout extends Component {
     changeActiveTab = (value) => {
         this.setState({activeTabValue: value})
         if (value === 'existing_address') {
-            console.log('Switching to existing project.')
             this.fetchAddress();
         }
     }
@@ -254,8 +261,7 @@ class Checkout extends Component {
     }
 
     fetchAddress = () => {
-        console.log('Fetching addresses.');
-        let token = 'eyJraWQiOiI2MWMxODFjNy03ODgyLTQxZTEtODVkYi1lMzk3M2M2NDllNjAiLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiIxYTlhZDRjYS04MmMwLTQ3YzQtYTNjZS1kZTcwZTRiZWZjNWEiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU4OTA0MCwiaWF0IjoxNTg5MDEyfQ.nxObTYbip4p4x5XT0jzVKsLPegxqSbdB7fW6iqLj4007-pqHxMEHJhiqPa8uWw3ZboIQhNfWkIQxeL3QsVkVOw';
+        let token = 'eyJraWQiOiJlMTllOGQ0Yy1mNzJkLTQ1NGYtYmY5Zi0wOTVjNjM2N2U5MzYiLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJmYTYyZDYzYy03ZDYxLTRhYjAtOGQ5NS02N2ZiNzhhZTlmMjUiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU4OTA0OCwiaWF0IjoxNTg5MDIwfQ._vaWXogeNSzGK0lQ8UXyYZZbvKWJSQJGaxrIn7g5wt0BYzeYhqVY23bKsykv3O6sQUJiILf3HrhJGB_anRqgqA';
 
         let xhr = new XMLHttpRequest();
 
@@ -307,7 +313,7 @@ class Checkout extends Component {
             state_uuid: this.state.stateUUID
         }
 
-        let token = 'eyJraWQiOiI2MWMxODFjNy03ODgyLTQxZTEtODVkYi1lMzk3M2M2NDllNjAiLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiIxYTlhZDRjYS04MmMwLTQ3YzQtYTNjZS1kZTcwZTRiZWZjNWEiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU4OTA0MCwiaWF0IjoxNTg5MDEyfQ.nxObTYbip4p4x5XT0jzVKsLPegxqSbdB7fW6iqLj4007-pqHxMEHJhiqPa8uWw3ZboIQhNfWkIQxeL3QsVkVOw';
+        let token = 'eyJraWQiOiJlMTllOGQ0Yy1mNzJkLTQ1NGYtYmY5Zi0wOTVjNjM2N2U5MzYiLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJmYTYyZDYzYy03ZDYxLTRhYjAtOGQ5NS02N2ZiNzhhZTlmMjUiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU4OTA0OCwiaWF0IjoxNTg5MDIwfQ._vaWXogeNSzGK0lQ8UXyYZZbvKWJSQJGaxrIn7g5wt0BYzeYhqVY23bKsykv3O6sQUJiILf3HrhJGB_anRqgqA';
 
         let xhr = new XMLHttpRequest();
 
