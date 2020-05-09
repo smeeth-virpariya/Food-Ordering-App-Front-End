@@ -53,7 +53,7 @@ export default function OrderItems(props) {
                 </div>
             </div>
             <FormControl className='place-order-button'>
-                <Button variant="contained" color="primary">PLACE ORDER</Button>
+                <Button variant="contained" color="primary" onClick={props.placeOrder}>PLACE ORDER</Button>
             </FormControl>
         </div>
     )

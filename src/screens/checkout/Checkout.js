@@ -57,21 +57,23 @@ class Checkout extends Component {
             displayChaange: 'display-none',
             placeOrderMessage: undefined,
             placeOrderMessageOpen: false,
+            couponId: '2ddf6a5e-ecd0-11e8-8eb2-f2801f1b9fd1',
             orderItems: {
+                restaurantId: '9df46816-a294-11e8-9a3a-720006ceb890',
                 total: 240,
                 items: [
                     {
-                        id: '100',
+                        id: '2461589e-a238-11e8-9077-720006ceb890',
                         name: 'Coke',
                         itype: 0,
                         quantity: 4,
-                        pricePerItem: 10
-                    }, {
-                        id: '101',
-                        name: 'Pizza',
-                        itype: 1,
-                        quantity: 2,
                         pricePerItem: 100
+                    }, {
+                        id: '19a4b6b2-a29c-11e8-9a3a-720006ceb890',
+                        name: 'Pizza',
+                        itype: 0,
+                        quantity: 2,
+                        pricePerItem: 300
                     }]
             }
         }
@@ -240,7 +242,7 @@ class Checkout extends Component {
                             <Typography variant='h6' component='h3' color='textSecondary'>
                                 Restaurant Name
                             </Typography>
-                            <OrderItems divider='true' orderitems={this.state.orderItems}/>
+                            <OrderItems divider='true' orderitems={this.state.orderItems} placeOrder={this.placeOrder}/>
                         </CardContent>
                     </Card>
                 </div>
@@ -250,6 +252,7 @@ class Checkout extends Component {
                           message={this.state.placeOrderMessage}
                           open={this.state.placeOrderMessageOpen}
                           onClose={this.placeOrderMessageClose}
+                          autoHideDuration={6000}
                           action={<Fragment> <IconButton color='inherit'
                                                          onClick={this.placeOrderMessageClose}><CloseIcon/></IconButton></Fragment>}/>
             </div>
@@ -471,6 +474,59 @@ class Checkout extends Component {
         xhr.setRequestHeader('content-type', 'application/json');
 
         xhr.send(JSON.stringify(address));
+    }
+
+    placeOrder = () => {
+        let bill = 1000;
+        let discount = 300;
+        let itemQuantities = [];
+        this.state.orderItems.items.map((item, index) => (
+            itemQuantities.push({item_id: item.id, price: item.quantity * item.pricePerItem, quantity: item.quantity})
+        ))
+        let order = {
+            address_id: this.state.selectedAddressId,
+            coupon_id: this.state.couponId,
+            item_quantities: itemQuantities,
+            payment_id: this.state.paymentId,
+            restaurant_id: this.state.orderItems.restaurantId,
+            bill: bill,
+            discount: discount
+        }
+
+        let token = 'eyJraWQiOiJlMTllOGQ0Yy1mNzJkLTQ1NGYtYmY5Zi0wOTVjNjM2N2U5MzYiLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJmYTYyZDYzYy03ZDYxLTRhYjAtOGQ5NS02N2ZiNzhhZTlmMjUiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU4OTA0OCwiaWF0IjoxNTg5MDIwfQ._vaWXogeNSzGK0lQ8UXyYZZbvKWJSQJGaxrIn7g5wt0BYzeYhqVY23bKsykv3O6sQUJiILf3HrhJGB_anRqgqA';
+
+        let xhr = new XMLHttpRequest();
+
+        let that = this;
+
+        xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    if (this.status === 201) {
+                        let orderId = JSON.parse(this.responseText).id;
+                        that.setState({
+                            placeOrderMessage: 'Order placed successfully! Your order ID is ' + orderId,
+                            placeOrderMessageOpen: true
+                        });
+                    } else {
+                        that.setState({
+                            placeOrderMessage: 'Unable to place your order! Please try again!',
+                            placeOrderMessageOpen: true
+                        });
+                        console.clear();
+                    }
+                }
+            }
+        );
+
+        let url = 'http://localhost:8080/api/order';
+
+        xhr.open('POST', url);
+
+        xhr.setRequestHeader('authorization', 'Bearer ' + token);
+        xhr.setRequestHeader("Cache-Control", "no-cache");
+        xhr.setRequestHeader('content-type', 'application/json');
+
+        xhr.send(JSON.stringify(order));
     }
 }
 
