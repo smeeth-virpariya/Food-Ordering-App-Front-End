@@ -40,6 +40,7 @@ class Checkout extends Component {
             activeTabValue: 'existing_address',
             addresses: [],
             states: [],
+            payments: [],
             flat: undefined,
             locality: undefined,
             city: undefined,
@@ -77,6 +78,7 @@ class Checkout extends Component {
     componentDidMount() {
         this.fetchAddress();
         this.fetchStates();
+        this.fetchPayments();
     }
 
     render() {
@@ -206,9 +208,10 @@ class Checkout extends Component {
                                     <FormControl>
                                         <FormLabel>Select Mode of Payment</FormLabel>
                                         <RadioGroup>
-                                            <FormControlLabel value="payment-id-01" control={<Radio/>} label="COD"/>
-                                            <FormControlLabel value="payment-id-02" control={<Radio/>}
-                                                              label="Wallet"/>
+                                            {(this.state.payments || []).map((payment, index) => (
+                                                <FormControlLabel value={payment.id} control={<Radio/>}
+                                                                  label={payment.payment_name}/>
+                                            ))}
                                         </RadioGroup>
                                     </FormControl>
                                 </div>
@@ -347,6 +350,27 @@ class Checkout extends Component {
         });
 
         let url = 'http://localhost:8080/api/states';
+
+        xhr.open('GET', url);
+
+        xhr.setRequestHeader("Cache-Control", "no-cache");
+
+        xhr.send();
+    }
+
+    fetchPayments = () => {
+
+        let xhr = new XMLHttpRequest();
+
+        let that = this;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                that.setState({payments: JSON.parse(this.responseText).paymentMethods});
+            }
+        });
+
+        let url = 'http://localhost:8080/api/payment';
 
         xhr.open('GET', url);
 
