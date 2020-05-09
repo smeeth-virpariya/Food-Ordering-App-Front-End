@@ -5,7 +5,7 @@ import './Home.css';
 class Home extends Component {
     render() {
         return(
-            <Header showSearchBox={true}/>
+            <Header {...this.props} showSearchBox={true} />
         )
     }
 }

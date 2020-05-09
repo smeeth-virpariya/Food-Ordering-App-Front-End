@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
+
+//importing material-ui styles
 import { withStyles, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
+//importing material-ui components
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -19,9 +23,13 @@ import PropTypes from 'prop-types';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import validator from 'validator';
 import Snackbar from '@material-ui/core/Snackbar';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
+//importing the css file of the header
 import './Header.css';
 
+//styles for the header using breakpoints to make the header responsive
 const styles = theme => ({
     grow: {
         flexGrow: 1,
@@ -65,6 +73,7 @@ const styles = theme => ({
     }
 });
 
+// theme for changing the border bottom color of the searchbox to white when customer clicks on the serach field 
 const theme = createMuiTheme({
     palette: {
         primary: {
@@ -73,6 +82,7 @@ const theme = createMuiTheme({
     }
 });
 
+//custom style for modal
 const customStyles = {
     content: {
         top: '50%',
@@ -84,6 +94,7 @@ const customStyles = {
     }
 };
 
+// Tab container inside the modal
 const TabContainer = function (props) {
     return (
         <Typography component="div" style={{ padding: 0, textAlign: 'center' }}>
@@ -128,6 +139,8 @@ class Header extends Component {
             openSignupSnackBar: false,
             signupErrorMessage: "",
             signupErrorMessageRequired: "dispNone",
+            menuState: false,
+            anchorEl: null,
         }
     }
 
@@ -136,11 +149,14 @@ class Header extends Component {
         return (
             <div>
                 <AppBar position="static" className={classes.appBar}>
+                    {/* Toolbar that contains app logo, searchbox and login button */}
                     <Toolbar className={classes.headerTools}>
+                        {/* app logo inside iconButton*/}
                         <IconButton disableRipple={true} className={classes.logo} edge="start" color="inherit" aria-label="app logo">
                             <FastfoodIcon />
                         </IconButton>
                         <div className={classes.grow} />
+                        {/* searchbox will be displayed only if needed */}
                         {this.props.showSearchBox ?
                             <div className={classes.searchBox}>
                                 <ThemeProvider theme={theme}>
@@ -162,16 +178,24 @@ class Header extends Component {
                             : null
                         }
                         <div className={classes.grow} />
+                        {/* If customer is not logged in then it displays login button otherwise displays the customer's firstname */}
                         {!this.state.loggedIn ?
                             <div className={classes.headerLoginBtn}>
                                 <Button variant="contained" color="default" startIcon={<AccountCircle />} onClick={this.openModalHandler}>Login</Button>
                             </div>
                             : <div className={classes.customerProifleBtn}>
-                                <Button id="customer-profile" startIcon={<AccountCircle />}>{sessionStorage.getItem("first-name")}</Button>
+                                <Button id="customer-profile" startIcon={<AccountCircle />} onClick={this.onProfileIconClick}>{sessionStorage.getItem("first-name")}</Button>
+                                <Menu open={this.state.menuState} onClose={this.onMenuClose}
+                                    anchorEl={this.state.anchorEl} getContentAnchorEl={null}
+                                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }} keepMounted>
+                                    <MenuItem onClick={this.onMyProfile}><Typography>My Profile</Typography></MenuItem>
+                                    <MenuItem onClick={this.onLogout}><Typography>Logout</Typography></MenuItem>
+                                </Menu>
                             </div>
                         }
                     </Toolbar>
                 </AppBar>
+                {/* displays login modal if customer clicks on the login button, modal contains two tabs one for login and one for signup */}
                 <Modal
                     ariaHideApp={false}
                     isOpen={this.state.modalIsOpen}
@@ -182,8 +206,10 @@ class Header extends Component {
                         <Tab label="Login" />
                         <Tab label="Signup" />
                     </Tabs>
+                    {/* If value is 0 then displays the first tab of the modal */}
                     {this.state.value === 0 &&
                         <TabContainer>
+                            {/* login form with contact no and password input fields */}
                             <FormControl required className="login-and-signup-forms">
                                 <InputLabel htmlFor="contactno">Contact No</InputLabel>
                                 <Input id="contactno" type="text" value={this.state.loginContactNo} contactno={this.state.loginContactNo} onChange={this.inputLoginContactNoChangeHandler} />
@@ -207,6 +233,7 @@ class Header extends Component {
                     }
                     {this.state.value === 1 &&
                         <TabContainer>
+                            {/* signup form contains firstname, lastname, email, password and contact no input fields */}
                             <FormControl required className="login-and-signup-forms">
                                 <InputLabel htmlFor="firstname">First Name</InputLabel>
                                 <Input id="firstname" type="text" value={this.state.signupFirstname} signupfirstname={this.state.signupFirstname} onChange={this.inputSignupFirstNameChangeHandler} />
@@ -276,6 +303,7 @@ class Header extends Component {
         );
     }
 
+    // clears all the values and required field validation messages and error messages when modal is opened
     openModalHandler = () => {
         this.setState({
             modalIsOpen: true,
@@ -300,14 +328,19 @@ class Header extends Component {
         });
     }
 
+    // closes the modal
     closeModalHandler = () => {
         this.setState({ modalIsOpen: false });
     }
 
+    // changes the tabs inside modal
     tabChangeHandler = (event, value) => {
         this.setState({ value });
     }
 
+    /* when customer click's on login button then below function will be called 
+    performs field validation and displays login error message if cutomer tries to login with invalid credentials or 
+    contact no is not registered */
     loginClickHandler = () => {
 
         let contactNoRequired = false;
@@ -340,6 +373,7 @@ class Header extends Component {
             return;
         }
 
+        // validates the contact number
         const isvalidContactNo = validator.isMobilePhone(this.state.loginContactNo);
         if ((contactNoRequired === false && !isvalidContactNo) || this.state.loginContactNo.length !== 10) {
             this.setState({
@@ -355,14 +389,17 @@ class Header extends Component {
         this.sendLoginDetails();
     }
 
+     // calls when value of the contact no field changes in login form
     inputLoginContactNoChangeHandler = (e) => {
         this.setState({ loginContactNo: e.target.value });
     }
 
+     // calls when value of the password field changes in login form
     inputLoginPasswordChangeHandler = (e) => {
         this.setState({ loginPassword: e.target.value });
     }
 
+    //closes the login snackbar
     loginSnackBarCloseHandler = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -372,6 +409,7 @@ class Header extends Component {
         });
     }
 
+    // Integrating login functionality with backend
     sendLoginDetails = () => {
         let loginData = null;
         let that = this;
@@ -379,12 +417,14 @@ class Header extends Component {
         xhrLogin.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
                 let loginResponse = JSON.parse(this.responseText);
+                // displays the login error message
                 if (this.status === 401) {
                     that.setState({
                         loginErroMessage: loginResponse.message,
                         loginErroMessageRequired: "dispBlock"
                     });
                 }
+                // after successful login stores uuid, access-token, first-name inside session storage and displays the login snackbar
                 if (this.status === 200) {
                     sessionStorage.setItem("uuid", loginResponse.id);
                     sessionStorage.setItem("access-token", xhrLogin.getResponseHeader("access-token"));
@@ -393,6 +433,7 @@ class Header extends Component {
                         loggedIn: true,
                         openLoginSnackBar: true
                     });
+                    //closes the modal after successful login
                     that.closeModalHandler();
                 }
             }
@@ -405,6 +446,7 @@ class Header extends Component {
         xhrLogin.send(loginData);
     }
 
+    // signup form validation 
     signupClickHandler = () => {
 
         this.state.signupFirstname === "" ? this.setState({ signupFirstnameRequired: "dispBlock" }) : this.setState({ signupFirstnameRequired: "dispNone" });
@@ -442,6 +484,7 @@ class Header extends Component {
             this.setState({ signupContactNoRequired: "dispNone" });
         }
 
+        // checks the email is valid or not
         const isValidEmail = validator.isEmail(this.state.signupEmail);
         if (signupEmailRequired === false && !isValidEmail) {
             this.setState({
@@ -451,6 +494,7 @@ class Header extends Component {
             return;
         }
 
+        //check the password has  at least one capital letter, one small letter, one number, and one special character
         const isValidPassword = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{4,}$');
         if (signupPasswordRequired === false && !isValidPassword.test(this.state.signupPassword)) {
             this.setState({
@@ -464,6 +508,7 @@ class Header extends Component {
             return;
         }
 
+        // checks the contact number is valid or not
         const isvalidContactNo = validator.isMobilePhone(this.state.signupContactNo);
         if ((signupContactNoRequired === false && !isvalidContactNo) || this.state.signupContactNo.length !== 10) {
             this.setState({
@@ -476,26 +521,32 @@ class Header extends Component {
         this.sendSignupDetails();
     }
 
+    // calls when value of the firstname field changes in signup form
     inputSignupFirstNameChangeHandler = (e) => {
         this.setState({ signupFirstname: e.target.value });
     }
 
+     // calls when value of the lastname field changes in signup form
     inputSignupLastNameChangeHandler = (e) => {
         this.setState({ singupLastname: e.target.value });
     }
 
+     // calls when value of the email field changes in signup form
     inputSignupEmailChangeHandler = (e) => {
         this.setState({ signupEmail: e.target.value });
     }
 
+     // calls when value of the password field changes in signup form
     inputSignupPasswordChangeHandler = (e) => {
         this.setState({ signupPassword: e.target.value });
     }
 
+     // calls when value of the contact no field changes in signup form
     inputSignupContactNoChangeHandler = (e) => {
         this.setState({ signupContactNo: e.target.value });
     }
 
+    // closes the signup snackbar
     signupSnackBarCloseHandler = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -505,6 +556,7 @@ class Header extends Component {
         });
     }
 
+    // Integrating signup functionality with backend
     sendSignupDetails = () => {
         let signupData = JSON.stringify({
             "contact_number": this.state.signupContactNo,
@@ -519,12 +571,14 @@ class Header extends Component {
         xhrSignup.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
                 let responseText = JSON.parse(this.responseText);
+                // displays the signup error message
                 if (this.status === 400) {
                     that.setState({
                         signupErrorMessage: responseText.message,
                         signupErrorMessageRequired: "dispBlock"
                     });
                 }
+                // after successful signup tab changes to login tab inside the modal and displays the signup snackbar
                 if (this.status === 201) {
                     that.setState({
                         value: 0,
@@ -539,6 +593,41 @@ class Header extends Component {
         xhrSignup.setRequestHeader("Cache-Control", "no-cache");
         xhrSignup.send(signupData);
     }
+
+    // called when customer clicks on profile icon
+    onProfileIconClick = (e) => {
+        this.setState({ 'menuState': !this.state.menuState, 'anchorEl': e.currentTarget });
+    }
+
+    // closes the menu
+    onMenuClose = () => {
+        this.setState({ 'menuState': !this.state.menuState, 'anchorEl': null });
+    }
+
+    // redirects to profile page when customer clicks on My Profile inside the menu
+    onMyProfile = () => {
+        this.setState({
+            loggedIn: true
+        });
+        this.props.history.push({
+            pathname: '/profile',
+        });
+    }
+
+    // when customer clicks on logout inside the menu remove's access-token, uuid, first-name from sessionStorage and redirects to home page and closes the menu
+    onLogout = () => {
+        sessionStorage.removeItem('access-token');
+        sessionStorage.removeItem('uuid');
+        sessionStorage.removeItem('first-name');
+        this.setState({
+            loggedIn: false
+        })
+        this.props.history.push({
+            pathname: '/',
+        });
+        this.onMenuClose();
+    }
+
 }
 
 export default withStyles(styles)(Header);
