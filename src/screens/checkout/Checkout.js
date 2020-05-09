@@ -30,6 +30,7 @@ import Typography from "@material-ui/core/Typography";
 import OrderItems from "../../common/orderitems/OrderItems";
 import Snackbar from "@material-ui/core/Snackbar";
 import CloseIcon from '@material-ui/icons/Close';
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 class Checkout extends Component {
     constructor() {
@@ -44,6 +45,12 @@ class Checkout extends Component {
             city: undefined,
             stateUUID: '',
             pincode: undefined,
+            flatRequired: false,
+            localityRequired: false,
+            cityRequired: false,
+            stateUUIDRequired: false,
+            pincodeRequired: false,
+            pincodeValid: true,
             selectedAddressId: undefined,
             placeOrderMessage: undefined,
             placeOrderMessageOpen: false,
@@ -131,18 +138,27 @@ class Checkout extends Component {
                                         <InputLabel htmlFor='flat'>Flat/Building No</InputLabel>
                                         <Input id='flat' name='flat' type='text'
                                                onChange={this.onInputFieldChangeHandler}/>
+                                        {this.state.flatRequired ? <FormHelperText>
+                                            <span style={{color: "red"}}>required</span>
+                                        </FormHelperText> : null}
                                     </FormControl>
                                     <br/>
                                     <FormControl style={{minWidth: 300}}>
                                         <InputLabel htmlFor='locality'>Locality</InputLabel>
                                         <Input id='locality' name='locality' type='text'
                                                onChange={this.onInputFieldChangeHandler}/>
+                                        {this.state.localityRequired ? <FormHelperText>
+                                            <span style={{color: "red"}}>required</span>
+                                        </FormHelperText> : null}
                                     </FormControl>
                                     <br/>
                                     <FormControl style={{minWidth: 300}}>
                                         <InputLabel htmlFor='city'>City</InputLabel>
                                         <Input id='city' name='city' type='text'
                                                onChange={this.onInputFieldChangeHandler}/>
+                                        {this.state.cityRequired ? <FormHelperText>
+                                            <span style={{color: "red"}}>required</span>
+                                        </FormHelperText> : null}
                                     </FormControl>
                                     <br/>
                                     <FormControl style={{minWidth: 300}}>
@@ -153,12 +169,21 @@ class Checkout extends Component {
                                                 <MenuItem key={state.id} value={state.id}>{state.state_name}</MenuItem>
                                             ))}
                                         </Select>
+                                        {this.state.stateUUIDRequired ? <FormHelperText>
+                                            <span style={{color: "red"}}>required</span>
+                                        </FormHelperText> : null}
                                     </FormControl>
                                     <br/>
                                     <FormControl style={{minWidth: 300}}>
                                         <InputLabel htmlFor='pincode'>Pincode</InputLabel>
                                         <Input id='pincode' name='pincode' type='text'
                                                onChange={this.onInputFieldChangeHandler}/>
+                                        {this.state.pincodeRequired ? <FormHelperText>
+                                            <span style={{color: "red"}}>required</span>
+                                        </FormHelperText> : null}
+                                        {!this.state.pincodeRequired && !this.state.pincodeValid ? <FormHelperText>
+                                            <span style={{color: "red"}}>Pincode must contain only numbers and must be 6 digits long</span>
+                                        </FormHelperText> : null}
                                     </FormControl>
                                     <br/>
                                     <br/>
@@ -250,10 +275,36 @@ class Checkout extends Component {
     onInputFieldChangeHandler = (e) => {
         let stateKey = e.target.id;
         let stateValue = e.target.value;
+        //Material UI Select doesn't return key
         if (stateKey === undefined) {
             stateKey = 'stateUUID';
         }
-        this.setState({[stateKey]: stateValue});
+        //Form validation.
+        let stateValueRequiredKey = stateKey + 'Required';
+        let stateKeyRequiredValue = false;
+        if (stateValue === '') {
+            stateKeyRequiredValue = true;
+        }
+        let validPincode = this.state.pincodeValid;
+        if (stateKey === 'pincode') {
+            validPincode = this.validatePincode(stateValue);
+        }
+        //console.log(this.state.validPincode + ' '+this.validatePincode(stateValue))
+        this.setState({
+            [stateKey]: stateValue,
+            [stateValueRequiredKey]: stateKeyRequiredValue,
+            'pincodeValid': validPincode
+        });
+    }
+
+    validatePincode = (pincode) => {
+        if (pincode !== undefined && pincode.length !== 6) {
+            return false;
+        } else if (!isNaN(pincode) && pincode.length === 6) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     placeOrderMessageClose = () => {
@@ -305,6 +356,42 @@ class Checkout extends Component {
     }
 
     saveAddress = () => {
+        let tempCityRequired = false;
+        let tempPincodeRequired = false;
+        let tempFlatRequired = false;
+        let tempStateRequired = false;
+        let tempLocalityRequired = false;
+        if (this.state.city === undefined || this.state.cityRequired) {
+            tempCityRequired = true;
+        }
+
+        if (this.state.locality === undefined || this.state.localityRequired) {
+            tempLocalityRequired = true;
+        }
+
+        if (this.state.flat === undefined || this.state.flatRequired) {
+            tempFlatRequired = true;
+        }
+
+        if (this.state.stateUUID === '' || this.state.stateUUIDRequired) {
+            tempStateRequired = true;
+        }
+
+        if (this.state.pincode === undefined || this.state.pincodeRequired) {
+            tempPincodeRequired = true;
+        }
+
+        if (tempFlatRequired || tempPincodeRequired || tempStateRequired || tempLocalityRequired || tempCityRequired) {
+            this.setState({
+                flatRequired: tempFlatRequired,
+                localityRequired: tempLocalityRequired,
+                cityRequired: tempCityRequired,
+                stateUUIDRequired: tempStateRequired,
+                pincodeRequired: tempPincodeRequired
+            })
+            return;
+        }
+
         let address = {
             city: this.state.city,
             flat_building_name: this.state.flat,
