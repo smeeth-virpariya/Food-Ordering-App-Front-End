@@ -46,6 +46,7 @@ class Checkout extends Component {
             city: undefined,
             stateUUID: '',
             pincode: undefined,
+            paymentId: '',
             flatRequired: false,
             localityRequired: false,
             cityRequired: false,
@@ -207,7 +208,7 @@ class Checkout extends Component {
                                 <div id='payment-modes'>
                                     <FormControl>
                                         <FormLabel>Select Mode of Payment</FormLabel>
-                                        <RadioGroup>
+                                        <RadioGroup onChange={this.onPaymentSelection}>
                                             {(this.state.payments || []).map((payment, index) => (
                                                 <FormControlLabel key={payment.id} value={payment.id} control={<Radio/>}
                                                                   label={payment.payment_name}/>
@@ -308,6 +309,10 @@ class Checkout extends Component {
         } else {
             return false;
         }
+    }
+
+    onPaymentSelection = (e) => {
+        this.setState({'paymentId': e.target.value});
     }
 
     placeOrderMessageClose = () => {
