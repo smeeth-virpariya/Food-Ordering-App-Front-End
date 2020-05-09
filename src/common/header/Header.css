@@ -2,7 +2,7 @@
     margin-bottom: 20px;
 }
 
-.MuiFormControl-root {
+.MuiFormControl-root.login-and-signup-forms {
     width: 80%;
 }
 
