@@ -51,45 +51,48 @@ class Home extends Component {
         const { classes } = this.props;
         return (
             <div>
-                <Header showSearchBox={true} searchHandler={this.searchHandler}/>
-                <GridList cols={this.state.cards} cellHeight="auto">
-                    {this.state.restaurants.map(restaurant => (
-                        <GridListTile key={'restaurant' + restaurant.id} >
-                            {/* restaurant details card */}
-                            < Card className={classes.restaurantsCard}>
-                                <CardActionArea>
-                                    <CardMedia component="img" height={160} image={restaurant.photo_URL} title={restaurant.restaurant_name} />
-                                    <CardContent>
-                                        <div className="restaurant-title-div">
-                                            <Typography gutterBottom variant='h5' component='h2'>
-                                                {restaurant.restaurant_name}
-                                            </Typography>
-                                        </div>
-                                        <div className="restaurant-categories-div">
-                                            <Typography variant='subtitle1'>
-                                                {restaurant.categories}
-                                            </Typography>
-                                        </div>
-                                        <div className="rating-and-avg-div">
-                                            {/* restaurant rating */}
-                                            <div className="restaurant-rating-div">
-                                                <Typography variant='body1'>
-                                                    <i className="fa fa-star"></i> {restaurant.customer_rating} ({restaurant.number_customers_rated})
+                <Header showSearchBox={true} searchHandler={this.searchHandler} />
+                {this.state.restaurants.length === 0 ?
+                    <Typography variant="h6">No restaurant with the given name.</Typography> :
+                    <GridList cols={this.state.cards} cellHeight="auto">
+                        {this.state.restaurants.map(restaurant => (
+                            <GridListTile key={'restaurant' + restaurant.id} >
+                                {/* restaurant details card */}
+                                < Card className={classes.restaurantsCard}>
+                                    <CardActionArea>
+                                        <CardMedia component="img" height={160} image={restaurant.photo_URL} title={restaurant.restaurant_name} />
+                                        <CardContent>
+                                            <div className="restaurant-title-div">
+                                                <Typography gutterBottom variant='h5' component='h2'>
+                                                    {restaurant.restaurant_name}
                                                 </Typography>
                                             </div>
-                                            {/* restaurant average price */}
-                                            <div className="restaurant-avg-price-div">
-                                                <Typography variant='body1'>
-                                                    <i className="fa fa-inr" aria-hidden="true"></i>{restaurant.average_price} for two
-                                            </Typography>
+                                            <div className="restaurant-categories-div">
+                                                <Typography variant='subtitle1'>
+                                                    {restaurant.categories}
+                                                </Typography>
                                             </div>
-                                        </div>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>
-                        </GridListTile>
-                    ))}
-                </GridList>
+                                            <div className="rating-and-avg-div">
+                                                {/* restaurant rating */}
+                                                <div className="restaurant-rating-div">
+                                                    <Typography variant='body1'>
+                                                        <i className="fa fa-star"></i> {restaurant.customer_rating} ({restaurant.number_customers_rated})
+                                                </Typography>
+                                                </div>
+                                                {/* restaurant average price */}
+                                                <div className="restaurant-avg-price-div">
+                                                    <Typography variant='body1'>
+                                                        <i className="fa fa-inr" aria-hidden="true"></i>{restaurant.average_price} for two
+                                            </Typography>
+                                                </div>
+                                            </div>
+                                        </CardContent>
+                                    </CardActionArea>
+                                </Card>
+                            </GridListTile>
+                        ))}
+                    </GridList>
+                }
             </div >
         )
     }
@@ -162,7 +165,7 @@ class Home extends Component {
             }
         });
         if (event.target.value === '') {
-            this.getRestaurants();            
+            this.getRestaurants();
         } else {
             xhrFilteredRestaurants.open("GET", "http://localhost:8080/api/restaurant/name/" + event.target.value);
             xhrFilteredRestaurants.send(filteredRestaurants);
