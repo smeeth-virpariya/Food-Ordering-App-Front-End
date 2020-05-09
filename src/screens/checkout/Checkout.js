@@ -24,6 +24,10 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormLabel from "@material-ui/core/FormLabel";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import OrderItems from "../../common/orderitems/OrderItems";
 
 class Checkout extends Component {
     constructor() {
@@ -31,7 +35,19 @@ class Checkout extends Component {
         this.state = {
             activeStep: 0,
             activeTabValue: 'existing_address',
-            selectedAddressId: undefined
+            selectedAddressId: undefined,
+            orderItems: [
+                {
+                    name: 'Coke',
+                    itype: 0,
+                    quantity: 4,
+                    pricePerItem: 10
+                }, {
+                    name: 'Pizza',
+                    itype: 1,
+                    quantity: 2,
+                    pricePerItem: 100
+                }]
         }
     }
 
@@ -181,7 +197,18 @@ class Checkout extends Component {
                     </Stepper>
                 </div>
                 <div className='summary-section'>
-                    <span>Summary</span>
+                    <Card variant='elevation' className='summary-card'>
+                        <CardContent>
+                            <Typography variant="h5" component="h2">
+                                Summary
+                            </Typography>
+                            <br/>
+                            <Typography variant='h6' component='h3' color='textSecondary'>
+                                Restaurant Name
+                            </Typography>
+                            <OrderItems divider='true' orderitems={this.state.orderItems}/>
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
         </Fragment>

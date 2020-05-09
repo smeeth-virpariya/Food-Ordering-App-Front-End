@@ -1,0 +1,49 @@
+.order-item-container {
+    margin-top: 10px;
+}
+
+.order-item {
+    display: flex;
+    flex-direction: row;
+}
+
+.icon-type {
+    margin-top: 8px;
+}
+
+.item-name {
+    text-align: left;
+    margin-left: 20px;
+    min-width: 60%;
+}
+
+.rupees-icon {
+    margin: 3px;
+}
+
+.quantity-price {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    min-width: 30%;
+}
+
+.amount {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.payable-bill-amount {
+    display: flex;
+    flex-direction: row;
+    min-width: 30%;
+    justify-content: flex-end;
+    margin-right: 10px;
+    margin-bottom: 20px;
+}
+
+.place-order-button {
+    width: 100%;
+}
