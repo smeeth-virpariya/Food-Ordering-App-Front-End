@@ -23,6 +23,7 @@ import PropTypes from 'prop-types';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import validator from 'validator';
 import Snackbar from '@material-ui/core/Snackbar';
+import CloseIcon from '@material-ui/icons/Close';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
@@ -48,6 +49,7 @@ const styles = theme => ({
         '&:hover': {
             backgroundColor: 'transparent !important',
         },
+        cursor: 'default',
     },
     searchBox: {
         [theme.breakpoints.only('xs')]: {
@@ -70,7 +72,7 @@ const styles = theme => ({
         [theme.breakpoints.only('xs')]: {
             marginBottom: theme.spacing(1.5),
         },
-    }
+    },
 });
 
 // theme for changing the border bottom color of the searchbox to white when customer clicks on the serach field 
@@ -183,13 +185,14 @@ class Header extends Component {
                             <div className={classes.headerLoginBtn}>
                                 <Button variant="contained" color="default" startIcon={<AccountCircle />} onClick={this.openModalHandler}>Login</Button>
                             </div>
-                            : <div className={classes.customerProifleBtn}>
+                            :
+                            <div className={classes.customerProifleBtn}>
                                 <Button id="customer-profile" startIcon={<AccountCircle />} onClick={this.onProfileIconClick}>{sessionStorage.getItem("first-name")}</Button>
-                                <Menu open={this.state.menuState} onClose={this.onMenuClose}
+                                <Menu id="profile-menu" open={this.state.menuState} onClose={this.onMenuClose}
                                     anchorEl={this.state.anchorEl} getContentAnchorEl={null}
-                                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }} keepMounted>
-                                    <MenuItem onClick={this.onMyProfile}><Typography>My Profile</Typography></MenuItem>
-                                    <MenuItem onClick={this.onLogout}><Typography>Logout</Typography></MenuItem>
+                                    anchorOrigin={{ vertical: "bottom", horizontal: "left" }} keepMounted>
+                                    <MenuItem style={{minHeight: 48}} onClick={this.onMyProfile}><Typography>My Profile</Typography></MenuItem>
+                                    <MenuItem style={{minHeight: 48}} onClick={this.onLogout}><Typography>Logout</Typography></MenuItem>
                                 </Menu>
                             </div>
                         }
@@ -284,9 +287,16 @@ class Header extends Component {
                         horizontal: 'left',
                     }}
                     open={this.state.openLoginSnackBar}
-                    autoHideDuration={5000}
+                    autoHideDuration={10000}
                     onClose={this.loginSnackBarCloseHandler}
                     message="Logged in successfully!"
+                    action={
+                        <React.Fragment>
+                            <IconButton size="small" aria-label="close" color="inherit" onClick={this.loginSnackBarCloseHandler}>
+                                <CloseIcon fontSize="small" />
+                            </IconButton>
+                        </React.Fragment>
+                    }
                 />
                 {/* signup snackbar to display the message if customer registered successfully  */}
                 <Snackbar
@@ -295,9 +305,16 @@ class Header extends Component {
                         horizontal: 'left',
                     }}
                     open={this.state.openSignupSnackBar}
-                    autoHideDuration={5000}
+                    autoHideDuration={10000}
                     onClose={this.signupSnackBarCloseHandler}
                     message="Registered successfully! Please login now!"
+                    action={
+                        <React.Fragment>
+                            <IconButton size="small" aria-label="close" color="inherit" onClick={this.signupSnackBarCloseHandler}>
+                                <CloseIcon fontSize="small" />
+                            </IconButton>
+                        </React.Fragment>
+                    }
                 />
             </div>
         );
@@ -389,12 +406,12 @@ class Header extends Component {
         this.sendLoginDetails();
     }
 
-     // calls when value of the contact no field changes in login form
+    // calls when value of the contact no field changes in login form
     inputLoginContactNoChangeHandler = (e) => {
         this.setState({ loginContactNo: e.target.value });
     }
 
-     // calls when value of the password field changes in login form
+    // calls when value of the password field changes in login form
     inputLoginPasswordChangeHandler = (e) => {
         this.setState({ loginPassword: e.target.value });
     }
@@ -495,7 +512,7 @@ class Header extends Component {
         }
 
         //check the password has  at least one capital letter, one small letter, one number, and one special character
-        const isValidPassword = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{4,}$');
+        const isValidPassword = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$');
         if (signupPasswordRequired === false && !isValidPassword.test(this.state.signupPassword)) {
             this.setState({
                 signupPasswordRequiredMessage: "Password must contain at least one capital letter, one small letter, one number, and one special character",
@@ -526,24 +543,41 @@ class Header extends Component {
         this.setState({ signupFirstname: e.target.value });
     }
 
-     // calls when value of the lastname field changes in signup form
+    // calls when value of the lastname field changes in signup form
     inputSignupLastNameChangeHandler = (e) => {
         this.setState({ singupLastname: e.target.value });
     }
 
-     // calls when value of the email field changes in signup form
+    // calls when value of the email field changes in signup form
     inputSignupEmailChangeHandler = (e) => {
         this.setState({ signupEmail: e.target.value });
     }
 
-     // calls when value of the password field changes in signup form
+    // calls when value of the password field changes in signup form
     inputSignupPasswordChangeHandler = (e) => {
         this.setState({ signupPassword: e.target.value });
     }
 
-     // calls when value of the contact no field changes in signup form
+    // calls when value of the contact no field changes in signup form
     inputSignupContactNoChangeHandler = (e) => {
         this.setState({ signupContactNo: e.target.value });
+    }
+
+    // clears the signup form after successful signup
+    clearSignupForm = () => {
+        this.setState({
+            signupFirstname: "",
+            signupFirstnameRequired: "dispNone",
+            singupLastname: "",
+            signupEmail: "",
+            signupEmailRequired: "dispNone",
+            signupPassword: "",
+            signupPasswordRequired: "dispNone",
+            signupContactNo: "",
+            signupContactNoRequired: "dispNone",
+            signupErrorMessage: "",
+            signupErrorMessageRequired: "dispNone",
+        });
     }
 
     // closes the signup snackbar
@@ -584,6 +618,7 @@ class Header extends Component {
                         value: 0,
                         openSignupSnackBar: true
                     });
+                    that.clearSignupForm();
                 }
             }
         });
