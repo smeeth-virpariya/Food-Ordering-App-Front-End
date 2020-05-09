@@ -250,7 +250,9 @@ class Checkout extends Component {
     }
 
     incrementActiveStep = () => {
-        if (this.state.activeStep === 1 && this.state.paymentId === '') {
+        if(this.state.activeStep === 0 && this.state.selectedAddressId === undefined){
+            //Do nothing as it is mandatory to select an address
+        }else if (this.state.activeStep === 1 && this.state.paymentId === '') {
             //Do nothing, Because user has to select payment to proceed further.
         } else {
             let activeState = this.state.activeStep + 1;
