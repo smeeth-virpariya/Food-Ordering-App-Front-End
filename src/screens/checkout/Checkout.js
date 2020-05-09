@@ -39,6 +39,11 @@ class Checkout extends Component {
             activeTabValue: 'existing_address',
             addresses: [],
             states: [],
+            flat: undefined,
+            locality: undefined,
+            city: undefined,
+            stateUUID: '',
+            pincode: undefined,
             selectedAddressId: undefined,
             placeOrderMessage: undefined,
             placeOrderMessageOpen: false,
@@ -68,6 +73,7 @@ class Checkout extends Component {
     }
 
     render() {
+        console.log(this.state.newState);
         return <Fragment>
             <div className='main-container'>
                 <div className='delivery-payment-section'>
@@ -89,7 +95,7 @@ class Checkout extends Component {
                                      className={this.state.activeTabValue === 'existing_address' ? 'display-block' : 'display-none'}>
                                     <GridList style={{flexWrap: 'nowrap'}} cols={3} cellHeight='auto'>
                                         {
-                                            this.state.addresses.map((address, index) => (
+                                            (this.state.addresses||[]).map((address, index) => (
                                                 <GridListTile key={address.id}
                                                               className={this.state.selectedAddressId === address.id ? 'grid-list-tile-selected-address' : 'grid-list-tile'}>
                                                     <div>
@@ -116,22 +122,26 @@ class Checkout extends Component {
                                      className={this.state.activeTabValue === 'new_address' ? 'display-block' : 'display-none'}>
                                     <FormControl style={{minWidth: 300}}>
                                         <InputLabel htmlFor='flat'>Flat/Building No</InputLabel>
-                                        <Input id='flat' name='flat' type='text'/>
+                                        <Input id='flat' name='flat' type='text'
+                                               onChange={this.onInputFieldChangeHandler}/>
                                     </FormControl>
                                     <br/>
                                     <FormControl style={{minWidth: 300}}>
                                         <InputLabel htmlFor='locality'>Locality</InputLabel>
-                                        <Input id='locality' name='locality' type='text'/>
+                                        <Input id='locality' name='locality' type='text'
+                                               onChange={this.onInputFieldChangeHandler}/>
                                     </FormControl>
                                     <br/>
                                     <FormControl style={{minWidth: 300}}>
                                         <InputLabel htmlFor='city'>City</InputLabel>
-                                        <Input id='city' name='city' type='text'/>
+                                        <Input id='city' name='city' type='text'
+                                               onChange={this.onInputFieldChangeHandler}/>
                                     </FormControl>
                                     <br/>
                                     <FormControl style={{minWidth: 300}}>
-                                        <InputLabel htmlFor='state'>State</InputLabel>
-                                        <Select id='state' name='state' value=''>
+                                        <InputLabel htmlFor='stateUUID'>State</InputLabel>
+                                        <Select id='stateUUID' name='stateUUID' value={this.state.stateUUID}
+                                                onChange={this.onInputFieldChangeHandler}>
                                             {this.state.states.map((state, index) => (
                                                 <MenuItem key={state.id} value={state.id}>{state.state_name}</MenuItem>
                                             ))}
@@ -140,12 +150,14 @@ class Checkout extends Component {
                                     <br/>
                                     <FormControl style={{minWidth: 300}}>
                                         <InputLabel htmlFor='pincode'>Pincode</InputLabel>
-                                        <Input id='pincode' name='pincode' type='text'/>
+                                        <Input id='pincode' name='pincode' type='text'
+                                               onChange={this.onInputFieldChangeHandler}/>
                                     </FormControl>
                                     <br/>
                                     <br/>
                                     <FormControl style={{minWidth: 150}}>
-                                        <Button variant='contained' color='secondary'>SAVE ADDRESS</Button>
+                                        <Button variant='contained' color='secondary' onClick={this.saveAddress}>SAVE
+                                            ADDRESS</Button>
                                     </FormControl>
                                 </div>
                                 <div>
@@ -225,6 +237,15 @@ class Checkout extends Component {
         }
     }
 
+    onInputFieldChangeHandler = (e) => {
+        let stateKey = e.target.id;
+        let stateValue = e.target.value;
+        if (stateKey === undefined) {
+            stateKey = 'stateUUID';
+        }
+        this.setState({[stateKey]: stateValue});
+    }
+
     placeOrderMessageClose = () => {
         this.setState({placeOrderMessageOpen: false});
     }
@@ -271,6 +292,39 @@ class Checkout extends Component {
         xhr.setRequestHeader("Cache-Control", "no-cache");
 
         xhr.send();
+    }
+
+    saveAddress = () => {
+        let address = {
+            city: this.state.city,
+            flat_building_name: this.state.flat,
+            locality: this.state.locality,
+            pincode: this.state.pincode,
+            state_uuid: this.state.stateUUID
+        }
+
+        let token = 'eyJraWQiOiI2MWMxODFjNy03ODgyLTQxZTEtODVkYi1lMzk3M2M2NDllNjAiLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiIxYTlhZDRjYS04MmMwLTQ3YzQtYTNjZS1kZTcwZTRiZWZjNWEiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU4OTA0MCwiaWF0IjoxNTg5MDEyfQ.nxObTYbip4p4x5XT0jzVKsLPegxqSbdB7fW6iqLj4007-pqHxMEHJhiqPa8uWw3ZboIQhNfWkIQxeL3QsVkVOw';
+
+        let xhr = new XMLHttpRequest();
+
+        let that = this;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                that.setState({addresses: JSON.parse(this.responseText).addresses});
+            }
+        });
+
+        let url = 'http://localhost:8080/api/address/';
+
+        xhr.open('POST', url);
+
+        xhr.setRequestHeader('authorization', 'Bearer ' + token);
+        xhr.setRequestHeader("Cache-Control", "no-cache");
+        xhr.setRequestHeader('content-type','application/json');
+
+        xhr.send(JSON.stringify(address));
+
     }
 }
 
