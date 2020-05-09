@@ -43,6 +43,10 @@ class Home extends Component {
         window.addEventListener('resize', this.noOfCardsPerColumn);
     }
 
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.noOfCardsPerColumn);
+    }
+
     render() {
         const { classes } = this.props;
         return (
