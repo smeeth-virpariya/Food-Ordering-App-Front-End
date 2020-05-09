@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import '../../../node_modules/font-awesome/css/font-awesome.min.css';
 import './OrderItems.css'
 import Typography from "@material-ui/core/Typography";
@@ -9,8 +9,8 @@ import FormControl from "@material-ui/core/FormControl";
 export default function OrderItems(props) {
     return (
         <div className='order-item-container'>
-            {(props.orderitems || []).map((item, index) => (
-                <div className='order-item'>
+            {(props.orderitems.items || []).map((item, index) => (
+                <div key={item.id} className='order-item'>
                     <div>
                         <i className="fa fa-stop-circle-o icon-type" aria-hidden="true"
                            style={item.itype === 0 ? {color: "green"} : {color: "red"}}></i>
@@ -37,16 +37,18 @@ export default function OrderItems(props) {
             ))
             }
             {props.divider ? <Divider/> : null}
-            <div className='amount'>
-                <Typography variant='h6' color='textPrimary'>
-                    Net Ammount
-                </Typography>
+            <div className='amount-section'>
+                <div className='amount'>
+                    <Typography variant='h6' color='textPrimary'>
+                        Net Ammount
+                    </Typography>
+                </div>
                 <div className='payable-bill-amount'>
                     <Typography variant='h6' color='textSecondary'>
                         <i className="fa fa-inr" aria-hidden="true"></i>
                     </Typography>
-                    <Typography variant='h6' color='textSecondary'>
-                        {Number(240).toLocaleString(undefined, {minimumFractionDigits: 2})}
+                    <Typography style={{marginRight: 10}} variant='h6' color='textSecondary'>
+                        {Number(props.orderitems.total).toLocaleString(undefined, {minimumFractionDigits: 2})}
                     </Typography>
                 </div>
             </div>

@@ -28,6 +28,8 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import OrderItems from "../../common/orderitems/OrderItems";
+import Snackbar from "@material-ui/core/Snackbar";
+import CloseIcon from '@material-ui/icons/Close';
 
 class Checkout extends Component {
     constructor() {
@@ -36,18 +38,25 @@ class Checkout extends Component {
             activeStep: 0,
             activeTabValue: 'existing_address',
             selectedAddressId: undefined,
-            orderItems: [
-                {
-                    name: 'Coke',
-                    itype: 0,
-                    quantity: 4,
-                    pricePerItem: 10
-                }, {
-                    name: 'Pizza',
-                    itype: 1,
-                    quantity: 2,
-                    pricePerItem: 100
-                }]
+            placeOrderMessage: undefined,
+            placeOrderMessageOpen: false,
+            orderItems: {
+                total: 240,
+                items: [
+                    {
+                        id: '100',
+                        name: 'Coke',
+                        itype: 0,
+                        quantity: 4,
+                        pricePerItem: 10
+                    }, {
+                        id: '101',
+                        name: 'Pizza',
+                        itype: 1,
+                        quantity: 2,
+                        pricePerItem: 100
+                    }]
+            }
         }
     }
 
@@ -153,9 +162,9 @@ class Checkout extends Component {
                                     <br/>
                                     <FormControl style={{minWidth: 300}}>
                                         <InputLabel htmlFor='state'>State</InputLabel>
-                                        <Select id='state' name='state'>
+                                        <Select id='state' name='state' value=''>
                                             <MenuItem value='1'>Karnataka</MenuItem>
-                                            <MenuItem value='1'>Gujarat</MenuItem>
+                                            <MenuItem value='2'>Gujarat</MenuItem>
                                         </Select>
                                     </FormControl>
                                     <br/>
@@ -211,6 +220,14 @@ class Checkout extends Component {
                     </Card>
                 </div>
             </div>
+            <div>
+                <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'left'}} key='01'
+                          message={this.state.placeOrderMessage}
+                          open={this.state.placeOrderMessageOpen}
+                          onClose={this.placeOrderMessageClose}
+                          action={<Fragment> <IconButton color='inherit'
+                                                         onClick={this.placeOrderMessageClose}><CloseIcon/></IconButton></Fragment>}/>
+            </div>
         </Fragment>
     }
 
@@ -236,6 +253,10 @@ class Checkout extends Component {
         if (elementId.startsWith('select-address-button-')) {
             this.setState({selectedAddressId: elementId.split('select-address-button-')[1]})
         }
+    }
+
+    placeOrderMessageClose = () => {
+        this.setState({placeOrderMessageOpen: false});
     }
 }
 

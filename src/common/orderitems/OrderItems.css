@@ -28,20 +28,27 @@
     min-width: 30%;
 }
 
-.amount {
+.amount-section {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin-top: 10px;
 }
 
+.amount {
+    min-width: 70%;
+}
+
 .payable-bill-amount {
     display: flex;
     flex-direction: row;
-    min-width: 30%;
     justify-content: flex-end;
-    margin-right: 10px;
+    min-width: 30%;
     margin-bottom: 20px;
+}
+
+.amount-value {
+    margin-right: 20px;
 }
 
 .place-order-button {
