@@ -73,7 +73,6 @@ class Checkout extends Component {
     }
 
     render() {
-        console.log(this.state.newState);
         return <Fragment>
             <div className='main-container'>
                 <div className='delivery-payment-section'>
@@ -95,7 +94,7 @@ class Checkout extends Component {
                                      className={this.state.activeTabValue === 'existing_address' ? 'display-block' : 'display-none'}>
                                     <GridList style={{flexWrap: 'nowrap'}} cols={3} cellHeight='auto'>
                                         {
-                                            (this.state.addresses||[]).map((address, index) => (
+                                            (this.state.addresses || []).map((address, index) => (
                                                 <GridListTile key={address.id}
                                                               className={this.state.selectedAddressId === address.id ? 'grid-list-tile-selected-address' : 'grid-list-tile'}>
                                                     <div>
@@ -225,6 +224,10 @@ class Checkout extends Component {
 
     changeActiveTab = (value) => {
         this.setState({activeTabValue: value})
+        if (value === 'existing_address') {
+            console.log('Switching to existing project.')
+            this.fetchAddress();
+        }
     }
 
     selectAddress = (e) => {
@@ -251,6 +254,7 @@ class Checkout extends Component {
     }
 
     fetchAddress = () => {
+        console.log('Fetching addresses.');
         let token = 'eyJraWQiOiI2MWMxODFjNy03ODgyLTQxZTEtODVkYi1lMzk3M2M2NDllNjAiLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiIxYTlhZDRjYS04MmMwLTQ3YzQtYTNjZS1kZTcwZTRiZWZjNWEiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU4OTA0MCwiaWF0IjoxNTg5MDEyfQ.nxObTYbip4p4x5XT0jzVKsLPegxqSbdB7fW6iqLj4007-pqHxMEHJhiqPa8uWw3ZboIQhNfWkIQxeL3QsVkVOw';
 
         let xhr = new XMLHttpRequest();
@@ -321,10 +325,9 @@ class Checkout extends Component {
 
         xhr.setRequestHeader('authorization', 'Bearer ' + token);
         xhr.setRequestHeader("Cache-Control", "no-cache");
-        xhr.setRequestHeader('content-type','application/json');
+        xhr.setRequestHeader('content-type', 'application/json');
 
         xhr.send(JSON.stringify(address));
-
     }
 }
 
