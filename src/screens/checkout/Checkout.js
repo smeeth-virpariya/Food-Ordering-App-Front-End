@@ -209,7 +209,7 @@ class Checkout extends Component {
                                         <FormLabel>Select Mode of Payment</FormLabel>
                                         <RadioGroup>
                                             {(this.state.payments || []).map((payment, index) => (
-                                                <FormControlLabel value={payment.id} control={<Radio/>}
+                                                <FormControlLabel key={payment.id} value={payment.id} control={<Radio/>}
                                                                   label={payment.payment_name}/>
                                             ))}
                                         </RadioGroup>
