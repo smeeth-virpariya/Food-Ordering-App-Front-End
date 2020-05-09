@@ -51,7 +51,7 @@ class Home extends Component {
         const { classes } = this.props;
         return (
             <div>
-                <Header showSearchBox={true} />
+                <Header showSearchBox={true} searchHandler={this.searchHandler}/>
                 <GridList cols={this.state.cards} cellHeight="auto">
                     {this.state.restaurants.map(restaurant => (
                         <GridListTile key={'restaurant' + restaurant.id} >
@@ -106,7 +106,6 @@ class Home extends Component {
             }
         })
         xhrRestaurants.open("GET", "http://localhost:8080/api/restaurant");
-        xhrRestaurants.setRequestHeader("Access-Control-Allow-Origin", "*");
         xhrRestaurants.send(restaurantsData);
     }
 
@@ -142,6 +141,31 @@ class Home extends Component {
         if (window.innerWidth >= 1530) {
             this.setState({ cards: 5 });
             return;
+        }
+    }
+
+    searchHandler = (event) => {
+        let that = this;
+        let filteredRestaurants = null;
+        let xhrFilteredRestaurants = new XMLHttpRequest();
+        xhrFilteredRestaurants.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                if (!JSON.parse(this.responseText).restaurants) {
+                    that.setState({
+                        restaurants: null
+                    });
+                } else {
+                    that.setState({
+                        restaurants: JSON.parse(this.responseText).restaurants
+                    });
+                }
+            }
+        });
+        if (event.target.value === '') {
+            this.getRestaurants();            
+        } else {
+            xhrFilteredRestaurants.open("GET", "http://localhost:8080/api/restaurant/name/" + event.target.value);
+            xhrFilteredRestaurants.send(filteredRestaurants);
         }
     }
 }
