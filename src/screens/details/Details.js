@@ -5,10 +5,12 @@ import Divider from "@material-ui/core/Divider";
 import AddIcon from '@material-ui/icons/Add';
 import Snackbar from '@material-ui/core/Snackbar';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import CardContent from '@material-ui/core/CardContent';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import Badge from '@material-ui/core/Badge';
 
 class Details extends Component{
   
@@ -23,7 +25,14 @@ class Details extends Component{
             number_customers_rated : null,
             locality : null,
             categories : [],
-            open:false
+            open:false,
+            totalAmount : 0,
+            totalItems:0,
+            cartEmpty : false,
+            orderItems : {id:null,items:[]},
+            cartItems:[],
+            cartItem : {}
+            
             
         }
        
@@ -49,7 +58,9 @@ class Details extends Component{
                     average_price : JSON.parse(this.responseText).average_price,
                     number_customers_rated : JSON.parse(this.responseText).number_customers_rated,
                     locality : JSON.parse(this.responseText).address.locality,
-                    categories : JSON.parse(this.responseText).categories
+                    categories : JSON.parse(this.responseText).categories,
+                    orderItems : {id:JSON.parse(this.responseText).id},
+                    
 
                 });
             }
@@ -60,12 +71,34 @@ class Details extends Component{
         xhr.send(data);
     }
 
-    addToCartHandler = () =>{
-        this.setState({open:true})
+    addToCartHandler = (e,id,type,name,price)=>{
+        const newItem = this.state.cartItem;
+        newItem.id = id;
+        newItem.type = type;
+        newItem.name = name;
+        newItem.pricePerItem = price;
+    
+        this.setState({cartItem: newItem});
+        this.state.cartItems.push(this.state.cartItem);
+        this.setState({cartItem:{}});
+
+       const orderItems = this.state.orderItems;
+        orderItems.items =  this.state.cartItems;
+        this.setState({orderItems:orderItems});
+
+        var totalItems = this.state.totalItems;
+        totalItems +=1;
+        this.setState({open:true});
+        this.setState({totalItems,totalItems});
     }
 
     closeHandler = () =>{
         this.setState({open:false})
+        this.setState({cartEmpty:false})
+    }
+
+    checkoutHandler = () =>{
+        this.state.totalItems === 0 ? this.setState({cartEmpty:true}):this.setState({cartEmpty:false});
     }
     Capitalize(str){
         var arr = str.split(" ")
@@ -79,6 +112,7 @@ class Details extends Component{
         }
 
     render(){
+       
         return(
          <div>Header comes here
             <div className="restaurant-details-container">
@@ -92,7 +126,7 @@ class Details extends Component{
                     {
                         this.state.categories.map(category =>(
                             
-                        <span>{category.category_name}, </span>
+                        <span key={category.id+"category"}>{category.category_name}, </span>
                         ))
                     }
                   </div>
@@ -116,9 +150,9 @@ class Details extends Component{
             <div className="category-items-cart-container">
                 <div className="category-items-container">
                     {this.state.categories.map(category=>(
-                        <div className="category"><span style={{color:"grey",fontWeight:"bolder"}}>{category.category_name.toUpperCase()}</span> <Divider style={{marginTop:"10px",marginBottom:"10px"}}/>
+                        <div className="category" key="category.id"><span style={{color:"grey",fontWeight:"bolder"}}>{category.category_name.toUpperCase()}</span> <Divider style={{marginTop:"10px",marginBottom:"10px"}}/>
                         {  category.item_list.map(item=>(
-                            <div className="item">
+                            <div className="item" key={item.id}>
                                <div className="item-left">{
                                   
                                    item.item_type == "VEG" ?  <span className="fa fa-circle" aria-hidden="true" style={{fontSize:"12px" ,color:"green",paddingRight:"12px"}} />:
@@ -129,7 +163,8 @@ class Details extends Component{
                                <div className="item-right"><i className="fa fa-inr" aria-hidden="true" 
                                  style={{paddingRight:"4px",paddingBottom:"3px",
                                  paddingLeft:"2px"}}></i>{item.price.toFixed(2)}
-                                <IconButton style={{marginLeft:"40px"}}><AddIcon onClick={this.addToCartHandler}/> </IconButton>
+                                <IconButton style={{marginLeft:"40px"}} 
+                                onClick={(e)=> this.addToCartHandler(e,item.id,item.item_type,item.item_name,item.price)}><AddIcon /> </IconButton>
                                </div>
                             </div> 
                              ))
@@ -157,15 +192,62 @@ class Details extends Component{
                     <div className="cart-container">
                     <Card>  
                            <CardContent>
-                           <Typography style={{fontWeight:"bold"}}>
-                             My Cart
-                            </Typography>
-                            <Typography style={{fontWeight:"bold"}}>
-                            TOTAL AMOUNT
-                            </Typography>
+                           <div style={{fontWeight:"bold"}}>
+                             <i  style={{paddingRight:"20px"}}>
+                             <Badge badgeContent={this.state.totalItems} color="primary" showZero>  
+                                 <ShoppingCartIcon/>
+                             </Badge>     
+                            </i>My Cart
+                            </div>
+                             <div className="cart-item-list">
+                                {
+                                    this.state.orderItems.items !== undefined ?
+                                    this.state.orderItems.items.map(item=>(
+                                    <div className="cart-item">
+                                    {
+                                         item.type == "VEG" ?  
+                                         <span className="fa fa-stop-circle-o" aria-hidden="true" style={{fontSize:"12px" ,color:"green",paddingRight:"12px"}} />:
+                                         <span className="fa fa-stop-circle-o" aria-hidden="true" style={{fontSize:"12px" ,color:"red",paddingRight:"12px"}} /> 
+                                    }
+                                     
+                                        {this.Capitalize(item.name)}
+                                    </div>)):""
+                                }
+                            </div>
+                            <div className="total-amount-section">
+                                <span>
+                                TOTAL AMOUNT
+                                </span>
+                                <span style={{float:"right"}}>
+                                <i className="fa fa-inr" aria-hidden="true" style={{paddingRight:"2px"}} ></i>{this.state.totalAmount.toFixed(2)}
+                                </span>
+                            </div>
+                           
+                            <div className="checkout-button" onClick={this.checkoutHandler}>
+                                <Button className="checkout" variant="contained" color="primary" style={{marginLeft:'5px',minWidth:'450px'}}>
+                                CHECKOUT
+                                </Button>
+                            </div>
                            </CardContent>    
                        </Card>   
                     </div>
+                    <Snackbar
+                    anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                    }}
+                    open={this.state.cartEmpty}
+                    autoHideDuration={3000}
+                    onClose={this.closeHandler}
+                    message="Please add an item to your cart!"
+                    action={
+                    <React.Fragment>
+                        <IconButton size="small" aria-label="close" color="inherit" onClick={this.closeHandler}>
+                        <CloseIcon fontSize="small" />
+                        </IconButton>
+                    </React.Fragment>
+                        }
+                    /> 
             </div>            
 
 

@@ -74,3 +74,23 @@
 .CardContent{
     padding : 10px
 }
+
+.total-amount-section{
+    font-weight: bold;
+    font-size: 12px;
+    margin-top: 25px;
+}
+
+.checkout-button{
+    margin-top: 15px;
+  
+}
+
+.cart-item-list{
+    padding-top: 20px;
+}
+
+.cart-item{
+    margin-top: 20px;
+}
+
