@@ -92,5 +92,21 @@
 
 .cart-item{
     margin-top: 20px;
+    font-weight: lighter;
+    font-size: 14px;
+    display: flex;
+    flex-direction: row;
+}
+
+.cart-item-left{
+    flex: 50%;
+}
+
+.cart-item-centre{
+    flex: 30%;
+}
+
+.cart-item-right{
+    flex: 20%;
 }
 

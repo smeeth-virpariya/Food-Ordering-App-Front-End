@@ -11,6 +11,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Badge from '@material-ui/core/Badge';
+import RemoveIcon from '@material-ui/icons/Remove';
 
 class Details extends Component{
   
@@ -29,9 +30,10 @@ class Details extends Component{
             totalAmount : 0,
             totalItems:0,
             cartEmpty : false,
-            orderItems : {id:null,items:[]},
+            orderItems : {id:null,items:[],total:0},
             cartItems:[],
-            cartItem : {}
+            cartItem : {},
+            itemQuantityDecreased : false
             
             
         }
@@ -71,30 +73,96 @@ class Details extends Component{
         xhr.send(data);
     }
 
+   getIndex = (value, arr, prop)=> {
+       console.log("Value is :" + value);
+       console.log("Prop is :" + prop);
+        for(var i = 0; i < arr.length; i++) {
+            if(arr[i][prop] === value) {
+                return i;
+            }
+        }
+        return -1; //to handle the case where the value doesn't exist
+    }
+
     addToCartHandler = (e,id,type,name,price)=>{
+        var totalAmount = this.state.totalAmount;
+        var totalItems = this.state.totalItems;
+        totalItems +=1;
+       
         const newItem = this.state.cartItem;
         newItem.id = id;
         newItem.type = type;
         newItem.name = name;
         newItem.pricePerItem = price;
+        newItem.quantity = 1;
+        newItem.priceForAll = price;
     
         this.setState({cartItem: newItem});
-        this.state.cartItems.push(this.state.cartItem);
-        this.setState({cartItem:{}});
 
-       const orderItems = this.state.orderItems;
-        orderItems.items =  this.state.cartItems;
-        this.setState({orderItems:orderItems});
+        totalAmount+=price;
 
-        var totalItems = this.state.totalItems;
-        totalItems +=1;
+        if(this.state.orderItems.items !== undefined && this.state.orderItems.items.some(item => (item.name === name))){ 
+            var index = this.getIndex(name,this.state.orderItems.items,"name");
+            var quantity = this.state.orderItems.items[index].quantity + 1;
+            var priceForAll = this.state.orderItems.items[index].priceForAll +  this.state.orderItems.items[index].pricePerItem;
+            var item = this.state.orderItems.items[index];
+            item.quantity = quantity;
+            item.priceForAll = priceForAll;
+            this.setState(item);
+            
+        }
+        else{
+
+            this.state.cartItems.push(this.state.cartItem);
+            this.setState({cartItem:{}});
+    
+    
+            const orderItems = this.state.orderItems;
+            orderItems.items =  this.state.cartItems;
+            this.setState({orderItems:orderItems});
+        }
+     
         this.setState({open:true});
         this.setState({totalItems,totalItems});
+        this.setState({totalAmount:totalAmount});
+      
+     
+    
     }
+
+    removeFromCartHandler = (e,id,type,name,price)=>{
+      
+        var index = this.getIndex(name,this.state.orderItems.items,"name");
+    
+        if(this.state.orderItems.items[index].quantity > 1){
+            var quantity = this.state.orderItems.items[index].quantity - 1;
+            var priceForAll = this.state.orderItems.items[index].priceForAll -  this.state.orderItems.items[index].pricePerItem;
+            var item = this.state.orderItems.items[index];
+            item.quantity = quantity;
+            item.priceForAll = priceForAll;
+            this.setState(item);
+        }
+        else{
+
+            this.state.orderItems.items.splice(index,1);
+           
+        }
+
+        var totalAmount = this.state.totalAmount;
+        totalAmount-=price;
+        var totalItems = this.state.totalItems;
+        totalItems -=1;
+        this.setState({itemQuantityDecreased:true});
+        this.setState({totalItems,totalItems});
+        this.setState({totalAmount:totalAmount});
+
+    }
+       
 
     closeHandler = () =>{
         this.setState({open:false})
         this.setState({cartEmpty:false})
+        this.setState({itemQuantityDecreased:false})
     }
 
     checkoutHandler = () =>{
@@ -204,13 +272,24 @@ class Details extends Component{
                                     this.state.orderItems.items !== undefined ?
                                     this.state.orderItems.items.map(item=>(
                                     <div className="cart-item">
-                                    {
-                                         item.type == "VEG" ?  
-                                         <span className="fa fa-stop-circle-o" aria-hidden="true" style={{fontSize:"12px" ,color:"green",paddingRight:"12px"}} />:
-                                         <span className="fa fa-stop-circle-o" aria-hidden="true" style={{fontSize:"12px" ,color:"red",paddingRight:"12px"}} /> 
-                                    }
-                                     
-                                        {this.Capitalize(item.name)}
+                                      <div className="cart-item-left">
+                                        {
+                                            item.type == "VEG" ?  
+                                            <span className="fa fa-stop-circle-o" aria-hidden="true" style={{fontSize:"12px" ,color:"green",paddingRight:"12px"}} />:
+                                            <span className="fa fa-stop-circle-o" aria-hidden="true" style={{fontSize:"12px" ,color:"red",paddingRight:"12px"}} /> 
+                                        }
+                                         {this.Capitalize(item.name)}
+                                      </div>                                                 
+                                       <div className="cart-item-centre">
+                                         <IconButton><RemoveIcon onClick={(e)=>this.removeFromCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}/></IconButton>
+                                         <span >{item.quantity} </span>
+                                         <IconButton ><AddIcon onClick={(e)=>this.addToCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}/></IconButton>
+                                        </div>
+                                        <div className="cart-item-right" >
+                                         <span style={{float:"right"}}>
+                                            <i className="fa fa-inr" aria-hidden="true" style={{paddingRight:"4px"}}></i>
+                                            {item.priceForAll.toFixed(2)}</span>
+                                        </div>
                                     </div>)):""
                                 }
                             </div>
@@ -224,7 +303,7 @@ class Details extends Component{
                             </div>
                            
                             <div className="checkout-button" onClick={this.checkoutHandler}>
-                                <Button className="checkout" variant="contained" color="primary" style={{marginLeft:'5px',minWidth:'450px'}}>
+                                <Button className="checkout" variant="contained" color="primary" style={{minWidth:'470px'}}>
                                 CHECKOUT
                                 </Button>
                             </div>
@@ -240,6 +319,23 @@ class Details extends Component{
                     autoHideDuration={3000}
                     onClose={this.closeHandler}
                     message="Please add an item to your cart!"
+                    action={
+                    <React.Fragment>
+                        <IconButton size="small" aria-label="close" color="inherit" onClick={this.closeHandler}>
+                        <CloseIcon fontSize="small" />
+                        </IconButton>
+                    </React.Fragment>
+                        }
+                    /> 
+                      <Snackbar
+                    anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                    }}
+                    open={this.state.itemQuantityDecreased}
+                    autoHideDuration={3000}
+                    onClose={this.closeHandler}
+                    message="Item quantity decreased by 1!"
                     action={
                     <React.Fragment>
                         <IconButton size="small" aria-label="close" color="inherit" onClick={this.closeHandler}>
