@@ -38,6 +38,7 @@ class Home extends Component {
     }
 
     componentDidMount() {
+        this.mounted = true;
         this.getRestaurants();
         this.noOfCardsPerColumn();
         window.addEventListener('resize', this.noOfCardsPerColumn);
@@ -50,6 +51,7 @@ class Home extends Component {
     render() {
         const { classes } = this.props;
         return (
+            this.mounted === true ?
             <div>
                 <Header showSearchBox={true} searchHandler={this.searchHandler} />
                 {this.state.restaurants.length === 0 ?
@@ -58,7 +60,7 @@ class Home extends Component {
                         {this.state.restaurants.map(restaurant => (
                             <GridListTile key={'restaurant' + restaurant.id} >
                                 {/* restaurant details card */}
-                                < Card className={classes.restaurantsCard}>
+                                < Card className={classes.restaurantsCard} onClick={() => this.restaurantDetails(restaurant.id)}>
                                     <CardActionArea>
                                         <CardMedia component="img" height={160} image={restaurant.photo_URL} title={restaurant.restaurant_name} />
                                         <CardContent>
@@ -93,7 +95,8 @@ class Home extends Component {
                         ))}
                     </GridList>
                 }
-            </div >
+            </div>
+            : ""
         )
     }
 
@@ -170,6 +173,10 @@ class Home extends Component {
             xhrFilteredRestaurants.open("GET", "http://localhost:8080/api/restaurant/name/" + event.target.value);
             xhrFilteredRestaurants.send(filteredRestaurants);
         }
+    }
+
+    restaurantDetails = (restaurantId) => {
+        this.props.history.push('/restaurant/' + restaurantId);
     }
 }
 
