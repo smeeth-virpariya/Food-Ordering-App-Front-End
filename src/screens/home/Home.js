@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
+
+//importing the header component
 import Header from '../../common/header/Header';
+
+//importing material-ui components
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import Card from '@material-ui/core/Card';
@@ -8,8 +12,11 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+
+//importing font awesome
 import '../../../node_modules/font-awesome/css/font-awesome.min.css';
 
+//importing the css file of the Home page
 import './Home.css';
 
 const styles = theme => ({
@@ -40,66 +47,70 @@ class Home extends Component {
     componentDidMount() {
         this.mounted = true;
         this.getRestaurants();
-        this.noOfCardsPerColumn();
-        window.addEventListener('resize', this.noOfCardsPerColumn);
+        this.noOfColumns();
+        //when the window is resized calls the noOfColumns method
+        window.addEventListener('resize', this.noOfColumns);
     }
 
+    //called before render()
     componentWillUnmount() {
-        window.removeEventListener('resize', this.noOfCardsPerColumn);
+        window.removeEventListener('resize', this.noOfColumns);
     }
 
     render() {
         const { classes } = this.props;
         return (
             this.mounted === true ?
-            <div>
-                <Header showSearchBox={true} searchHandler={this.searchHandler} />
-                {this.state.restaurants.length === 0 ?
-                    <Typography variant="h6">No restaurant with the given name.</Typography> :
-                    <GridList cols={this.state.cards} cellHeight="auto">
-                        {this.state.restaurants.map(restaurant => (
-                            <GridListTile key={'restaurant' + restaurant.id} >
-                                {/* restaurant details card */}
-                                < Card className={classes.restaurantsCard} onClick={() => this.restaurantDetails(restaurant.id)}>
-                                    <CardActionArea>
-                                        <CardMedia component="img" height={160} image={restaurant.photo_URL} title={restaurant.restaurant_name} />
-                                        <CardContent>
-                                            <div className="restaurant-title-div">
-                                                <Typography gutterBottom variant='h5' component='h2'>
-                                                    {restaurant.restaurant_name}
-                                                </Typography>
-                                            </div>
-                                            <div className="restaurant-categories-div">
-                                                <Typography variant='subtitle1'>
-                                                    {restaurant.categories}
-                                                </Typography>
-                                            </div>
-                                            <div className="rating-and-avg-div">
-                                                {/* restaurant rating */}
-                                                <div className="restaurant-rating-div">
-                                                    <Typography variant='body1'>
-                                                        <i className="fa fa-star"></i> {restaurant.customer_rating} ({restaurant.number_customers_rated})
-                                                </Typography>
+                <div>
+                    <Header showSearchBox={true} searchHandler={this.searchHandler} />
+                    {/* if no restaurants found with the entered name displays the No restaurant with the given name. */}
+                    {this.state.restaurants.length === 0 ?
+                        <Typography variant="h6">No restaurant with the given name.</Typography> :
+                        <GridList cols={this.state.cards} cellHeight="auto">
+                            {this.state.restaurants.map(restaurant => (
+                                <GridListTile key={'restaurant' + restaurant.id} >
+                                    {/* restaurant details card onclick redirects to restaurant details page*/}
+                                    < Card className={classes.restaurantsCard} onClick={() => this.restaurantDetails(restaurant.id)}>
+                                        <CardActionArea>
+                                            <CardMedia component="img" height={160} image={restaurant.photo_URL} title={restaurant.restaurant_name} />
+                                            <CardContent>
+                                                <div className="restaurant-title-div">
+                                                    <Typography gutterBottom variant='h5' component='h2'>
+                                                        {restaurant.restaurant_name}
+                                                    </Typography>
                                                 </div>
-                                                {/* restaurant average price */}
-                                                <div className="restaurant-avg-price-div">
-                                                    <Typography variant='body1'>
-                                                        <i className="fa fa-inr" aria-hidden="true"></i>{restaurant.average_price} for two
+                                                <div className="restaurant-categories-div">
+                                                    <Typography variant='subtitle1'>
+                                                        {restaurant.categories}
+                                                    </Typography>
+                                                </div>
+                                                <div className="rating-and-avg-div">
+                                                    {/* restaurant rating */}
+                                                    <div className="restaurant-rating-div">
+                                                        <Typography variant='body1'>
+                                                            <i className="fa fa-star"></i> {restaurant.customer_rating} ({restaurant.number_customers_rated})
+                                                </Typography>
+                                                    </div>
+                                                    {/* restaurant average price */}
+                                                    <div className="restaurant-avg-price-div">
+                                                        <Typography variant='body1'>
+                                                            <i className="fa fa-inr" aria-hidden="true"></i>{restaurant.average_price} for two
                                             </Typography>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </Card>
-                            </GridListTile>
-                        ))}
-                    </GridList>
-                }
-            </div>
-            : ""
+                                            </CardContent>
+                                        </CardActionArea>
+                                    </Card>
+                                </GridListTile>
+                            ))}
+                        </GridList>
+                    }
+                </div>
+                : ""
         )
     }
 
+    //fetches the restaurants from backend
     getRestaurants = () => {
         let that = this;
         let restaurantsData = null;
@@ -115,7 +126,8 @@ class Home extends Component {
         xhrRestaurants.send(restaurantsData);
     }
 
-    noOfCardsPerColumn = () => {
+    //method updates the no columns according to the window size
+    noOfColumns = () => {
 
         if (window.innerWidth >= 320 && window.innerWidth <= 600) {
             this.setState({
@@ -150,6 +162,7 @@ class Home extends Component {
         }
     }
 
+    // integrating search box with ui
     searchHandler = (event) => {
         let that = this;
         let filteredRestaurants = null;
@@ -175,6 +188,7 @@ class Home extends Component {
         }
     }
 
+    // redirects to restaurant details page with restaurnat id
     restaurantDetails = (restaurantId) => {
         this.props.history.push('/restaurant/' + restaurantId);
     }
