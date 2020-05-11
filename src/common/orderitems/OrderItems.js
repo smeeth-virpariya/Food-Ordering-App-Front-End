@@ -11,7 +11,7 @@ export default function OrderItems(props) {
         <div className='order-item-container'>
             {(props.orderitems.items || []).map((item, index) => (
                 <div key={item.id} className='order-item'>
-                    <div>
+                    <div className='icon'>
                         <i className="fa fa-stop-circle-o icon-type" aria-hidden="true"
                            style={item.itype === 0 ? {color: "green"} : {color: "red"}}></i>
                     </div>
@@ -20,19 +20,17 @@ export default function OrderItems(props) {
                             {item.name}
                         </Typography>
                     </div>
-                    <div className='quantity-price'>
-                        <div>
+                        <div className='quantity'>
                             <Typography variant='h6' color='textSecondary'>
                                 {item.quantity}
                             </Typography>
                         </div>
-                        <div>
+                        <div className='price'>
                             <Typography variant='h6' color='textSecondary'>
                                 <i className="fa fa-inr" aria-hidden="true"></i>
                                 {Number(item.quantity * item.pricePerItem).toLocaleString(undefined, {minimumFractionDigits: 2})}
                             </Typography>
                         </div>
-                    </div>
                 </div>
             ))
             }
