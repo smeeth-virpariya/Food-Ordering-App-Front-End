@@ -41,6 +41,7 @@ class Home extends Component {
         this.state = {
             restaurants: [],
             cards: null,
+            loading: false
         }
     }
 
@@ -64,7 +65,7 @@ class Home extends Component {
                 <div>
                     <Header showSearchBox={true} searchHandler={this.searchHandler} />
                     {/* if no restaurants found with the entered name displays the No restaurant with the given name. */}
-                    {this.state.restaurants.length === 0 ?
+                    {this.state.restaurants.length === 0 && this.state.loading === false ?
                         <Typography variant="h6">No restaurant with the given name.</Typography> :
                         <GridList cols={this.state.cards} cellHeight="auto">
                             {this.state.restaurants.map(restaurant => (
@@ -115,10 +116,12 @@ class Home extends Component {
         let that = this;
         let restaurantsData = null;
         let xhrRestaurants = new XMLHttpRequest();
+        xhrRestaurants.onload = this.setState({ loading: true })
         xhrRestaurants.addEventListener('readystatechange', function () {
             if (this.readyState === 4) {
                 that.setState({
-                    restaurants: JSON.parse(this.responseText).restaurants
+                    restaurants: JSON.parse(this.responseText).restaurants,
+                    loading: false
                 });
             }
         })
@@ -188,7 +191,7 @@ class Home extends Component {
         }
     }
 
-    // redirects to restaurant details page with restaurnat id
+    // redirects to restaurant details page with restauranat id
     restaurantDetails = (restaurantId) => {
         this.props.history.push('/restaurant/' + restaurantId);
     }
