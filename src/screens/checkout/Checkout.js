@@ -344,7 +344,7 @@ class Checkout extends Component {
     }
 
     fetchAddress = () => {
-        let token = 'eyJraWQiOiJmMTQxMTA3Zi03YTI2LTQ0NjktOGNhMi1mYThiMmM3MmFhMDIiLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiIxYTlhZDRjYS04MmMwLTQ3YzQtYTNjZS1kZTcwZTRiZWZjNWEiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU4OTQ2MSwiaWF0IjoxNTg5NDMzfQ.J4JOdvuV2sd9Q0Rg2S7w-syZpzKKemmizDfFI6P6qr660sIy_zmmNABZLEOFwNdNWi1R3JVCqI6SnoEDUecQEg';
+        let token = sessionStorage.getItem('access-token');
 
         let xhr = new XMLHttpRequest();
 
@@ -453,7 +453,7 @@ class Checkout extends Component {
             state_uuid: this.state.stateUUID
         }
 
-        let token = 'eyJraWQiOiJmMTQxMTA3Zi03YTI2LTQ0NjktOGNhMi1mYThiMmM3MmFhMDIiLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiIxYTlhZDRjYS04MmMwLTQ3YzQtYTNjZS1kZTcwZTRiZWZjNWEiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU4OTQ2MSwiaWF0IjoxNTg5NDMzfQ.J4JOdvuV2sd9Q0Rg2S7w-syZpzKKemmizDfFI6P6qr660sIy_zmmNABZLEOFwNdNWi1R3JVCqI6SnoEDUecQEg';
+        let token = sessionStorage.getItem('access-token');
 
         let xhr = new XMLHttpRequest();
 
@@ -493,7 +493,7 @@ class Checkout extends Component {
             discount: discount
         }
 
-        let token = 'eyJraWQiOiJmMTQxMTA3Zi03YTI2LTQ0NjktOGNhMi1mYThiMmM3MmFhMDIiLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiIxYTlhZDRjYS04MmMwLTQ3YzQtYTNjZS1kZTcwZTRiZWZjNWEiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU4OTQ2MSwiaWF0IjoxNTg5NDMzfQ.J4JOdvuV2sd9Q0Rg2S7w-syZpzKKemmizDfFI6P6qr660sIy_zmmNABZLEOFwNdNWi1R3JVCqI6SnoEDUecQEg';
+        let token = sessionStorage.getItem('access-token');
 
         let xhr = new XMLHttpRequest();
 
