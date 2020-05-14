@@ -41,11 +41,11 @@ class Checkout extends Component {
             addresses: [],
             states: [],
             payments: [],
-            flat: undefined,
-            locality: undefined,
-            city: undefined,
+            flat: '',
+            locality: '',
+            city: '',
             stateUUID: '',
-            pincode: undefined,
+            pincode: '',
             paymentId: '',
             flatRequired: false,
             localityRequired: false,
@@ -142,7 +142,7 @@ class Checkout extends Component {
                                      className={this.state.activeTabValue === 'new_address' ? 'display-block' : 'display-none'}>
                                     <FormControl style={{minWidth: 300}}>
                                         <InputLabel htmlFor='flat'>Flat/Building No</InputLabel>
-                                        <Input id='flat' name='flat' type='text'
+                                        <Input id='flat' name='flat' type='text' value={this.state.flat} flat={this.state.flat}
                                                onChange={this.onInputFieldChangeHandler}/>
                                         {this.state.flatRequired ? <FormHelperText>
                                             <span style={{color: "red"}}>required</span>
@@ -151,7 +151,7 @@ class Checkout extends Component {
                                     <br/>
                                     <FormControl style={{minWidth: 300}}>
                                         <InputLabel htmlFor='locality'>Locality</InputLabel>
-                                        <Input id='locality' name='locality' type='text'
+                                        <Input id='locality' name='locality' type='text' value={this.state.locality} locality={this.state.locality}
                                                onChange={this.onInputFieldChangeHandler}/>
                                         {this.state.localityRequired ? <FormHelperText>
                                             <span style={{color: "red"}}>required</span>
@@ -160,7 +160,7 @@ class Checkout extends Component {
                                     <br/>
                                     <FormControl style={{minWidth: 300}}>
                                         <InputLabel htmlFor='city'>City</InputLabel>
-                                        <Input id='city' name='city' type='text'
+                                        <Input id='city' name='city' type='text' value={this.state.city} city={this.state.city}
                                                onChange={this.onInputFieldChangeHandler}/>
                                         {this.state.cityRequired ? <FormHelperText>
                                             <span style={{color: "red"}}>required</span>
@@ -182,7 +182,7 @@ class Checkout extends Component {
                                     <br/>
                                     <FormControl style={{minWidth: 300}}>
                                         <InputLabel htmlFor='pincode'>Pincode</InputLabel>
-                                        <Input id='pincode' name='pincode' type='text'
+                                        <Input id='pincode' name='pincode' type='text' value={this.state.pincode} pincode={this.state.pincode}
                                                onChange={this.onInputFieldChangeHandler}/>
                                         {this.state.pincodeRequired ? <FormHelperText>
                                             <span style={{color: "red"}}>required</span>
@@ -344,7 +344,7 @@ class Checkout extends Component {
     }
 
     fetchAddress = () => {
-        let token = 'eyJraWQiOiJlMTllOGQ0Yy1mNzJkLTQ1NGYtYmY5Zi0wOTVjNjM2N2U5MzYiLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJmYTYyZDYzYy03ZDYxLTRhYjAtOGQ5NS02N2ZiNzhhZTlmMjUiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU4OTA0OCwiaWF0IjoxNTg5MDIwfQ._vaWXogeNSzGK0lQ8UXyYZZbvKWJSQJGaxrIn7g5wt0BYzeYhqVY23bKsykv3O6sQUJiILf3HrhJGB_anRqgqA';
+        let token = 'eyJraWQiOiJmMTQxMTA3Zi03YTI2LTQ0NjktOGNhMi1mYThiMmM3MmFhMDIiLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiIxYTlhZDRjYS04MmMwLTQ3YzQtYTNjZS1kZTcwZTRiZWZjNWEiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU4OTQ2MSwiaWF0IjoxNTg5NDMzfQ.J4JOdvuV2sd9Q0Rg2S7w-syZpzKKemmizDfFI6P6qr660sIy_zmmNABZLEOFwNdNWi1R3JVCqI6SnoEDUecQEg';
 
         let xhr = new XMLHttpRequest();
 
@@ -453,7 +453,7 @@ class Checkout extends Component {
             state_uuid: this.state.stateUUID
         }
 
-        let token = 'eyJraWQiOiJlMTllOGQ0Yy1mNzJkLTQ1NGYtYmY5Zi0wOTVjNjM2N2U5MzYiLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJmYTYyZDYzYy03ZDYxLTRhYjAtOGQ5NS02N2ZiNzhhZTlmMjUiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU4OTA0OCwiaWF0IjoxNTg5MDIwfQ._vaWXogeNSzGK0lQ8UXyYZZbvKWJSQJGaxrIn7g5wt0BYzeYhqVY23bKsykv3O6sQUJiILf3HrhJGB_anRqgqA';
+        let token = 'eyJraWQiOiJmMTQxMTA3Zi03YTI2LTQ0NjktOGNhMi1mYThiMmM3MmFhMDIiLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiIxYTlhZDRjYS04MmMwLTQ3YzQtYTNjZS1kZTcwZTRiZWZjNWEiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU4OTQ2MSwiaWF0IjoxNTg5NDMzfQ.J4JOdvuV2sd9Q0Rg2S7w-syZpzKKemmizDfFI6P6qr660sIy_zmmNABZLEOFwNdNWi1R3JVCqI6SnoEDUecQEg';
 
         let xhr = new XMLHttpRequest();
 
@@ -461,7 +461,7 @@ class Checkout extends Component {
 
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
-                that.setState({addresses: JSON.parse(this.responseText).addresses});
+                that.setState({addresses: JSON.parse(this.responseText).addresses,city:'',locality:'',flat:'',stateUUID:'',pincode:''});
             }
         });
 
@@ -493,7 +493,7 @@ class Checkout extends Component {
             discount: discount
         }
 
-        let token = 'eyJraWQiOiJlMTllOGQ0Yy1mNzJkLTQ1NGYtYmY5Zi0wOTVjNjM2N2U5MzYiLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJmYTYyZDYzYy03ZDYxLTRhYjAtOGQ5NS02N2ZiNzhhZTlmMjUiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU4OTA0OCwiaWF0IjoxNTg5MDIwfQ._vaWXogeNSzGK0lQ8UXyYZZbvKWJSQJGaxrIn7g5wt0BYzeYhqVY23bKsykv3O6sQUJiILf3HrhJGB_anRqgqA';
+        let token = 'eyJraWQiOiJmMTQxMTA3Zi03YTI2LTQ0NjktOGNhMi1mYThiMmM3MmFhMDIiLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiIxYTlhZDRjYS04MmMwLTQ3YzQtYTNjZS1kZTcwZTRiZWZjNWEiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU4OTQ2MSwiaWF0IjoxNTg5NDMzfQ.J4JOdvuV2sd9Q0Rg2S7w-syZpzKKemmizDfFI6P6qr660sIy_zmmNABZLEOFwNdNWi1R3JVCqI6SnoEDUecQEg';
 
         let xhr = new XMLHttpRequest();
 
