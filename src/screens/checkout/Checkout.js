@@ -54,7 +54,7 @@ class Checkout extends Component {
             pincodeRequired: false,
             pincodeValid: true,
             selectedAddressId: undefined,
-            displayChaange: 'display-none',
+            displayChange: 'display-none',
             placeOrderMessage: undefined,
             placeOrderMessageOpen: false,
             couponId: '2ddf6a5e-ecd0-11e8-8eb2-f2801f1b9fd1',
@@ -142,7 +142,8 @@ class Checkout extends Component {
                                      className={this.state.activeTabValue === 'new_address' ? 'display-block' : 'display-none'}>
                                     <FormControl style={{minWidth: 300}}>
                                         <InputLabel htmlFor='flat'>Flat/Building No</InputLabel>
-                                        <Input id='flat' name='flat' type='text' value={this.state.flat} flat={this.state.flat}
+                                        <Input id='flat' name='flat' type='text' value={this.state.flat}
+                                               flat={this.state.flat}
                                                onChange={this.onInputFieldChangeHandler}/>
                                         {this.state.flatRequired ? <FormHelperText>
                                             <span style={{color: "red"}}>required</span>
@@ -151,7 +152,8 @@ class Checkout extends Component {
                                     <br/>
                                     <FormControl style={{minWidth: 300}}>
                                         <InputLabel htmlFor='locality'>Locality</InputLabel>
-                                        <Input id='locality' name='locality' type='text' value={this.state.locality} locality={this.state.locality}
+                                        <Input id='locality' name='locality' type='text' value={this.state.locality}
+                                               locality={this.state.locality}
                                                onChange={this.onInputFieldChangeHandler}/>
                                         {this.state.localityRequired ? <FormHelperText>
                                             <span style={{color: "red"}}>required</span>
@@ -160,7 +162,8 @@ class Checkout extends Component {
                                     <br/>
                                     <FormControl style={{minWidth: 300}}>
                                         <InputLabel htmlFor='city'>City</InputLabel>
-                                        <Input id='city' name='city' type='text' value={this.state.city} city={this.state.city}
+                                        <Input id='city' name='city' type='text' value={this.state.city}
+                                               city={this.state.city}
                                                onChange={this.onInputFieldChangeHandler}/>
                                         {this.state.cityRequired ? <FormHelperText>
                                             <span style={{color: "red"}}>required</span>
@@ -182,7 +185,8 @@ class Checkout extends Component {
                                     <br/>
                                     <FormControl style={{minWidth: 300}}>
                                         <InputLabel htmlFor='pincode'>Pincode</InputLabel>
-                                        <Input id='pincode' name='pincode' type='text' value={this.state.pincode} pincode={this.state.pincode}
+                                        <Input id='pincode' name='pincode' type='text' value={this.state.pincode}
+                                               pincode={this.state.pincode}
                                                onChange={this.onInputFieldChangeHandler}/>
                                         {this.state.pincodeRequired ? <FormHelperText>
                                             <span style={{color: "red"}}>required</span>
@@ -225,7 +229,7 @@ class Checkout extends Component {
                             </StepContent>
                         </Step>
                     </Stepper>
-                    <div className={this.state.displayChaange}>
+                    <div className={this.state.displayChange}>
                         <Typography style={{marginLeft: 40}} variant='h5'>
                             View the summary and place your order now!
                         </Typography>
@@ -271,7 +275,7 @@ class Checkout extends Component {
             if (activeState === 2) {
                 changeAddressPayment = 'display-block';
             }
-            this.setState({activeStep: activeState, displayChaange: changeAddressPayment})
+            this.setState({activeStep: activeState, displayChange: changeAddressPayment})
         }
     }
 
@@ -281,7 +285,7 @@ class Checkout extends Component {
     }
 
     resetActiveStep = () => {
-        this.setState({activeStep: 0, displayChaange: 'display-none'})
+        this.setState({activeStep: 0, displayChange: 'display-none'})
     }
     changeActiveTab = (value) => {
         this.setState({activeTabValue: value})
@@ -461,7 +465,14 @@ class Checkout extends Component {
 
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
-                that.setState({addresses: JSON.parse(this.responseText).addresses,city:'',locality:'',flat:'',stateUUID:'',pincode:''});
+                that.setState({
+                    addresses: JSON.parse(this.responseText).addresses,
+                    city: '',
+                    locality: '',
+                    flat: '',
+                    stateUUID: '',
+                    pincode: ''
+                });
             }
         });
 
@@ -477,6 +488,13 @@ class Checkout extends Component {
     }
 
     placeOrder = () => {
+        if (this.state.selectedAddressId === '' || this.state.selectedAddressId === undefined || this.state.paymentId === '' || this.state.paymentId === undefined || this.state.displayChange === 'display-none') {
+            this.setState({
+                placeOrderMessage: 'Unable to place your order! Please try again!',
+                placeOrderMessageOpen: true
+            })
+            return;
+        }
         let bill = 1000;
         let discount = 300;
         let itemQuantities = [];
