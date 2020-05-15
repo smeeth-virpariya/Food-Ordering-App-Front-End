@@ -32,6 +32,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import CloseIcon from '@material-ui/icons/Close';
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Header from "../../common/header/Header";
+import {Redirect} from 'react-router-dom';
 
 class Checkout extends Component {
     constructor() {
@@ -81,12 +82,17 @@ class Checkout extends Component {
     }
 
     componentDidMount() {
-        this.fetchAddress();
-        this.fetchStates();
-        this.fetchPayments();
+        if (sessionStorage.getItem('access-token') !== null) {
+            this.fetchAddress();
+            this.fetchStates();
+            this.fetchPayments();
+        }
     }
 
     render() {
+        if (sessionStorage.getItem('access-token') === null) {
+            return <Redirect to='/'/>
+        }
         return <Fragment>
             <Header></Header>
             <div className='main-container'>
