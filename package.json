@@ -7,7 +7,6 @@
     "@material-ui/icons": "^4.9.1",
     "font-awesome": "^4.7.0",
     "@material-ui/styles": "^4.9.13",
-    "font-awesome": "^4.7.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-modal": "^3.11.2",
