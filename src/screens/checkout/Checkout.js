@@ -31,6 +31,7 @@ import OrderItems from "../../common/orderitems/OrderItems";
 import Snackbar from "@material-ui/core/Snackbar";
 import CloseIcon from '@material-ui/icons/Close';
 import FormHelperText from "@material-ui/core/FormHelperText";
+import Header from "../../common/header/Header";
 
 class Checkout extends Component {
     constructor() {
@@ -87,6 +88,7 @@ class Checkout extends Component {
 
     render() {
         return <Fragment>
+            <Header></Header>
             <div className='main-container'>
                 <div className='delivery-payment-section'>
                     <Stepper activeStep={this.state.activeStep} orientation='vertical'>
