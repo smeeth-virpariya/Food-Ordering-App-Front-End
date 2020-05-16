@@ -38,7 +38,6 @@ import {Redirect} from 'react-router-dom';
 class Checkout extends Component {
     constructor() {
         super();
-        this.baseUrl = 'http://localhost:8080/api/';
         this.state = {
             activeStep: 0,
             activeTabValue: 'existing_address',
@@ -74,7 +73,7 @@ class Checkout extends Component {
     }
 
     render() {
-        if (this.props.location.state === undefined || sessionStorage.getItem('access-token') === null) {
+        if (this.props.location === undefined || sessionStorage.getItem('access-token') === null) {
             return <Redirect to='/'/>
         }
         return <Fragment>
@@ -380,7 +379,7 @@ class Checkout extends Component {
             }
         });
 
-        let url = this.baseUrl + 'address/customer';
+        let url = this.props.baseUrl + 'address/customer';
 
         xhr.open('GET', url);
 
@@ -405,7 +404,7 @@ class Checkout extends Component {
             }
         });
 
-        let url = this.baseUrl + 'states/';
+        let url = this.props.baseUrl + 'states/';
 
         xhr.open('GET', url);
 
@@ -429,7 +428,7 @@ class Checkout extends Component {
             }
         });
 
-        let url = this.baseUrl + 'payment';
+        let url = this.props.baseUrl + 'payment';
 
         xhr.open('GET', url);
 
@@ -505,7 +504,7 @@ class Checkout extends Component {
             }
         });
 
-        let url = this.baseUrl + 'address/';
+        let url = this.props.baseUrl + 'address/';
 
         xhr.open('POST', url);
 
@@ -567,7 +566,7 @@ class Checkout extends Component {
             }
         );
 
-        let url = this.baseUrl + 'order';
+        let url = this.props.baseUrl + 'order';
 
         xhr.open('POST', url);
 
