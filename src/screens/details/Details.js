@@ -237,7 +237,7 @@ class Details extends Component{
             <div className="category-items-cart-container">
                 <div className="category-items-container">
                     {this.state.categories.map(category=>(
-                        <div className="category" key="category.id"><span style={{color:"grey",fontWeight:"bolder"}}>{category.category_name.toUpperCase()}</span> <Divider style={{marginTop:"10px",marginBottom:"10px"}}/>
+                        <div className="category" key={"category"+category.id}><span style={{color:"grey",fontWeight:"bolder"}}>{category.category_name.toUpperCase()}</span> <Divider style={{marginTop:"10px",marginBottom:"10px"}}/>
                         {  category.item_list.map(item=>(
                             <div className="item" key={item.id}>
                                <div className="item-left">{
@@ -276,7 +276,7 @@ class Details extends Component{
                             {
                                 this.state.orderItems.items !== undefined ?
                                 this.state.orderItems.items.map(item=>(
-                                <div className="cart-item">
+                                <div className="cart-item" key={item.id}>
                                     <div className="cart-item-left">
                                     {
                                         item.type == "VEG" ?  
@@ -286,9 +286,9 @@ class Details extends Component{
                                         {this.Capitalize(item.name)}
                                     </div>                                                 
                                     <div className="cart-item-centre">
-                                        <IconButton><RemoveIcon onClick={(e)=>this.removeFromCartHandler(e,item.id,item.type,item.name,item.pricePerItem)} style={{fontWeight:"bolder"}}/></IconButton>
+                                        <IconButton onClick={(e)=>this.removeFromCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}><RemoveIcon  style={{fontWeight:"bolder"}}/></IconButton>
                                         <span >{item.quantity} </span>
-                                        <IconButton ><AddIcon onClick={(e)=>this.addToCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}/></IconButton>
+                                        <IconButton onClick={(e)=>this.addToCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}><AddIcon /></IconButton>
                                     </div>
                                     <div className="cart-item-right" >
                                         <span style={{float:"right"}}>
