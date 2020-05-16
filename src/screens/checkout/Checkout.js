@@ -74,9 +74,7 @@ class Checkout extends Component {
     }
 
     render() {
-        console.log(this.props.location.state.orderItems);
-
-        if (sessionStorage.getItem('access-token') === null) {
+        if (this.props.location.state === undefined || sessionStorage.getItem('access-token') === null) {
             return <Redirect to='/'/>
         }
         return <Fragment>
