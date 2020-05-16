@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
 //Stylesheet import
-import './checkout.css'
+import './Checkout.css'
 
 //Material-Ui Imports
 import Stepper from '@material-ui/core/Stepper';
@@ -38,7 +38,7 @@ import {Redirect} from 'react-router-dom';
 class Checkout extends Component {
     constructor() {
         super();
-        this.baseUrl='http://localhost:8080/api/';
+        this.baseUrl = 'http://localhost:8080/api/';
         this.state = {
             activeStep: 0,
             activeTabValue: 'existing_address',
@@ -62,24 +62,6 @@ class Checkout extends Component {
             placeOrderMessage: undefined,
             placeOrderMessageOpen: false,
             couponId: undefined,
-            orderItems: {
-                restaurantId: '9df46816-a294-11e8-9a3a-720006ceb890',
-                total: 240,
-                items: [
-                    {
-                        id: '2461589e-a238-11e8-9077-720006ceb890',
-                        name: 'Coke',
-                        itype: 0,
-                        quantity: 4,
-                        pricePerItem: 100
-                    }, {
-                        id: '19a4b6b2-a29c-11e8-9a3a-720006ceb890',
-                        name: 'Pizza',
-                        itype: 0,
-                        quantity: 2,
-                        pricePerItem: 300
-                    }]
-            }
         }
     }
 
@@ -92,6 +74,8 @@ class Checkout extends Component {
     }
 
     render() {
+        console.log(this.props.location.state.orderItems);
+
         if (sessionStorage.getItem('access-token') === null) {
             return <Redirect to='/'/>
         }
@@ -254,9 +238,10 @@ class Checkout extends Component {
                             </Typography>
                             <br/>
                             <Typography variant='h6' component='h3' color='textSecondary'>
-                                Restaurant Name
+                                {this.props.location.state.restaurantName}
                             </Typography>
-                            <OrderItems divider='true' orderitems={this.state.orderItems} placeOrder={this.placeOrder}/>
+                            <OrderItems divider='true' orderitems={this.props.location.state.orderItems}
+                                        total={this.props.location.state.total} placeOrder={this.placeOrder}/>
                         </CardContent>
                     </Card>
                 </div>
@@ -397,7 +382,7 @@ class Checkout extends Component {
             }
         });
 
-        let url = this.baseUrl+'address/customer';
+        let url = this.baseUrl + 'address/customer';
 
         xhr.open('GET', url);
 
@@ -422,7 +407,7 @@ class Checkout extends Component {
             }
         });
 
-        let url = this.baseUrl+'states/';
+        let url = this.baseUrl + 'states/';
 
         xhr.open('GET', url);
 
@@ -446,7 +431,7 @@ class Checkout extends Component {
             }
         });
 
-        let url = this.baseUrl+'payment';
+        let url = this.baseUrl + 'payment';
 
         xhr.open('GET', url);
 
@@ -522,7 +507,7 @@ class Checkout extends Component {
             }
         });
 
-        let url = this.baseUrl+'address/';
+        let url = this.baseUrl + 'address/';
 
         xhr.open('POST', url);
 
@@ -544,10 +529,9 @@ class Checkout extends Component {
             })
             return;
         }
-        let bill = 1000;
-        let discount = 300;
+        let bill = this.props.location.state.total;
         let itemQuantities = [];
-        this.state.orderItems.items.map((item, index) => (
+        this.props.location.state.orderItems.items.map((item, index) => (
             itemQuantities.push({item_id: item.id, price: item.quantity * item.pricePerItem, quantity: item.quantity})
         ))
         let order = {
@@ -555,9 +539,9 @@ class Checkout extends Component {
             coupon_id: this.state.couponId,
             item_quantities: itemQuantities,
             payment_id: this.state.paymentId,
-            restaurant_id: this.state.orderItems.restaurantId,
+            restaurant_id: this.props.location.state.orderItems.id,
             bill: bill,
-            discount: discount
+            discount: 0
         }
 
         let token = sessionStorage.getItem('access-token');
@@ -585,7 +569,7 @@ class Checkout extends Component {
             }
         );
 
-        let url = this.baseUrl+'order';
+        let url = this.baseUrl + 'order';
 
         xhr.open('POST', url);
 
