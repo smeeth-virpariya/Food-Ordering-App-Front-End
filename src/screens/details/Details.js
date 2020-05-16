@@ -36,7 +36,8 @@ class Details extends Component{
             cartItems:[],
             cartItem : {},
             itemQuantityDecreased : false,
-            nonloggedIn:false
+            nonloggedIn:false,
+            itemRemovedFromCart:false
             
             
         }
@@ -55,7 +56,6 @@ class Details extends Component{
        
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
-                console.log("The response is : " +this.responseText);
                 that.setState({
                     id : JSON.parse(this.responseText).id,
                     restaurant_name : JSON.parse(this.responseText).restaurant_name,
@@ -143,18 +143,22 @@ class Details extends Component{
             item.quantity = quantity;
             item.priceForAll = priceForAll;
             this.setState(item);
+            this.setState({itemQuantityDecreased:true});
+           
         }
         else{
 
             this.state.orderItems.items.splice(index,1);
+            this.setState({itemRemovedFromCart:true});
            
         }
 
+       
         var totalAmount = this.state.totalAmount;
         totalAmount-=price;
         var totalItems = this.state.totalItems;
         totalItems -=1;
-        this.setState({itemQuantityDecreased:true});
+       
         this.setState({totalItems,totalItems});
         this.setState({totalAmount:totalAmount});
 
@@ -165,6 +169,7 @@ class Details extends Component{
         this.setState({open:false})
         this.setState({cartEmpty:false})
         this.setState({itemQuantityDecreased:false})
+        this.setState({itemRemovedFromCart:false})
     }
 
     checkoutHandler = () =>{
@@ -255,7 +260,7 @@ class Details extends Component{
                     horizontal: 'left',
                     }}
                     open={this.state.open}
-                    autoHideDuration={3000}
+                    autoHideDuration={1000}
                     onClose={this.closeHandler}
                     message="Item added to cart!"
                     action={
@@ -325,7 +330,7 @@ class Details extends Component{
                     horizontal: 'left',
                     }}
                     open={this.state.cartEmpty}
-                    autoHideDuration={3000}
+                    autoHideDuration={1000}
                     onClose={this.closeHandler}
                     message="Please add an item to your cart!"
                     action={
@@ -342,7 +347,7 @@ class Details extends Component{
                     horizontal: 'left',
                     }}
                     open={this.state.itemQuantityDecreased}
-                    autoHideDuration={3000}
+                    autoHideDuration={1000}
                     onClose={this.closeHandler}
                     message="Item quantity decreased by 1!"
                     action={
@@ -359,9 +364,26 @@ class Details extends Component{
                     horizontal: 'left',
                     }}
                     open={this.state.nonloggedIn}
-                    autoHideDuration={3000}
+                    autoHideDuration={1000}
                     onClose={this.closeHandler}
                     message="Please login first!"
+                    action={
+                    <React.Fragment>
+                        <IconButton size="small" aria-label="close" color="inherit" onClick={this.closeHandler}>
+                        <CloseIcon fontSize="small" />
+                        </IconButton>
+                    </React.Fragment>
+                        }
+                    /> 
+                    <Snackbar
+                    anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                    }}
+                    open={this.state.itemRemovedFromCart}
+                    autoHideDuration={1000}
+                    onClose={this.closeHandler}
+                    message="Item removed from cart!"
                     action={
                     <React.Fragment>
                         <IconButton size="small" aria-label="close" color="inherit" onClick={this.closeHandler}>
