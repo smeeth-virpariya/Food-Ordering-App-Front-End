@@ -178,15 +178,13 @@ class Details extends Component{
 
     checkoutHandler = () =>{
        if ( this.state.totalItems === 0 ){
-           this.setState({cartEmpty:true})
+           this.setState({cartEmpty:true});
+           return;
         } else  if(this.state.totalItems > 0 && sessionStorage.getItem('access-token') === null) {
-            this.setState({nonloggedIn:true})
-        } else{
-            this.props.history.push({
-                pathname:'/checkout',orderItems:this.state.orderItems,
-                total:this.state.totalAmount,restaurantName:this.state.restaurant_name
-            })
-        }
+            this.setState({nonloggedIn:true});
+            return;
+        } 
+        
     }
     Capitalize(str){
         var arr = str.split(" ")
@@ -312,7 +310,11 @@ class Details extends Component{
                         
                         <div className="checkout-button" onClick={this.checkoutHandler}>
                             <Button className="checkout" variant="contained" color="primary">
+                             <Link to={{ pathname: '/checkout', state :{orderItems:this.state.orderItems,
+                                   total:this.state.totalAmount,restaurantName:this.state.restaurant_name }}}
+                                   style={{ textDecoration: 'none', color: 'white' }}>  
                                <Typography>CHECKOUT</Typography>
+                               </Link>
                             </Button>
                         </div>
                         </CardContent>    
