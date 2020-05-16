@@ -9,8 +9,6 @@ import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 
 export default function OrderItems(props) {
-    console.log('Total '+props.total)
-    console.log('Conv: '+props.total.toLocaleString(undefined, {minimumFractionDigits: 2}))
     return (
         <div className='order-item-container'>
             {(props.orderitems.items || []).map((item, index) => (
