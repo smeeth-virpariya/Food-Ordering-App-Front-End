@@ -12,6 +12,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import Button from '@material-ui/core/Button';
 import Badge from '@material-ui/core/Badge';
 import RemoveIcon from '@material-ui/icons/Remove';
+import Typography from '@material-ui/core/Typography';
+import { Link } from 'react-router-dom';
 
 
 
@@ -316,9 +318,11 @@ class Details extends Component{
                                 </span>
                             </div>
                            
-                            <div className="checkout-b<Link to={{ pathname: '/checkout', orderItems:this.state.orderItems  }}> CHECKOUT </Link>utton" onClick={this.checkoutHandler}>
+                            <div className="checkout-button" onClick={this.checkoutHandler}>
                                 <Button className="checkout" variant="contained" color="primary" style={{minWidth:'470px'}}>
-                                   CHECKOUT
+                                <Link to={{pathname:'/checkout/' ,orderItems:this.state.orderItems,
+                                 total:this.state.totalAmount,totalItems:this.state.totalItems}} 
+                                 style={{ textDecoration: 'none', color: 'white' }}><Typography>CHECKOUT</Typography></Link>
                                 </Button>
                             </div>
                            </CardContent>    
