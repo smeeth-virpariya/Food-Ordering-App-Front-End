@@ -179,10 +179,10 @@ class Details extends Component{
     checkoutHandler = () =>{
        if ( this.state.totalItems === 0 ){
            this.setState({cartEmpty:true});
-           return;
+           
         } else  if(this.state.totalItems > 0 && sessionStorage.getItem('access-token') === null) {
             this.setState({nonloggedIn:true});
-            return;
+            
         } 
         
     }
@@ -248,11 +248,22 @@ class Details extends Component{
                                   
                                  <span style={{wordWrap: "break-word"}}>  {this.Capitalize(item.item_name)} </span>
                                 </div>
-                               <div className="item-right"><span style={{minWidth:"20px"}}><i className="fa fa-inr" aria-hidden="true"></i>{item.price.toFixed(2)}</span>
-                                
-                                <IconButton  style={{float:'right'}}
-                                onClick={(e)=> this.addToCartHandler(e,item.id,item.item_type,item.item_name,item.price)}><AddIcon  /> 
-                                </IconButton>
+                               <div className="item-right">
+                                  <div className="pricePerItem">
+                                    <span style={{minWidth:"20px"}}>
+                                    <i className="fa fa-inr" aria-hidden="true"></i>
+                                        {item.price.toFixed(2)}
+                                    </span>
+                                  </div>
+                                  <div className="addIcon">
+                                    <IconButton  style={{float:'right'}}
+                                    onClick={(e)=> this.addToCartHandler(e,item.id,item.item_type,item.item_name,item.price)}>
+                                      
+                                        <AddIcon  /> 
+                                       
+                                    </IconButton>
+                                    </div> 
+                                 
                                 </div>
                                
                             </div> 
@@ -286,7 +297,7 @@ class Details extends Component{
                                         {this.Capitalize(item.name)}
                                     </div>                                                 
                                     <div className="cart-item-centre">
-                                        <IconButton onClick={(e)=>this.removeFromCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}><RemoveIcon  style={{fontWeight:"bolder"}}/></IconButton>
+                                        <IconButton onClick={(e)=>this.removeFromCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}><RemoveIcon/></IconButton>
                                         <span >{item.quantity} </span>
                                         <IconButton onClick={(e)=>this.addToCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}><AddIcon /></IconButton>
                                     </div>

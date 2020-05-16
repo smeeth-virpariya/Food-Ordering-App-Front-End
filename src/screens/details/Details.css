@@ -72,7 +72,7 @@
 .item{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    align-items: center;
     padding-top: 10px;
     width: 100%;
   
@@ -87,7 +87,13 @@
 .item-right{
     flex: 40%;
     width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
 }
+
+
 
 
 
@@ -124,11 +130,13 @@
 }
 
 .cart-item{
-    margin-top: 20px;
+    margin-top: 5px;
     font-weight: lighter;
     font-size: 14px;
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .cart-item-left{
@@ -207,13 +215,16 @@
 
   
   /*Mobile Query*/
-  @media only screen and (max-width: 480px) {
+  @media only screen and (min-width:150px) and (max-width: 480px) {
+    .main-container {
+        width:100%
+      }
   
     .restaurant-details-container{
         width: auto;
         display: flex;
         flex-direction: column;
-        height: 400px;
+        height: 500px;
         align-items: center;
         padding: 4px 2px;
     }
@@ -267,6 +278,7 @@
     .cart-item{
         display: flex;
         flex-direction: row;
+        align-items: baseline;
     }
 
     .cart-item-left{
