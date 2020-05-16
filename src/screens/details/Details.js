@@ -80,7 +80,7 @@ class Details extends Component{
     }
 
    getIndex = (value, arr, prop)=> {
-        for(var i = 0; i < arr.length; i++) {
+        for(let i = 0; i < arr.length; i++) {
             if(arr[i][prop] === value) {
                 return i;
             }
@@ -181,7 +181,7 @@ class Details extends Component{
             this.setState({nonloggedIn:true})
         } else{
             this.props.history.push({pathname:'/checkout/' ,orderItems:this.state.orderItems,
-            total:this.state.totalAmount,totalItems:this.state.totalItems});
+            total:this.state.totalAmount,restaurantName:this.state.restaurant_name});
         }
     }
     Capitalize(str){
