@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-
+//Stylesheet import
 import './checkout.css'
 
 //Material-Ui Imports
@@ -32,6 +32,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import CloseIcon from '@material-ui/icons/Close';
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Header from "../../common/header/Header";
+//Router Import
 import {Redirect} from 'react-router-dom';
 
 class Checkout extends Component {
@@ -59,7 +60,7 @@ class Checkout extends Component {
             displayChange: 'display-none',
             placeOrderMessage: undefined,
             placeOrderMessageOpen: false,
-            couponId: '2ddf6a5e-ecd0-11e8-8eb2-f2801f1b9fd1',
+            couponId: undefined,
             orderItems: {
                 restaurantId: '9df46816-a294-11e8-9a3a-720006ceb890',
                 total: 240,
@@ -271,6 +272,9 @@ class Checkout extends Component {
         </Fragment>
     }
 
+    /**
+     * This function is used for stepper to move ahead based on user actions.
+     */
     incrementActiveStep = () => {
         if (this.state.activeStep === 0 && this.state.selectedAddressId === undefined) {
             //Do nothing as it is mandatory to select an address
@@ -287,11 +291,17 @@ class Checkout extends Component {
         }
     }
 
+    /**
+     * This function is used for stepper to move backwards based on user actions.
+     */
     decrementActiveStep = () => {
         let activeState = this.state.activeStep - 1;
         this.setState({activeStep: activeState})
     }
 
+    /**
+     * This function is used for stepper reset to first step when user wants to change the order.
+     */
     resetActiveStep = () => {
         this.setState({activeStep: 0, displayChange: 'display-none'})
     }
@@ -302,6 +312,9 @@ class Checkout extends Component {
         }
     }
 
+    /**
+     * This function is used when a user clicks on one address tile to select the address.
+     */
     selectAddress = (e) => {
         let elementId = e.target.id;
         if (elementId.startsWith('select-address-icon-')) {
@@ -312,6 +325,9 @@ class Checkout extends Component {
         }
     }
 
+    /**
+     * This function is common for all the input changes of the new address form.
+     */
     onInputFieldChangeHandler = (e) => {
         let stateKey = e.target.id;
         let stateValue = e.target.value;
@@ -337,6 +353,9 @@ class Checkout extends Component {
         });
     }
 
+    /**
+     * This function is used to validate the pincode.
+     */
     validatePincode = (pincode) => {
         if (pincode !== undefined && pincode.length !== 6) {
             return false;
@@ -347,14 +366,23 @@ class Checkout extends Component {
         }
     }
 
+    /**
+     * This function is used in step 2 of the stepper when a user selects the payment mode.
+     */
     onPaymentSelection = (e) => {
         this.setState({'paymentId': e.target.value});
     }
 
+    /**
+     * This function closes the snackbar that displays order success or failure message.
+     */
     placeOrderMessageClose = () => {
         this.setState({placeOrderMessageOpen: false});
     }
 
+    /**
+     * This function connects to the API server to fetch the addresses.
+     */
     fetchAddress = () => {
         let token = sessionStorage.getItem('access-token');
 
@@ -378,6 +406,9 @@ class Checkout extends Component {
         xhr.send();
     }
 
+    /**
+     * This function connects to the API server to fetch the states.
+     */
     fetchStates = () => {
 
         let xhr = new XMLHttpRequest();
@@ -399,6 +430,9 @@ class Checkout extends Component {
         xhr.send();
     }
 
+    /**
+     * This function connects to the API server to fetch the payments.
+     */
     fetchPayments = () => {
 
         let xhr = new XMLHttpRequest();
@@ -420,6 +454,9 @@ class Checkout extends Component {
         xhr.send();
     }
 
+    /**
+     * This function connects to the API server to save the address.
+     */
     saveAddress = () => {
         let tempCityRequired = false;
         let tempPincodeRequired = false;
@@ -495,6 +532,9 @@ class Checkout extends Component {
         xhr.send(JSON.stringify(address));
     }
 
+    /**
+     * This function connects to the API server to place the order.
+     */
     placeOrder = () => {
         if (this.state.selectedAddressId === '' || this.state.selectedAddressId === undefined || this.state.paymentId === '' || this.state.paymentId === undefined || this.state.displayChange === 'display-none') {
             this.setState({
