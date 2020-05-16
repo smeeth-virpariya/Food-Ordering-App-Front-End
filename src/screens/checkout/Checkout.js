@@ -224,7 +224,7 @@ class Checkout extends Component {
                                 <div id='payment-modes'>
                                     <FormControl>
                                         <FormLabel>Select Mode of Payment</FormLabel>
-                                        <RadioGroup onChange={this.onPaymentSelection}>
+                                        <RadioGroup onChange={this.onPaymentSelection} value={this.state.paymentId}>
                                             {(this.state.payments || []).map((payment, index) => (
                                                 <FormControlLabel key={payment.id} value={payment.id} control={<Radio/>}
                                                                   label={payment.payment_name}/>
