@@ -9,13 +9,15 @@ import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 
 export default function OrderItems(props) {
+    console.log('Total '+props.total)
+    console.log('Conv: '+props.total.toLocaleString(undefined, {minimumFractionDigits: 2}))
     return (
         <div className='order-item-container'>
             {(props.orderitems.items || []).map((item, index) => (
                 <div key={item.id} className='order-item'>
                     <div className='icon'>
                         <i className="fa fa-stop-circle-o icon-type" aria-hidden="true"
-                           style={item.itype === 0 ? {color: "green"} : {color: "red"}}></i>
+                           style={item.type === 'VEG' ? {color: "green"} : {color: "red"}}></i>
                     </div>
                     <div className='item-name'>
                         <Typography variant='h6' color='textSecondary'>
@@ -30,7 +32,7 @@ export default function OrderItems(props) {
                         <div className='price'>
                             <Typography variant='h6' color='textSecondary'>
                                 <i className="fa fa-inr" aria-hidden="true"></i>
-                                {Number(item.quantity * item.pricePerItem).toLocaleString(undefined, {minimumFractionDigits: 2})}
+                                {item.priceForAll.toLocaleString(undefined, {minimumFractionDigits: 2})}
                             </Typography>
                         </div>
                 </div>
@@ -48,7 +50,7 @@ export default function OrderItems(props) {
                         <i className="fa fa-inr" aria-hidden="true"></i>
                     </Typography>
                     <Typography style={{marginRight: 10}} variant='h6' color='textSecondary'>
-                        {Number(props.orderitems.total).toLocaleString(undefined, {minimumFractionDigits: 2})}
+                        {Number(props.total).toLocaleString(undefined, {minimumFractionDigits: 2})}
                     </Typography>
                 </div>
             </div>

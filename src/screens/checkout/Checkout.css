@@ -68,18 +68,21 @@
     margin: 0px;
 }
 
-@media (min-width: 320px) and (max-width:900px) {
+@media (min-width: 320px) and (max-width: 900px) {
     .main-container {
         height: 100vh;
         display: block;
     }
-    .delivery-payment-section{
+
+    .delivery-payment-section {
         width: 100%;
     }
-    .summary-section{
+
+    .summary-section {
         width: 100%;
     }
-    .summary-card{
+
+    .summary-card {
         margin-left: 20px;
     }
 }
