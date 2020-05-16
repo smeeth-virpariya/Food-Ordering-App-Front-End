@@ -38,6 +38,7 @@ import {Redirect} from 'react-router-dom';
 class Checkout extends Component {
     constructor() {
         super();
+        this.baseUrl='http://localhost:8080/api/';
         this.state = {
             activeStep: 0,
             activeTabValue: 'existing_address',
@@ -396,7 +397,7 @@ class Checkout extends Component {
             }
         });
 
-        let url = 'http://localhost:8080/api/address/customer';
+        let url = this.baseUrl+'address/customer';
 
         xhr.open('GET', url);
 
@@ -421,7 +422,7 @@ class Checkout extends Component {
             }
         });
 
-        let url = 'http://localhost:8080/api/states';
+        let url = this.baseUrl+'states/';
 
         xhr.open('GET', url);
 
@@ -445,7 +446,7 @@ class Checkout extends Component {
             }
         });
 
-        let url = 'http://localhost:8080/api/payment';
+        let url = this.baseUrl+'payment';
 
         xhr.open('GET', url);
 
@@ -521,7 +522,7 @@ class Checkout extends Component {
             }
         });
 
-        let url = 'http://localhost:8080/api/address/';
+        let url = this.baseUrl+'address/';
 
         xhr.open('POST', url);
 
@@ -584,7 +585,7 @@ class Checkout extends Component {
             }
         );
 
-        let url = 'http://localhost:8080/api/order';
+        let url = this.baseUrl+'order';
 
         xhr.open('POST', url);
 
