@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Details.css';
+import Header from '../../common/header/Header'
 import IconButton from '@material-ui/core/IconButton';
 import Divider from "@material-ui/core/Divider";
 import AddIcon from '@material-ui/icons/Add';
@@ -8,10 +9,11 @@ import Card from '@material-ui/core/Card';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import CardContent from '@material-ui/core/CardContent';
 import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Badge from '@material-ui/core/Badge';
 import RemoveIcon from '@material-ui/icons/Remove';
+
+
 
 class Details extends Component{
   
@@ -33,7 +35,8 @@ class Details extends Component{
             orderItems : {id:null,items:[],total:0},
             cartItems:[],
             cartItem : {},
-            itemQuantityDecreased : false
+            itemQuantityDecreased : false,
+            nonloggedIn:false
             
             
         }
@@ -52,6 +55,7 @@ class Details extends Component{
        
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
+                console.log("The response is : " +this.responseText);
                 that.setState({
                     id : JSON.parse(this.responseText).id,
                     restaurant_name : JSON.parse(this.responseText).restaurant_name,
@@ -68,14 +72,12 @@ class Details extends Component{
             }
         });
        
-        xhr.open("GET", "/api/restaurant/3097b8f4-a294-11e8-9a3a-720006ceb890");
+        xhr.open("GET", "http://localhost:8080/api/restaurant/"+ this.props.match.params.restaurantId);
         xhr.setRequestHeader("Cache-Control", "no-cache");
         xhr.send(data);
     }
 
    getIndex = (value, arr, prop)=> {
-       console.log("Value is :" + value);
-       console.log("Prop is :" + prop);
         for(var i = 0; i < arr.length; i++) {
             if(arr[i][prop] === value) {
                 return i;
@@ -166,7 +168,14 @@ class Details extends Component{
     }
 
     checkoutHandler = () =>{
-        this.state.totalItems === 0 ? this.setState({cartEmpty:true}):this.setState({cartEmpty:false});
+       if ( this.state.totalItems === 0 ){
+           this.setState({cartEmpty:true})
+        } else if (this.state.totalItems > 0 && sessionStorage.getItem('access-token') === null) {
+            this.setState({nonloggedIn:true})
+        } else{
+            this.props.history.push({pathname:'/checkout/' ,orderItems:this.state.orderItems,
+            total:this.state.totalAmount,totalItems:this.state.totalItems});
+        }
     }
     Capitalize(str){
         var arr = str.split(" ")
@@ -182,7 +191,7 @@ class Details extends Component{
     render(){
        
         return(
-         <div>Header comes here
+         <div><Header/>
             <div className="restaurant-details-container">
                <div className="restaurant-left-container"> 
                   <img  src={this.state.photo_URL} className="restaurant-image"/>
@@ -302,9 +311,9 @@ class Details extends Component{
                                 </span>
                             </div>
                            
-                            <div className="checkout-button" onClick={this.checkoutHandler}>
+                            <div className="checkout-b<Link to={{ pathname: '/checkout', orderItems:this.state.orderItems  }}> CHECKOUT </Link>utton" onClick={this.checkoutHandler}>
                                 <Button className="checkout" variant="contained" color="primary" style={{minWidth:'470px'}}>
-                                CHECKOUT
+                                   CHECKOUT
                                 </Button>
                             </div>
                            </CardContent>    
@@ -336,6 +345,23 @@ class Details extends Component{
                     autoHideDuration={3000}
                     onClose={this.closeHandler}
                     message="Item quantity decreased by 1!"
+                    action={
+                    <React.Fragment>
+                        <IconButton size="small" aria-label="close" color="inherit" onClick={this.closeHandler}>
+                        <CloseIcon fontSize="small" />
+                        </IconButton>
+                    </React.Fragment>
+                        }
+                    /> 
+                  <Snackbar
+                    anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                    }}
+                    open={this.state.nonloggedIn}
+                    autoHideDuration={3000}
+                    onClose={this.closeHandler}
+                    message="Please login first!"
                     action={
                     <React.Fragment>
                         <IconButton size="small" aria-label="close" color="inherit" onClick={this.closeHandler}>
