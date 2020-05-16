@@ -1,0 +1,112 @@
+.order-item-container {
+    margin-top: 10px;
+}
+
+.order-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.icon {
+    min-width: 10%;
+}
+
+.icon-type {
+    margin-top: 8px;
+}
+
+.item-name {
+    text-align: left;
+    min-width: 50%;
+}
+
+.rupees-icon {
+    margin: 3px;
+}
+
+.quantity {
+    min-width: 20%;
+}
+
+.price {
+    min-width: 20%;
+}
+
+.quantity-price {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    min-width: 30%;
+}
+
+.amount-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.amount {
+    min-width: 78%;
+}
+
+.payable-bill-amount {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    min-width: 20%;
+    margin-bottom: 20px;
+    margin-right: 10px;
+}
+
+.amount-value {
+    margin-right: 20px;
+}
+
+.place-order-button {
+    width: 100%;
+}
+
+@media (min-width: 320px) and (max-width: 500px) {
+    .item-name {
+        min-width: 40%;
+    }
+
+    .quantity {
+        min-width: 15%;
+    }
+
+    .amount {
+        min-width: 82%;
+    }
+
+    .payable-bill-amount {
+        min-width: 20%;
+    }
+}
+
+@media (min-width: 500px) and (max-width: 900px){
+    .amount {
+        min-width: 80%;
+    }
+    .payable-bill-amount {
+        min-width: 20%;
+        justify-content: flex-start;
+    }
+}
+
+@media (min-width: 901px) and (max-width: 1500px) {
+    .item-name {
+        min-width: 40%;
+    }
+
+    .quantity {
+        min-width: 15%;
+    }
+
+    .amount {
+        min-width: 70%;
+    }
+}
+
