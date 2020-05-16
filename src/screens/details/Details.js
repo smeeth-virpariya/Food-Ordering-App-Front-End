@@ -171,6 +171,7 @@ class Details extends Component{
     closeHandler = () =>{
         this.setState({open:false})
         this.setState({cartEmpty:false})
+        this.setState({nonloggedIn:false})
         this.setState({itemQuantityDecreased:false})
         this.setState({itemRemovedFromCart:false})
     }
@@ -247,14 +248,15 @@ class Details extends Component{
                                    <span className="fa fa-circle" aria-hidden="true" style={{fontSize:"12px" ,color:"red",paddingRight:"12px"}} />
                                }
                                   
-                                   {this.Capitalize(item.item_name)}
+                                 <span style={{wordWrap: "break-word"}}>  {this.Capitalize(item.item_name)} </span>
                                 </div>
-                               <div className="item-right"><i className="fa fa-inr" aria-hidden="true" 
-                                 style={{paddingRight:"4px",paddingBottom:"3px",
-                                 paddingLeft:"2px"}}></i>{item.price.toFixed(2)}
-                                <IconButton style={{marginLeft:"40px"}} 
-                                onClick={(e)=> this.addToCartHandler(e,item.id,item.item_type,item.item_name,item.price)}><AddIcon /> </IconButton>
-                               </div>
+                               <div className="item-right"><span style={{minWidth:"20px"}}><i className="fa fa-inr" aria-hidden="true"></i>{item.price.toFixed(2)}</span>
+                                
+                                <IconButton  style={{float:'right'}}
+                                onClick={(e)=> this.addToCartHandler(e,item.id,item.item_type,item.item_name,item.price)}><AddIcon  /> 
+                                </IconButton>
+                                </div>
+                               
                             </div> 
                              ))
                          }
@@ -286,7 +288,7 @@ class Details extends Component{
                                         {this.Capitalize(item.name)}
                                     </div>                                                 
                                     <div className="cart-item-centre">
-                                        <IconButton><RemoveIcon onClick={(e)=>this.removeFromCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}/></IconButton>
+                                        <IconButton><RemoveIcon onClick={(e)=>this.removeFromCartHandler(e,item.id,item.type,item.name,item.pricePerItem)} style={{fontWeight:"bolder"}}/></IconButton>
                                         <span >{item.quantity} </span>
                                         <IconButton ><AddIcon onClick={(e)=>this.addToCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}/></IconButton>
                                     </div>
@@ -309,7 +311,7 @@ class Details extends Component{
                         </div>
                         
                         <div className="checkout-button" onClick={this.checkoutHandler}>
-                            <Button className="checkout" variant="contained" color="primary" style={{minWidth:'470px'}}>
+                            <Button className="checkout" variant="contained" color="primary">
                                <Typography>CHECKOUT</Typography>
                             </Button>
                         </div>
