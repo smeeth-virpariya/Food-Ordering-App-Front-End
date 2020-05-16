@@ -116,9 +116,27 @@
     }
 }
 
-@media (min-width: 1550px){
+@media (min-width: 1550px) and (max-width: 2099px){
     .payable-bill-amount{
-        margin-right: 10px;
+        margin-right: 3%;
+    }
+}
+
+@media (min-width: 2100px) and (max-width: 2519px){
+    .payable-bill-amount{
+        margin-right: 7%;
+    }
+}
+
+@media (min-width: 2520px){
+    .payable-bill-amount{
+        margin-right: 9%;
+    }
+}
+
+@media (min-width: 3360px){
+    .payable-bill-amount{
+        margin-right: 12%;
     }
 }
 
