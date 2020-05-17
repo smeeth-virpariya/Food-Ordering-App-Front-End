@@ -17,7 +17,7 @@ export default function OrderItems(props) {
                         <i className="fa fa-stop-circle-o icon-type" aria-hidden="true"
                            style={item.type === 'VEG' ? {color: "green"} : {color: "red"}}></i>
                     </div>
-                    <div className='item-name'>
+                    <div className='item-name' style={{textTransform:"capitalize"}}>
                         <Typography variant='h6' color='textSecondary'>
                             {item.name}
                         </Typography>
@@ -40,7 +40,7 @@ export default function OrderItems(props) {
             <div className='amount-section'>
                 <div className='amount'>
                     <Typography variant='h6' color='textPrimary'>
-                        Net Ammount
+                        Net Amount
                     </Typography>
                 </div>
                 <div className='payable-bill-amount'>
