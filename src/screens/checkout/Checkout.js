@@ -118,7 +118,7 @@ class Checkout extends Component {
                                                             <p>{address.pincode}</p>
                                                         </div>
                                                         <Grid container>
-                                                            <Grid item xs={10}></Grid>
+                                                            <Grid item xs={6} lg={10}></Grid>
                                                             <Grid item xs={2}>
                                                                 <IconButton
                                                                     id={'select-address-button-' + address.id}
