@@ -1,3 +1,8 @@
+.main-container{
+   display: flex;
+   flex-direction: column;
+}
+
 .restaurant-details-container{
     height: 200px;
     width: auto;
@@ -20,6 +25,14 @@
     height: 200px;
     width: 250px;
   
+}
+
+.restaurant-name{
+    font-weight: medium ;
+    font-size: 30px; 
+    padding-top:10px;
+    padding-bottom:10px;
+
 }
 .restaurant-right-container{
     flex: 75%;
@@ -59,17 +72,43 @@
 .item{
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
+    align-items: center;
     padding-top: 10px;
+    width: 100%;
+  
 }
+
+.item-left{
+    flex: 60%;
+     width: 100%;
+     word-wrap: break-word;
+}
+
+.item-right{
+    flex: 40%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+
+
+
+
+
 
 .cart-container{
     padding-left: 150px ;
     padding-top: 25px;
     height: 1000px;
     width : 500px;
-    
+}
+
+
+.cart-item-right{
+    float: right;
 }
 .CardContent{
     padding : 10px
@@ -91,11 +130,13 @@
 }
 
 .cart-item{
-    margin-top: 20px;
+    margin-top: 5px;
     font-weight: lighter;
     font-size: 14px;
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .cart-item-left{
@@ -104,9 +145,164 @@
 
 .cart-item-centre{
     flex: 30%;
+    font-weight: bold;
 }
 
 .cart-item-right{
     flex: 20%;
 }
 
+.checkout{
+  width:470px
+}
+  
+  /*Tablet Query*/
+  @media  (min-width: 200px) and (max-width:1000px) {
+    .main-container {
+      width:100%
+    }
+
+    .restaurant-details-container{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        height: 400px;
+        align-items: center;
+        padding : 15px 5px;
+    }
+
+    .restaurant-left-container{
+        width: 70%;
+        padding: 5px 2px;
+   }
+
+    .restaurant-right-container{
+        width: 60%;
+        text-align: center;
+    }
+
+    .category-items-cart-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+       
+    }
+    .category-items-container{
+        flex:100%;
+        width: 70%;
+    }
+
+
+
+    .cart-container{
+        flex: 100%;
+        padding-left: 15px;
+       
+        width : 450px;
+    }
+
+    .checkout-button{
+        padding-left: 20px;
+    }
+
+    .checkout{
+        width:370px;
+        margin-left: 40px;
+      }
+}
+
+
+  
+  /*Mobile Query*/
+  @media only screen and (min-width:150px) and (max-width: 480px) {
+    .main-container {
+        width:100%
+      }
+  
+    .restaurant-details-container{
+        width: auto;
+        display: flex;
+        flex-direction: column;
+        height: 500px;
+        align-items: center;
+        padding: 4px 2px;
+    }
+    .restaurant-left-container{
+        width: 80%;
+        padding: 5px 2px;
+    }
+ 
+     .restaurant-right-container{
+         width: 70%;
+         text-align: center;
+     }
+
+    .category-items-cart-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    .category-items-container{
+        flex: 100%;
+        width: 80%;
+        font-size: 15px;
+    }
+ 
+    .item{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-top: 10px;
+        width: 100%;
+      
+    }
+    
+    .item-left{
+        flex: 60%;
+         width: 100%;
+    }
+    
+    .item-right{
+        flex: 40%;
+        width: 100%;
+    }
+   
+
+    .cart-container{
+        flex: 100%;
+        width : 350px;
+        padding:10px 5px;
+    }
+    .cart-item{
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+    }
+
+    .cart-item-left{
+        flex: 50%;
+    }
+    
+    .cart-item-centre{
+        flex: 30%;
+        font-weight: bolder;
+        padding-bottom: 40px;
+    }
+    
+    .cart-item-right{
+        flex: 20%;
+    }
+    .checkout-button{
+        padding-left: 20px;
+    }
+
+    .checkout{
+       width:270px;
+     }
+
+
+   
+   
+  }
