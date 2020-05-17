@@ -71,8 +71,10 @@ class Details extends Component{
                 });
             }
         });
+
+        let url = this.props.baseUrl + 'restaurant/';
        
-        xhr.open("GET", "http://localhost:8080/api/restaurant/"+ this.props.match.params.restaurantId);
+        xhr.open("GET", url+ this.props.match.params.restaurantId);
         xhr.setRequestHeader("Cache-Control", "no-cache");
         xhr.send(data);
     }
@@ -202,7 +204,7 @@ class Details extends Component{
     render(){  
      return(
          
-        <div><Header/>
+        <div><Header baseUrl={this.props.baseUrl}/>
         {this.state.text}
           <div className="main-container-body">
                 <div className="restaurant-details-container">
@@ -245,11 +247,11 @@ class Details extends Component{
                             <div className="item" key={item.id}>
                                <div className="item-left">{
                                   
-                                   item.item_type === "VEG" ?  <span className="fa fa-circle" aria-hidden="true" style={{fontSize:"12px" ,color:"green",paddingRight:"12px"}} />:
-                                   <span className="fa fa-circle" aria-hidden="true" style={{fontSize:"12px" ,color:"red",paddingRight:"12px"}} />
+                                   item.item_type === "VEG" ?  <span className="fa fa-circle" aria-hidden="true" style={{fontSize:"12px" ,color:"green"}} />:
+                                   <span className="fa fa-circle"  aria-hidden="true" style={{fontSize:"12px" ,color:"red"}} />
                                }
                                   
-                                 <span>  {this.Capitalize(item.item_name)} </span>
+                                 <span className="item-name">  {this.Capitalize(item.item_name)} </span>
                                 </div>
                                <div className="item-right">
                                   <div className="pricePerItem">

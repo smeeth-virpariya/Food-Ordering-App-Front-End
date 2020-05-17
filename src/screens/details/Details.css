@@ -14,13 +14,10 @@
     justify-content: flex-start;
 }
 
-.badgeHide{
-    visibility: hidden;
+.badge{
+    z-index: 0;
 }
 
-.badgeVisible{
-    visibility: visible;
-}
 
 .removeIcon-cart:hover {
     background-color: #fdff81 !important;
@@ -82,6 +79,7 @@
     width: 40%;
     padding-left: 50px;
     padding-top: 25px;
+    flex: 60%;
 }
 
 .category{
@@ -112,17 +110,18 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-around;
 }
 
 .pricePerItem{
-    flex: 70%;
-     flex-wrap: nowrap;
-     flex-shrink: 0;
+    flex: 50%;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
 }
 
 .addIcon{
-    flex:30%
+    flex:50%;
+    padding-right:100px;
 }
 
 
@@ -190,6 +189,11 @@
 
 .checkout{
   width:470px
+}
+
+.item-name{
+    padding-left:12px;
+    word-wrap: break-word;
 }
   
   /*Tablet Query*/
@@ -280,11 +284,15 @@
         flex-direction: column;
         align-items: center;
         width: 100%;
+        margin: 0px;
+       
     }
     .category-items-container{
         flex: 100%;
         width: 80%;
         font-size: 15px;
+        margin: 10px;
+        padding: 5px;
     }
  
     .item{
@@ -297,24 +305,20 @@
     }
     
     .item-left{
-        flex: 60%;
+        flex: 50%;
          width: 100%;
     }
     
     .item-right{
-        flex: 40%;
+        flex: 50%;
         width: 100%;
     }
    
 
     .cart-container{
         flex: 100%;
-        width : 350px;
+        width : 300px;
         padding:10px 5px;
-      
-
-       
-        
     }
     .cart-item{
         display: flex;
@@ -327,33 +331,39 @@
         padding: 2px;
     }
 
+    .addIcon{
+        padding-right:0px;
+    }
+
     .addIcon-cart{
         padding: 2px;
     }
 
     .cart-item-left{
-        flex: 50%;
-        
+        flex: 40%;
+        flex-wrap: wrap;
     }
     
     .cart-item-centre{
-        flex: 25%;
+        flex: 30%;
         font-weight: bolder;
         padding: 0 0;
     }
     
     .cart-item-right{
-        flex: 25%;
+        flex: 30%;
     }
     .checkout-button{
-        padding-left: 20px;
+        padding-left: 25px;
     }
 
     .checkout{
-       width:270px;
+       width:200px;
      }
 
-
+     .item-name{
+        padding-left:2px;
+    }
    
    
   }
