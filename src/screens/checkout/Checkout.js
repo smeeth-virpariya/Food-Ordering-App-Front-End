@@ -446,15 +446,15 @@ class Checkout extends Component {
         let tempFlatRequired = false;
         let tempStateRequired = false;
         let tempLocalityRequired = false;
-        if (this.state.city === undefined || this.state.cityRequired) {
+        if (this.state.city === '' || this.state.cityRequired) {
             tempCityRequired = true;
         }
 
-        if (this.state.locality === undefined || this.state.localityRequired) {
+        if (this.state.locality === '' || this.state.localityRequired) {
             tempLocalityRequired = true;
         }
 
-        if (this.state.flat === undefined || this.state.flatRequired) {
+        if (this.state.flat === '' || this.state.flatRequired) {
             tempFlatRequired = true;
         }
 
@@ -462,7 +462,7 @@ class Checkout extends Component {
             tempStateRequired = true;
         }
 
-        if (this.state.pincode === undefined || this.state.pincodeRequired) {
+        if (this.state.pincode === '' || this.state.pincodeRequired) {
             tempPincodeRequired = true;
         }
 
