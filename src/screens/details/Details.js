@@ -4,17 +4,14 @@ import Header from '../../common/header/Header'
 import IconButton from '@material-ui/core/IconButton';
 import Divider from "@material-ui/core/Divider";
 import AddIcon from '@material-ui/icons/Add';
-import Snackbar from '@material-ui/core/Snackbar';
 import Card from '@material-ui/core/Card';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import CardContent from '@material-ui/core/CardContent';
-import CloseIcon from '@material-ui/icons/Close';
 import Button from '@material-ui/core/Button';
 import Badge from '@material-ui/core/Badge';
 import RemoveIcon from '@material-ui/icons/Remove';
 import Typography from '@material-ui/core/Typography';
-import { Link } from 'react-router-dom';
-import CustomizedSnackbar from '../../common/CustomizedSnackBar'
+import CustomizedSnackbar from '../../common/CustomizedSnackbar/CustomizedSnackBar'
 
 
 
@@ -40,12 +37,12 @@ class Details extends Component{
             cartItem : {},
             itemQuantityDecreased : false,
             nonloggedIn:false,
-            itemRemovedFromCart:false
-            
-            
-        }
+            itemRemovedFromCart:false,
+         }
        
     }
+
+  
 
       
     componentDidMount() {
@@ -128,7 +125,7 @@ class Details extends Component{
         }
      
         this.setState({open:true});
-        this.setState({totalItems,totalItems});
+        this.setState({totalItems:totalItems});
         this.setState({totalAmount:totalAmount});
       
      
@@ -162,7 +159,7 @@ class Details extends Component{
         var totalItems = this.state.totalItems;
         totalItems -=1;
        
-        this.setState({totalItems,totalItems});
+        this.setState({totalItems:totalItems});
         this.setState({totalAmount:totalAmount});
 
     }
@@ -179,11 +176,15 @@ class Details extends Component{
     checkoutHandler = () =>{
        if ( this.state.totalItems === 0 ){
            this.setState({cartEmpty:true});
-           
         } else  if(this.state.totalItems > 0 && sessionStorage.getItem('access-token') === null) {
             this.setState({nonloggedIn:true});
-            
-        } 
+        } else{
+            this.props.history.push({
+                pathname: '/checkout/' ,
+                state :{orderItems:this.state.orderItems,
+                total:this.state.totalAmount,restaurantName:this.state.restaurant_name }
+            })
+        }
         
     }
     Capitalize(str){
@@ -197,14 +198,16 @@ class Details extends Component{
         return pascalCasedString
         }
 
-    render(){
-       
+
+    render(){  
      return(
+         
         <div><Header/>
-          <div className="main-container">
+        {this.state.text}
+          <div className="main-container-body">
                 <div className="restaurant-details-container">
                     <div className="restaurant-left-container"> 
-                        <img  src={this.state.photo_URL} className="restaurant-image"/>
+                        <img  src={this.state.photo_URL} alt="none" className="restaurant-image"/>
                     </div>
                     <div className="restaurant-right-container"> 
                         <div style={{fontWeight:"medium", fontSize:"30px", paddingTop:"10px" ,paddingBottom:"10px"}}>{this.state.restaurant_name}</div>
@@ -242,17 +245,17 @@ class Details extends Component{
                             <div className="item" key={item.id}>
                                <div className="item-left">{
                                   
-                                   item.item_type == "VEG" ?  <span className="fa fa-circle" aria-hidden="true" style={{fontSize:"12px" ,color:"green",paddingRight:"12px"}} />:
+                                   item.item_type === "VEG" ?  <span className="fa fa-circle" aria-hidden="true" style={{fontSize:"12px" ,color:"green",paddingRight:"12px"}} />:
                                    <span className="fa fa-circle" aria-hidden="true" style={{fontSize:"12px" ,color:"red",paddingRight:"12px"}} />
                                }
                                   
-                                 <span style={{wordWrap: "break-word"}}>  {this.Capitalize(item.item_name)} </span>
+                                 <span>  {this.Capitalize(item.item_name)} </span>
                                 </div>
                                <div className="item-right">
                                   <div className="pricePerItem">
-                                    <span style={{minWidth:"20px"}}>
+                                    <span>
                                     <i className="fa fa-inr" aria-hidden="true"></i>
-                                        {item.price.toFixed(2)}
+                                      <span style={{paddingLeft:"2px"}} >{item.price.toFixed(2)}</span>
                                     </span>
                                   </div>
                                   <div className="addIcon">
@@ -278,7 +281,7 @@ class Details extends Component{
                         <CardContent>
                         <div style={{fontWeight:"bold"}}>
                             <i  style={{paddingRight:"20px"}}>
-                            <Badge badgeContent={this.state.totalItems} color="primary" showZero>  
+                            <Badge  className="badge" badgeContent={this.state.totalItems} color="primary" showZero>  
                                 <ShoppingCartIcon/>
                             </Badge>     
                         </i>My Cart
@@ -290,21 +293,24 @@ class Details extends Component{
                                 <div className="cart-item" key={item.id}>
                                     <div className="cart-item-left">
                                     {
-                                        item.type == "VEG" ?  
+                                        item.type === "VEG" ?  
                                         <span className="fa fa-stop-circle-o" aria-hidden="true" style={{fontSize:"12px" ,color:"green",paddingRight:"12px"}} />:
                                         <span className="fa fa-stop-circle-o" aria-hidden="true" style={{fontSize:"12px" ,color:"red",paddingRight:"12px"}} /> 
                                     }
                                         {this.Capitalize(item.name)}
                                     </div>                                                 
                                     <div className="cart-item-centre">
-                                        <IconButton onClick={(e)=>this.removeFromCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}><RemoveIcon/></IconButton>
+                                      
+                                        <IconButton className="removeIcon-cart"
+                                        style={{fontWeight:"bolder"}} onClick={(e)=>this.removeFromCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}><RemoveIcon/></IconButton>
+                                     
                                         <span >{item.quantity} </span>
-                                        <IconButton onClick={(e)=>this.addToCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}><AddIcon /></IconButton>
+                                        <IconButton  className="addIcon-cart" style={{fontWeight:"bolder"}}  onClick={(e)=>this.addToCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}><AddIcon /></IconButton>
                                     </div>
                                     <div className="cart-item-right" >
-                                        <span style={{float:"right"}}>
-                                            <i className="fa fa-inr" aria-hidden="true" style={{paddingRight:"4px"}}></i>
-                                            {item.priceForAll.toFixed(2)}
+                                        <span >
+                                            <i className="fa fa-inr" aria-hidden="true" ></i>
+                                            <span style={{paddingLeft:"2px"}}>{item.priceForAll.toFixed(2)}</span>
                                         </span>
                                     </div>
                                 </div>)):""
@@ -319,13 +325,9 @@ class Details extends Component{
                             </span>
                         </div>
                         
-                        <div className="checkout-button" onClick={this.checkoutHandler}>
+                        <div className="checkout-button">
                             <Button className="checkout" variant="contained" color="primary">
-                             <Link to={{ pathname: '/checkout', state :{orderItems:this.state.orderItems,
-                                   total:this.state.totalAmount,restaurantName:this.state.restaurant_name }}}
-                                   style={{ textDecoration: 'none', color: 'white' }}>  
-                               <Typography>CHECKOUT</Typography>
-                               </Link>
+                               <Typography onClick={this.checkoutHandler}>CHECKOUT</Typography>
                             </Button>
                         </div>
                         </CardContent>    

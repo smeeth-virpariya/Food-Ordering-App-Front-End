@@ -1,4 +1,4 @@
-.main-container{
+.main-container-body{
    display: flex;
    flex-direction: column;
 }
@@ -14,6 +14,22 @@
     justify-content: flex-start;
 }
 
+.badgeHide{
+    visibility: hidden;
+}
+
+.badgeVisible{
+    visibility: visible;
+}
+
+.removeIcon-cart:hover {
+    background-color: #fdff81 !important;
+  }
+
+.addIcon-cart:hover{
+    background-color : #fdff81 !important;
+}  
+
 .restaurant-image{
   height: 100%;
   width: 100%;
@@ -28,7 +44,7 @@
 }
 
 .restaurant-name{
-    font-weight: medium ;
+    font-weight: normal ;
     font-size: 30px; 
     padding-top:10px;
     padding-bottom:10px;
@@ -57,6 +73,9 @@
 .category-items-cart-container{
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    margin-left: 20px;
+    margin-right: 40px;
 }
 
 .category-items-container{
@@ -72,16 +91,19 @@
 .item{
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: baseline;
+    justify-content: space-between;
     padding-top: 10px;
     width: 100%;
-  
+    font-weight: normal;
+    font-size: 18px;
+    flex-wrap: nowrap;
 }
 
 .item-left{
     flex: 60%;
      width: 100%;
-     word-wrap: break-word;
+     margin-right: 20px;
 }
 
 .item-right{
@@ -90,12 +112,18 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
 
+.pricePerItem{
+    flex: 70%;
+     flex-wrap: nowrap;
+     flex-shrink: 0;
+}
 
-
-
+.addIcon{
+    flex:30%
+}
 
 
 
@@ -103,9 +131,14 @@
     padding-left: 150px ;
     padding-top: 25px;
     height: 1000px;
-    width : 500px;
+    width: auto;
+
 }
 
+.cart-item{
+    font-size: 16px;
+    font-weight: lighter;
+}
 
 .cart-item-right{
     float: right;
@@ -116,7 +149,7 @@
 
 .total-amount-section{
     font-weight: bold;
-    font-size: 12px;
+    font-size: 18px;
     margin-top: 25px;
 }
 
@@ -130,17 +163,18 @@
 }
 
 .cart-item{
-    margin-top: 5px;
-    font-weight: lighter;
-    font-size: 14px;
+    margin-top: 3px;
+    font-size: 18px;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
+    font-weight: lighter;
 }
 
 .cart-item-left{
     flex: 50%;
+ 
 }
 
 .cart-item-centre{
@@ -152,13 +186,15 @@
     flex: 20%;
 }
 
+
+
 .checkout{
   width:470px
 }
   
   /*Tablet Query*/
   @media  (min-width: 200px) and (max-width:1000px) {
-    .main-container {
+    .main-container-body {
       width:100%
     }
 
@@ -186,6 +222,7 @@
         flex-direction: column;
         align-items: center;
         width: 100%;
+   
        
     }
     .category-items-container{
@@ -216,7 +253,7 @@
   
   /*Mobile Query*/
   @media only screen and (min-width:150px) and (max-width: 480px) {
-    .main-container {
+    .main-container-body {
         width:100%
       }
   
@@ -224,9 +261,9 @@
         width: auto;
         display: flex;
         flex-direction: column;
-        height: 500px;
         align-items: center;
         padding: 4px 2px;
+        height: auto;
     }
     .restaurant-left-container{
         width: 80%;
@@ -274,25 +311,39 @@
         flex: 100%;
         width : 350px;
         padding:10px 5px;
+      
+
+       
+        
     }
     .cart-item{
         display: flex;
         flex-direction: row;
         align-items: baseline;
+        justify-content: space-between;
+    }
+
+    .removeIcon-cart{
+        padding: 2px;
+    }
+
+    .addIcon-cart{
+        padding: 2px;
     }
 
     .cart-item-left{
         flex: 50%;
+        
     }
     
     .cart-item-centre{
-        flex: 30%;
+        flex: 25%;
         font-weight: bolder;
-        padding-bottom: 40px;
+        padding: 0 0;
     }
     
     .cart-item-right{
-        flex: 20%;
+        flex: 25%;
     }
     .checkout-button{
         padding-left: 20px;
