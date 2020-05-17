@@ -20,6 +20,10 @@
     margin: 10px;
 }
 
+.address-box{
+    margin: 10px;
+}
+
 .grid-list-tile-selected-address {
     margin: 10px;
     border: 1px solid deeppink;
