@@ -107,7 +107,7 @@ class Checkout extends Component {
                                                 (this.state.addresses || []).map((address, index) => (
                                                     <GridListTile key={address.id}
                                                                   className={this.state.selectedAddressId === address.id ? 'grid-list-tile-selected-address' : 'grid-list-tile'}>
-                                                        <div>
+                                                        <div className='address-box'>
                                                             <p>{address.flat_building_name}</p>
                                                             <p>{address.locality}</p>
                                                             <p>{address.city}</p>
