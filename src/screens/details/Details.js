@@ -71,8 +71,10 @@ class Details extends Component{
                 });
             }
         });
+
+        let url = this.props.baseUrl + 'restaurant/';
        
-        xhr.open("GET", "http://localhost:8080/api/restaurant/"+ this.props.match.params.restaurantId);
+        xhr.open("GET", url+ this.props.match.params.restaurantId);
         xhr.setRequestHeader("Cache-Control", "no-cache");
         xhr.send(data);
     }
@@ -202,7 +204,7 @@ class Details extends Component{
     render(){  
      return(
          
-        <div><Header/>
+        <div><Header baseUrl={this.props.baseUrl}/>
         {this.state.text}
           <div className="main-container-body">
                 <div className="restaurant-details-container">
