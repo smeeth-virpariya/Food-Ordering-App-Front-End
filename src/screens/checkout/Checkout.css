@@ -28,6 +28,11 @@
     border-radius: 5px;
 }
 
+#new-address-display{
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
 .select-address-icon-container {
     color: green;
     display: flex;
