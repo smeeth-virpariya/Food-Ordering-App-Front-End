@@ -40,7 +40,7 @@ export default function OrderItems(props) {
             {props.divider ? <Divider style={{marginTop: 15, marginBottom: 15}}/> : null}
             <Grid container>
                 <Grid item xs={9}>
-                    <Typography variant='h6' color='textPrimary'>
+                    <Typography color='textPrimary'>
                         Net Amount
                     </Typography>
                 </Grid>
