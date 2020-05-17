@@ -125,7 +125,8 @@ class Home extends Component {
                 });
             }
         })
-        xhrRestaurants.open("GET", this.props.baseUrl + 'restaurant');
+        let url = this.props.baseUrl + 'restaurant';
+        xhrRestaurants.open("GET", url);
         xhrRestaurants.send(restaurantsData);
     }
 
@@ -186,7 +187,8 @@ class Home extends Component {
         if (event.target.value === '') {
             this.getRestaurants();
         } else {
-            xhrFilteredRestaurants.open("GET", this.props.baseUrl + 'restaurant/name/' + event.target.value);
+            let url = this.props.baseUrl + 'restaurant/name/' + event.target.value;
+            xhrFilteredRestaurants.open("GET", url);
             xhrFilteredRestaurants.send(filteredRestaurants);
         }
     }

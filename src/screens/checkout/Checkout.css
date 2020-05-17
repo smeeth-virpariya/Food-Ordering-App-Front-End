@@ -87,5 +87,11 @@
     }
 }
 
-@media (min-width: 600px) and (max-width: 1100px) {
+@media (min-width: 900px) and (max-width: 1400px) {
+    .delivery-payment-section{
+        width: 58%;
+    }
+    .summary-section {
+        width: 42%;
+    }
 }
