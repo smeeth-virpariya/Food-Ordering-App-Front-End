@@ -77,7 +77,7 @@ class Checkout extends Component {
             return <Redirect to='/'/>
         }
         return <Fragment>
-            <Header></Header>
+            <Header baseUrl={this.props.baseUrl}></Header>
             <div className='main-container'>
                 <div className='delivery-payment-section'>
                     <Stepper activeStep={this.state.activeStep} orientation='vertical'>
