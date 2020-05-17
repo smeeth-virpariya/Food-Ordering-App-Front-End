@@ -79,7 +79,7 @@
     width: 40%;
     padding-left: 50px;
     padding-top: 25px;
-    flex: 60%;
+    flex: 70%;
 }
 
 .category{
@@ -99,13 +99,13 @@
 }
 
 .item-left{
-    flex: 60%;
+    flex: 70%;
      width: 100%;
      margin-right: 20px;
 }
 
 .item-right{
-    flex: 40%;
+    flex: 30%;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -131,6 +131,7 @@
     padding-top: 25px;
     height: 1000px;
     width: auto;
+    flex: 30%;
 
 }
 
@@ -191,9 +192,14 @@
   width:470px
 }
 
+
 .item-name{
     padding-left:12px;
     word-wrap: break-word;
+}
+.totalAmount{
+    float: right ;
+     margin-right : 14px;
 }
   
   /*Tablet Query*/
