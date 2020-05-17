@@ -14,6 +14,22 @@
     justify-content: flex-start;
 }
 
+.badgeHide{
+    visibility: hidden;
+}
+
+.badgeVisible{
+    visibility: visible;
+}
+
+.removeIcon-cart:hover {
+    background-color: #fdff81 !important;
+  }
+
+.addIcon-cart:hover{
+    background-color : #fdff81 !important;
+}  
+
 .restaurant-image{
   height: 100%;
   width: 100%;
@@ -28,7 +44,7 @@
 }
 
 .restaurant-name{
-    font-weight: medium ;
+    font-weight: normal ;
     font-size: 30px; 
     padding-top:10px;
     padding-bottom:10px;
@@ -59,7 +75,7 @@
     flex-direction: row;
     justify-content: space-between;
     margin-left: 20px;
-    margin-right: 20px;
+    margin-right: 40px;
 }
 
 .category-items-container{
@@ -75,16 +91,19 @@
 .item{
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: baseline;
+    justify-content: space-between;
     padding-top: 10px;
     width: 100%;
-  
+    font-weight: normal;
+    font-size: 18px;
+    flex-wrap: nowrap;
 }
 
 .item-left{
     flex: 60%;
      width: 100%;
-     word-wrap: break-word;
+     margin-right: 20px;
 }
 
 .item-right{
@@ -93,12 +112,18 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
 
+.pricePerItem{
+    flex: 70%;
+     flex-wrap: nowrap;
+     flex-shrink: 0;
+}
 
-
-
+.addIcon{
+    flex:30%
+}
 
 
 
@@ -106,10 +131,14 @@
     padding-left: 150px ;
     padding-top: 25px;
     height: 1000px;
-    width : 500px;
-    padding-right: 50px;
+    width: auto;
+
 }
 
+.cart-item{
+    font-size: 16px;
+    font-weight: lighter;
+}
 
 .cart-item-right{
     float: right;
@@ -120,7 +149,7 @@
 
 .total-amount-section{
     font-weight: bold;
-    font-size: 12px;
+    font-size: 18px;
     margin-top: 25px;
 }
 
@@ -134,17 +163,18 @@
 }
 
 .cart-item{
-    margin-top: 5px;
-    font-weight: lighter;
-    font-size: 14px;
+    margin-top: 3px;
+    font-size: 18px;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
+    font-weight: lighter;
 }
 
 .cart-item-left{
     flex: 50%;
+ 
 }
 
 .cart-item-centre{
@@ -155,6 +185,8 @@
 .cart-item-right{
     flex: 20%;
 }
+
+
 
 .checkout{
   width:470px
@@ -288,8 +320,7 @@
         display: flex;
         flex-direction: row;
         align-items: baseline;
-        height: 70px;
-        
+        justify-content: space-between;
     }
 
     .removeIcon-cart{
@@ -302,16 +333,17 @@
 
     .cart-item-left{
         flex: 50%;
+        
     }
     
     .cart-item-centre{
-        flex: 30%;
+        flex: 25%;
         font-weight: bolder;
         padding: 0 0;
     }
     
     .cart-item-right{
-        flex: 20%;
+        flex: 25%;
     }
     .checkout-button{
         padding-left: 20px;

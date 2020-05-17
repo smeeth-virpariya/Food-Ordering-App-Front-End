@@ -37,12 +37,12 @@ class Details extends Component{
             cartItem : {},
             itemQuantityDecreased : false,
             nonloggedIn:false,
-            itemRemovedFromCart:false
-            
-            
-        }
+            itemRemovedFromCart:false,
+         }
        
     }
+
+  
 
       
     componentDidMount() {
@@ -198,10 +198,12 @@ class Details extends Component{
         return pascalCasedString
         }
 
-    render(){
-       
+
+    render(){  
      return(
+         
         <div><Header/>
+        {this.state.text}
           <div className="main-container-body">
                 <div className="restaurant-details-container">
                     <div className="restaurant-left-container"> 
@@ -247,13 +249,13 @@ class Details extends Component{
                                    <span className="fa fa-circle" aria-hidden="true" style={{fontSize:"12px" ,color:"red",paddingRight:"12px"}} />
                                }
                                   
-                                 <span style={{wordWrap: "break-word"}}>  {this.Capitalize(item.item_name)} </span>
+                                 <span>  {this.Capitalize(item.item_name)} </span>
                                 </div>
                                <div className="item-right">
                                   <div className="pricePerItem">
-                                    <span style={{minWidth:"20px"}}>
+                                    <span>
                                     <i className="fa fa-inr" aria-hidden="true"></i>
-                                        {item.price.toFixed(2)}
+                                      <span style={{paddingLeft:"2px"}} >{item.price.toFixed(2)}</span>
                                     </span>
                                   </div>
                                   <div className="addIcon">
@@ -279,7 +281,7 @@ class Details extends Component{
                         <CardContent>
                         <div style={{fontWeight:"bold"}}>
                             <i  style={{paddingRight:"20px"}}>
-                            <Badge badgeContent={this.state.totalItems} color="primary" showZero>  
+                            <Badge  className="badge" badgeContent={this.state.totalItems} color="primary" showZero>  
                                 <ShoppingCartIcon/>
                             </Badge>     
                         </i>My Cart
@@ -298,14 +300,17 @@ class Details extends Component{
                                         {this.Capitalize(item.name)}
                                     </div>                                                 
                                     <div className="cart-item-centre">
-                                        <IconButton className="removeIcon-cart" onClick={(e)=>this.removeFromCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}><RemoveIcon/></IconButton>
+                                      
+                                        <IconButton className="removeIcon-cart"
+                                        style={{fontWeight:"bolder"}} onClick={(e)=>this.removeFromCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}><RemoveIcon/></IconButton>
+                                     
                                         <span >{item.quantity} </span>
-                                        <IconButton  className="addIcon-cart" onClick={(e)=>this.addToCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}><AddIcon /></IconButton>
+                                        <IconButton  className="addIcon-cart" style={{fontWeight:"bolder"}}  onClick={(e)=>this.addToCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}><AddIcon /></IconButton>
                                     </div>
                                     <div className="cart-item-right" >
-                                        <span style={{float:"right"}}>
-                                            <i className="fa fa-inr" aria-hidden="true" style={{paddingRight:"4px"}}></i>
-                                            {item.priceForAll.toFixed(2)}
+                                        <span >
+                                            <i className="fa fa-inr" aria-hidden="true" ></i>
+                                            <span style={{paddingLeft:"2px"}}>{item.priceForAll.toFixed(2)}</span>
                                         </span>
                                     </div>
                                 </div>)):""
