@@ -234,7 +234,8 @@ class Checkout extends Component {
                                 Summary
                             </Typography>
                             <br/>
-                            <Typography variant='h6' component='h3' color='textSecondary' style={{textTransform:"capitalize"}}>
+                            <Typography variant='h6' component='h3' color='textSecondary'
+                                        style={{textTransform: "capitalize", marginBottom: 15}}>
                                 {this.props.location.state.restaurantName}
                             </Typography>
                             <OrderItems divider='true' orderitems={this.props.location.state.orderItems}

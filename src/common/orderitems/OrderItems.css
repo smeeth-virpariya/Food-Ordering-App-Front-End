@@ -1,19 +1,5 @@
-.order-item-container {
-    margin-top: 10px;
-}
-
-.order-item {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.icon {
-    min-width: 10%;
-}
-
 .icon-type {
-    margin-top: 8px;
+    margin-top: 5px;
 }
 
 .item-name {
@@ -21,30 +7,8 @@
     min-width: 50%;
 }
 
-.rupees-icon {
-    margin: 3px;
-}
-
 .quantity {
     min-width: 20%;
-}
-
-.price {
-    min-width: 20%;
-}
-
-.quantity-price {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    min-width: 30%;
-}
-
-.amount-section {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-top: 10px;
 }
 
 .amount {
@@ -55,90 +19,11 @@
 .payable-bill-amount {
     display: flex;
     flex-direction: row;
-    width: 76px;
     margin-bottom: 20px;
-    margin-right: 20px;
-}
-
-.amount-value {
     margin-right: 20px;
 }
 
 .place-order-button {
     width: 100%;
-}
-
-@media (min-width: 400px) and (max-width: 500px) {
-    .item-name {
-        min-width: 40%;
-    }
-
-    .quantity {
-        min-width: 15%;
-    }
-
-    .amount {
-        min-width: 78%;
-    }
-
-}
-
-@media (min-width: 320px) and (max-width: 400px) {
-    .item-name {
-        min-width: 40%;
-    }
-
-    .quantity {
-        min-width: 15%;
-    }
-
-    .amount {
-        min-width: 75%;
-    }
-
-}
-
-@media (min-width: 500px) and (max-width: 900px){
-    .amount {
-        min-width: 80%;
-    }
-    .payable-bill-amount {
-        min-width: 20%;
-        justify-content: flex-start;
-    }
-}
-
-@media (min-width: 901px) and (max-width: 1500px) {
-    .item-name {
-        min-width: 40%;
-    }
-
-    .quantity {
-        min-width: 15%;
-    }
-}
-
-@media (min-width: 1550px) and (max-width: 2099px){
-    .payable-bill-amount{
-        margin-right: 3%;
-    }
-}
-
-@media (min-width: 2100px) and (max-width: 2519px){
-    .payable-bill-amount{
-        margin-right: 7%;
-    }
-}
-
-@media (min-width: 2520px){
-    .payable-bill-amount{
-        margin-right: 9%;
-    }
-}
-
-@media (min-width: 3360px){
-    .payable-bill-amount{
-        margin-right: 12%;
-    }
 }
 
