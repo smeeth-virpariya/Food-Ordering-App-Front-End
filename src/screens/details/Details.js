@@ -247,11 +247,11 @@ class Details extends Component{
                             <div className="item" key={item.id}>
                                <div className="item-left">{
                                   
-                                   item.item_type === "VEG" ?  <span className="fa fa-circle" aria-hidden="true" style={{fontSize:"12px" ,color:"green",paddingRight:"12px"}} />:
-                                   <span className="fa fa-circle" aria-hidden="true" style={{fontSize:"12px" ,color:"red",paddingRight:"12px"}} />
+                                   item.item_type === "VEG" ?  <span className="fa fa-circle" aria-hidden="true" style={{fontSize:"12px" ,color:"green"}} />:
+                                   <span className="fa fa-circle"  aria-hidden="true" style={{fontSize:"12px" ,color:"red"}} />
                                }
                                   
-                                 <span>  {this.Capitalize(item.item_name)} </span>
+                                 <span className="item-name">  {this.Capitalize(item.item_name)} </span>
                                 </div>
                                <div className="item-right">
                                   <div className="pricePerItem">
