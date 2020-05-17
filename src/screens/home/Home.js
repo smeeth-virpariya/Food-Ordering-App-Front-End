@@ -63,7 +63,7 @@ class Home extends Component {
         return (
             this.mounted === true ?
                 <div>
-                    <Header showSearchBox={true} searchHandler={this.searchHandler} />
+                    <Header showSearchBox={true} searchHandler={this.searchHandler} baseUrl={this.props.baseUrl}/>
                     {/* if no restaurants found with the entered name displays the No restaurant with the given name. */}
                     {this.state.restaurants.length === 0 && this.state.loading === false ?
                         <Typography variant="h6">No restaurant with the given name.</Typography> :

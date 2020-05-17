@@ -458,7 +458,7 @@ class Header extends Component {
             }
         });
 
-        xhrLogin.open("Post", "http://localhost:8080/api/customer/login");
+        xhrLogin.open("Post", this.props.baseUrl + 'customer/login');
         xhrLogin.setRequestHeader("Authorization", "Basic " + window.btoa(this.state.loginContactNo + ":" + this.state.loginPassword));
         xhrLogin.setRequestHeader("Content-Type", "application/json");
         xhrLogin.setRequestHeader("Cache-Control", "no-cache");
@@ -625,7 +625,7 @@ class Header extends Component {
             }
         });
 
-        xhrSignup.open("POST", "http://localhost:8080/api/customer/signup");
+        xhrSignup.open("POST", this.props.baseUrl + 'customer/signup');
         xhrSignup.setRequestHeader("Content-Type", "application/json");
         xhrSignup.setRequestHeader("Cache-Control", "no-cache");
         xhrSignup.send(signupData);
