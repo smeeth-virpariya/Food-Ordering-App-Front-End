@@ -15,15 +15,17 @@ import Details from "./screens/details/Details";
 class FoodOrdering extends Component {
     constructor() {
         super();
-        this.baseUrl='http://localhost:8080/api/'
+        this.baseUrl = 'http://localhost:8080/api/'
     }
+
     render() {
         return (
             <Switch>
-                <Route exact path='/' render={(props) => <Home {...props} />}/>
+                <Route exact path='/' render={(props) => <Home {...props} baseUrl={this.baseUrl}/>}/>
                 <Route exact path='/profile' render={(props) => <Profile {...props} />}/>
-                <Route exact path='/restaurant/:restaurantId' render={(props) => <Details {...props} />}/>
-                <Route exact path='/checkout' render={(props) => <Checkout {...props} baseUrl={this.baseUrl} />}/>
+                <Route exact path='/restaurant/:restaurantId'
+                       render={(props) => <Details {...props} baseUrl={this.baseUrl}/>}/>
+                <Route exact path='/checkout' render={(props) => <Checkout {...props} baseUrl={this.baseUrl}/>}/>
             </Switch>
         )
     }

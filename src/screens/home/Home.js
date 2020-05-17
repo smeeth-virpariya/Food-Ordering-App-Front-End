@@ -63,7 +63,7 @@ class Home extends Component {
         return (
             this.mounted === true ?
                 <div>
-                    <Header showSearchBox={true} searchHandler={this.searchHandler} />
+                    <Header showSearchBox={true} searchHandler={this.searchHandler} baseUrl={this.props.baseUrl} />
                     {/* if no restaurants found with the entered name displays the No restaurant with the given name. */}
                     {this.state.restaurants.length === 0 && this.state.loading === false ?
                         <Typography variant="h6">No restaurant with the given name.</Typography> :
@@ -125,7 +125,8 @@ class Home extends Component {
                 });
             }
         })
-        xhrRestaurants.open("GET", "http://localhost:8080/api/restaurant");
+        let url = this.props.baseUrl + 'restaurant';
+        xhrRestaurants.open("GET", url);
         xhrRestaurants.send(restaurantsData);
     }
 
@@ -186,7 +187,8 @@ class Home extends Component {
         if (event.target.value === '') {
             this.getRestaurants();
         } else {
-            xhrFilteredRestaurants.open("GET", "http://localhost:8080/api/restaurant/name/" + event.target.value);
+            let url = this.props.baseUrl + 'restaurant/name/' + event.target.value;
+            xhrFilteredRestaurants.open("GET", url);
             xhrFilteredRestaurants.send(filteredRestaurants);
         }
     }
