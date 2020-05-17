@@ -14,6 +14,7 @@ import Badge from '@material-ui/core/Badge';
 import RemoveIcon from '@material-ui/icons/Remove';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
+import CustomizedSnackbar from '../../common/CustomizedSnackBar'
 
 
 
@@ -170,19 +171,20 @@ class Details extends Component{
     closeHandler = () =>{
         this.setState({open:false})
         this.setState({cartEmpty:false})
+        this.setState({nonloggedIn:false})
         this.setState({itemQuantityDecreased:false})
         this.setState({itemRemovedFromCart:false})
     }
 
     checkoutHandler = () =>{
        if ( this.state.totalItems === 0 ){
-           this.setState({cartEmpty:true})
-        } else if (this.state.totalItems > 0 && sessionStorage.getItem('access-token') === null) {
-            this.setState({nonloggedIn:true})
-        } else{
-            this.props.history.push({pathname:'/checkout/' ,orderItems:this.state.orderItems,
-            total:this.state.totalAmount,restaurantName:this.state.restaurant_name});
-        }
+           this.setState({cartEmpty:true});
+           
+        } else  if(this.state.totalItems > 0 && sessionStorage.getItem('access-token') === null) {
+            this.setState({nonloggedIn:true});
+            
+        } 
+        
     }
     Capitalize(str){
         var arr = str.split(" ")
@@ -197,44 +199,45 @@ class Details extends Component{
 
     render(){
        
-        return(
-         <div><Header/>
-            <div className="restaurant-details-container">
-               <div className="restaurant-left-container"> 
-                  <img  src={this.state.photo_URL} className="restaurant-image"/>
-                </div>
-                <div className="restaurant-right-container"> 
-                  <div style={{fontWeight:"medium", fontSize:"30px", paddingTop:"10px" ,paddingBottom:"10px"}}>{this.state.restaurant_name}</div>
-                  <div style={{fontWeight:"medium", fontSize:"16px",paddingBottom:"10px"}}>{this.state.locality}</div>
-                  <div style={{fontSize:"14px",paddingBottom:"20px"}}>
-                    {
-                        this.state.categories.map(category =>(
-                            
-                        <span key={category.id+"category"}>{category.category_name}, </span>
-                        ))
-                    }
-                  </div>
-                  <div className="rating-section">
-                      <div className="rating-section-left">
-                        <i className="fa fa-star" aria-hidden="true" style={{paddingRight:"3px",paddingBottom:"3px",paddingLeft:"2px"}}></i>{this.state.customer_rating}
-                        <div style={{color:"gray", fontSize:"12px"}}>AVERAGE RATING BY</div>
-                        <div style={{color:"gray", fontSize:"12px"}}>{this.state.number_customers_rated} CUTOMERS</div>
-                      </div>
-                      <div className="rating-section-right">
-                      <i className="fa fa-inr" aria-hidden="true" style={{paddingRight:"4px",paddingBottom:"3px",
-                      paddingLeft:"2px"}}></i>{this.state.average_price}
-                      <div style={{color:"gray", fontSize:"12px"}}>AVERAGE COST FOR</div>
-                        <div style={{color:"gray", fontSize:"12px"}}>TWO PEOPLE</div>
-                      </div>
-                   </div>   
-                </div>
-             </div> 
+     return(
+        <div><Header/>
+          <div className="main-container">
+                <div className="restaurant-details-container">
+                    <div className="restaurant-left-container"> 
+                        <img  src={this.state.photo_URL} className="restaurant-image"/>
+                    </div>
+                    <div className="restaurant-right-container"> 
+                        <div style={{fontWeight:"medium", fontSize:"30px", paddingTop:"10px" ,paddingBottom:"10px"}}>{this.state.restaurant_name}</div>
+                        <div style={{fontWeight:"medium", fontSize:"16px",paddingBottom:"10px"}}>{this.state.locality}</div>
+                        <div style={{fontSize:"14px",paddingBottom:"20px"}}>
+                            {
+                                this.state.categories.map(category =>(
+                                    
+                                <span key={category.id+"category"}>{category.category_name}, </span>
+                                ))
+                            }
+                        </div>
+                        <div className="rating-section">
+                            <div className="rating-section-left">
+                                <i className="fa fa-star" aria-hidden="true" style={{paddingRight:"3px",paddingBottom:"3px",paddingLeft:"2px"}}></i>{this.state.customer_rating}
+                                <div style={{color:"gray", fontSize:"12px"}}>AVERAGE RATING BY</div>
+                                <div style={{color:"gray", fontSize:"12px"}}>{this.state.number_customers_rated} CUTOMERS</div>
+                            </div>
+                            <div className="rating-section-right">
+                                <i className="fa fa-inr" aria-hidden="true" style={{paddingRight:"4px",paddingBottom:"3px",
+                                paddingLeft:"2px"}}></i>{this.state.average_price}
+                                <div style={{color:"gray", fontSize:"12px"}}>AVERAGE COST FOR</div>
+                                <div style={{color:"gray", fontSize:"12px"}}>TWO PEOPLE</div>
+                            </div>
+                        </div>   
+                    </div>
+                </div> 
 
 
             <div className="category-items-cart-container">
                 <div className="category-items-container">
                     {this.state.categories.map(category=>(
-                        <div className="category" key="category.id"><span style={{color:"grey",fontWeight:"bolder"}}>{category.category_name.toUpperCase()}</span> <Divider style={{marginTop:"10px",marginBottom:"10px"}}/>
+                        <div className="category" key={"category"+category.id}><span style={{color:"grey",fontWeight:"bolder"}}>{category.category_name.toUpperCase()}</span> <Divider style={{marginTop:"10px",marginBottom:"10px"}}/>
                         {  category.item_list.map(item=>(
                             <div className="item" key={item.id}>
                                <div className="item-left">{
@@ -243,164 +246,101 @@ class Details extends Component{
                                    <span className="fa fa-circle" aria-hidden="true" style={{fontSize:"12px" ,color:"red",paddingRight:"12px"}} />
                                }
                                   
-                                   {this.Capitalize(item.item_name)}</div>
-                               <div className="item-right"><i className="fa fa-inr" aria-hidden="true" 
-                                 style={{paddingRight:"4px",paddingBottom:"3px",
-                                 paddingLeft:"2px"}}></i>{item.price.toFixed(2)}
-                                <IconButton style={{marginLeft:"40px"}} 
-                                onClick={(e)=> this.addToCartHandler(e,item.id,item.item_type,item.item_name,item.price)}><AddIcon /> </IconButton>
-                               </div>
+                                 <span style={{wordWrap: "break-word"}}>  {this.Capitalize(item.item_name)} </span>
+                                </div>
+                               <div className="item-right">
+                                  <div className="pricePerItem">
+                                    <span style={{minWidth:"20px"}}>
+                                    <i className="fa fa-inr" aria-hidden="true"></i>
+                                        {item.price.toFixed(2)}
+                                    </span>
+                                  </div>
+                                  <div className="addIcon">
+                                    <IconButton  style={{float:'right'}}
+                                    onClick={(e)=> this.addToCartHandler(e,item.id,item.item_type,item.item_name,item.price)}>
+                                      
+                                        <AddIcon  /> 
+                                       
+                                    </IconButton>
+                                    </div> 
+                                 
+                                </div>
+                               
                             </div> 
                              ))
                          }
                         </div>
                     ))}
                  </div>  
-                 <Snackbar
-                    anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                    }}
-                    open={this.state.open}
-                    autoHideDuration={1000}
-                    onClose={this.closeHandler}
-                    message="Item added to cart!"
-                    action={
-                    <React.Fragment>
-                        <IconButton size="small" aria-label="close" color="inherit" onClick={this.closeHandler}>
-                        <CloseIcon fontSize="small" />
-                        </IconButton>
-                    </React.Fragment>
-                        }
-                    /> 
-                    <div className="cart-container">
+                   
+                <div className="cart-container">
                     <Card>  
-                           <CardContent>
-                           <div style={{fontWeight:"bold"}}>
-                             <i  style={{paddingRight:"20px"}}>
-                             <Badge badgeContent={this.state.totalItems} color="primary" showZero>  
-                                 <ShoppingCartIcon/>
-                             </Badge>     
-                            </i>My Cart
-                            </div>
-                             <div className="cart-item-list">
-                                {
-                                    this.state.orderItems.items !== undefined ?
-                                    this.state.orderItems.items.map(item=>(
-                                    <div className="cart-item">
-                                      <div className="cart-item-left">
-                                        {
-                                            item.type == "VEG" ?  
-                                            <span className="fa fa-stop-circle-o" aria-hidden="true" style={{fontSize:"12px" ,color:"green",paddingRight:"12px"}} />:
-                                            <span className="fa fa-stop-circle-o" aria-hidden="true" style={{fontSize:"12px" ,color:"red",paddingRight:"12px"}} /> 
-                                        }
-                                         {this.Capitalize(item.name)}
-                                      </div>                                                 
-                                       <div className="cart-item-centre">
-                                         <IconButton><RemoveIcon onClick={(e)=>this.removeFromCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}/></IconButton>
-                                         <span >{item.quantity} </span>
-                                         <IconButton ><AddIcon onClick={(e)=>this.addToCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}/></IconButton>
-                                        </div>
-                                        <div className="cart-item-right" >
-                                         <span style={{float:"right"}}>
+                        <CardContent>
+                        <div style={{fontWeight:"bold"}}>
+                            <i  style={{paddingRight:"20px"}}>
+                            <Badge badgeContent={this.state.totalItems} color="primary" showZero>  
+                                <ShoppingCartIcon/>
+                            </Badge>     
+                        </i>My Cart
+                        </div>
+                        <div className="cart-item-list">
+                            {
+                                this.state.orderItems.items !== undefined ?
+                                this.state.orderItems.items.map(item=>(
+                                <div className="cart-item" key={item.id}>
+                                    <div className="cart-item-left">
+                                    {
+                                        item.type == "VEG" ?  
+                                        <span className="fa fa-stop-circle-o" aria-hidden="true" style={{fontSize:"12px" ,color:"green",paddingRight:"12px"}} />:
+                                        <span className="fa fa-stop-circle-o" aria-hidden="true" style={{fontSize:"12px" ,color:"red",paddingRight:"12px"}} /> 
+                                    }
+                                        {this.Capitalize(item.name)}
+                                    </div>                                                 
+                                    <div className="cart-item-centre">
+                                        <IconButton onClick={(e)=>this.removeFromCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}><RemoveIcon/></IconButton>
+                                        <span >{item.quantity} </span>
+                                        <IconButton onClick={(e)=>this.addToCartHandler(e,item.id,item.type,item.name,item.pricePerItem)}><AddIcon /></IconButton>
+                                    </div>
+                                    <div className="cart-item-right" >
+                                        <span style={{float:"right"}}>
                                             <i className="fa fa-inr" aria-hidden="true" style={{paddingRight:"4px"}}></i>
-                                            {item.priceForAll.toFixed(2)}</span>
-                                        </div>
-                                    </div>)):""
-                                }
-                            </div>
-                            <div className="total-amount-section">
-                                <span>
-                                TOTAL AMOUNT
-                                </span>
-                                <span style={{float:"right"}}>
-                                <i className="fa fa-inr" aria-hidden="true" style={{paddingRight:"2px"}} ></i>{this.state.totalAmount.toFixed(2)}
-                                </span>
-                            </div>
-                           
-                            <div className="checkout-button" onClick={this.checkoutHandler}>
-                                <Button className="checkout" variant="contained" color="primary" style={{minWidth:'470px'}}>
-                                <Link to={{pathname:'/checkout/' ,orderItems:this.state.orderItems,
-                                 total:this.state.totalAmount,totalItems:this.state.totalItems}} 
-                                 style={{ textDecoration: 'none', color: 'white' }}><Typography>CHECKOUT</Typography></Link>
-                                </Button>
-                            </div>
-                           </CardContent>    
-                       </Card>   
-                    </div>
-                    <Snackbar
-                    anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                    }}
-                    open={this.state.cartEmpty}
-                    autoHideDuration={1000}
-                    onClose={this.closeHandler}
-                    message="Please add an item to your cart!"
-                    action={
-                    <React.Fragment>
-                        <IconButton size="small" aria-label="close" color="inherit" onClick={this.closeHandler}>
-                        <CloseIcon fontSize="small" />
-                        </IconButton>
-                    </React.Fragment>
-                        }
-                    /> 
-                      <Snackbar
-                    anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                    }}
-                    open={this.state.itemQuantityDecreased}
-                    autoHideDuration={1000}
-                    onClose={this.closeHandler}
-                    message="Item quantity decreased by 1!"
-                    action={
-                    <React.Fragment>
-                        <IconButton size="small" aria-label="close" color="inherit" onClick={this.closeHandler}>
-                        <CloseIcon fontSize="small" />
-                        </IconButton>
-                    </React.Fragment>
-                        }
-                    /> 
-                  <Snackbar
-                    anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                    }}
-                    open={this.state.nonloggedIn}
-                    autoHideDuration={1000}
-                    onClose={this.closeHandler}
-                    message="Please login first!"
-                    action={
-                    <React.Fragment>
-                        <IconButton size="small" aria-label="close" color="inherit" onClick={this.closeHandler}>
-                        <CloseIcon fontSize="small" />
-                        </IconButton>
-                    </React.Fragment>
-                        }
-                    /> 
-                    <Snackbar
-                    anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                    }}
-                    open={this.state.itemRemovedFromCart}
-                    autoHideDuration={1000}
-                    onClose={this.closeHandler}
-                    message="Item removed from cart!"
-                    action={
-                    <React.Fragment>
-                        <IconButton size="small" aria-label="close" color="inherit" onClick={this.closeHandler}>
-                        <CloseIcon fontSize="small" />
-                        </IconButton>
-                    </React.Fragment>
-                        }
-                    /> 
-            </div>            
-
-
+                                            {item.priceForAll.toFixed(2)}
+                                        </span>
+                                    </div>
+                                </div>)):""
+                            }
+                        </div>
+                        <div className="total-amount-section">
+                            <span>
+                            TOTAL AMOUNT
+                            </span>
+                            <span style={{float:"right"}}>
+                            <i className="fa fa-inr" aria-hidden="true" style={{paddingRight:"2px"}} ></i>{this.state.totalAmount.toFixed(2)}
+                            </span>
+                        </div>
+                        
+                        <div className="checkout-button" onClick={this.checkoutHandler}>
+                            <Button className="checkout" variant="contained" color="primary">
+                             <Link to={{ pathname: '/checkout', state :{orderItems:this.state.orderItems,
+                                   total:this.state.totalAmount,restaurantName:this.state.restaurant_name }}}
+                                   style={{ textDecoration: 'none', color: 'white' }}>  
+                               <Typography>CHECKOUT</Typography>
+                               </Link>
+                            </Button>
+                        </div>
+                        </CardContent>    
+                    </Card>   
+                </div>
+            </div>  
+            <CustomizedSnackbar open={this.state.open} closeHandler={this.closeHandler} message="Item added to cart!"/>
+            <CustomizedSnackbar open={this.state.cartEmpty} closeHandler={this.closeHandler} message="Please add an item to your cart!"/>
+            <CustomizedSnackbar open={this.state.itemQuantityDecreased} closeHandler={this.closeHandler} message="Item quantity decreased by 1!"/>
+            <CustomizedSnackbar open={this.state.nonloggedIn} closeHandler={this.closeHandler} message="Please login first!"/>
+            <CustomizedSnackbar open={this.state.itemRemovedFromCart} closeHandler={this.closeHandler} message="Item removed from cart!"/>
+                
 
         </div>
+    </div>
         )
     }
 }
