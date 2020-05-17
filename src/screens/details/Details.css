@@ -1,4 +1,4 @@
-.main-container{
+.main-container-body{
    display: flex;
    flex-direction: column;
 }
@@ -57,6 +57,9 @@
 .category-items-cart-container{
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .category-items-container{
@@ -104,6 +107,7 @@
     padding-top: 25px;
     height: 1000px;
     width : 500px;
+    padding-right: 50px;
 }
 
 
@@ -158,7 +162,7 @@
   
   /*Tablet Query*/
   @media  (min-width: 200px) and (max-width:1000px) {
-    .main-container {
+    .main-container-body {
       width:100%
     }
 
@@ -186,6 +190,7 @@
         flex-direction: column;
         align-items: center;
         width: 100%;
+   
        
     }
     .category-items-container{
@@ -216,7 +221,7 @@
   
   /*Mobile Query*/
   @media only screen and (min-width:150px) and (max-width: 480px) {
-    .main-container {
+    .main-container-body {
         width:100%
       }
   
@@ -224,9 +229,9 @@
         width: auto;
         display: flex;
         flex-direction: column;
-        height: 500px;
         align-items: center;
         padding: 4px 2px;
+        height: auto;
     }
     .restaurant-left-container{
         width: 80%;
@@ -274,11 +279,25 @@
         flex: 100%;
         width : 350px;
         padding:10px 5px;
+      
+
+       
+        
     }
     .cart-item{
         display: flex;
         flex-direction: row;
         align-items: baseline;
+        height: 70px;
+        
+    }
+
+    .removeIcon-cart{
+        padding: 2px;
+    }
+
+    .addIcon-cart{
+        padding: 2px;
     }
 
     .cart-item-left{
@@ -288,7 +307,7 @@
     .cart-item-centre{
         flex: 30%;
         font-weight: bolder;
-        padding-bottom: 40px;
+        padding: 0 0;
     }
     
     .cart-item-right{
