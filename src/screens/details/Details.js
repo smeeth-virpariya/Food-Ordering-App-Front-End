@@ -48,7 +48,7 @@ class Details extends Component{
     componentDidMount() {
         
     
-        // Get profile 
+        // Get Restaurant Details from backend API 
         let data = null;
         let xhr = new XMLHttpRequest();
         let that = this;
@@ -79,6 +79,7 @@ class Details extends Component{
         xhr.send(data);
     }
 
+    /* The function to get index in array */
    getIndex = (value, arr, prop)=> {
         for(let i = 0; i < arr.length; i++) {
             if(arr[i][prop] === value) {
@@ -88,6 +89,7 @@ class Details extends Component{
         return -1; //to handle the case where the value doesn't exist
     }
 
+    /* The function when you click add item to cart */
     addToCartHandler = (e,id,type,name,price)=>{
         var totalAmount = this.state.totalAmount;
         var totalItems = this.state.totalItems;
@@ -130,10 +132,9 @@ class Details extends Component{
         this.setState({totalItems:totalItems});
         this.setState({totalAmount:totalAmount});
       
-     
-    
     }
 
+     /* The function when you click close button of SnackBar*/
     removeFromCartHandler = (e,id,type,name,price)=>{
       
         var index = this.getIndex(name,this.state.orderItems.items,"name");
@@ -167,6 +168,7 @@ class Details extends Component{
     }
        
 
+    /* The function when you click close button of SnackBar*/
     closeHandler = () =>{
         this.setState({open:false})
         this.setState({cartEmpty:false})
@@ -175,6 +177,7 @@ class Details extends Component{
         this.setState({itemRemovedFromCart:false})
     }
 
+    /* The function gets invoked when you click on checkout button*/
     checkoutHandler = () =>{
        if ( this.state.totalItems === 0 ){
            this.setState({cartEmpty:true});
@@ -189,6 +192,8 @@ class Details extends Component{
         }
         
     }
+
+    /* The  function to pascalize letters*/
     Capitalize(str){
         var arr = str.split(" ")
         var pascalCasedString =""
@@ -203,7 +208,6 @@ class Details extends Component{
 
     render(){  
      return(
-         
         <div><Header baseUrl={this.props.baseUrl}/>
         {this.state.text}
           <div className="main-container-body">
@@ -322,7 +326,7 @@ class Details extends Component{
                             <span>
                             TOTAL AMOUNT
                             </span>
-                            <span style={{float:"right"}}>
+                            <span className="totalAmount">
                             <i className="fa fa-inr" aria-hidden="true" style={{paddingRight:"2px"}} ></i>{this.state.totalAmount.toFixed(2)}
                             </span>
                         </div>
