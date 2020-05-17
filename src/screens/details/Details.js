@@ -351,7 +351,7 @@ class Details extends Component {
                                                                         <AddIcon fontSize='default' style={{color:'black',fontWeight:"bolder"}}/></IconButton>
                                                                 </div>
                                                             </Grid>
-                                                            <Grid item xs={3}>
+                                                            <Grid item xs={4} lg={3}>
                                                                 <span style={{float: 'right'}}>
                                                                     <i className="fa fa-inr" aria-hidden="true"></i>
                                                                     <span
