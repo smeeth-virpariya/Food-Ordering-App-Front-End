@@ -16,10 +16,6 @@
     display: none;
 }
 
-.grid-list-tile {
-    margin: 10px;
-}
-
 .address-box{
     margin: 10px;
 }
@@ -30,6 +26,11 @@
     border-right: 3px solid deeppink;
     border-bottom: 3px solid deeppink;
     border-radius: 5px;
+}
+
+#new-address-display{
+    margin-top: 10px;
+    margin-bottom: 15px;
 }
 
 .select-address-icon-container {

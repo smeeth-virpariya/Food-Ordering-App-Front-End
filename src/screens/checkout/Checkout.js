@@ -2,6 +2,9 @@ import React, {Component, Fragment} from 'react';
 //Stylesheet import
 import './Checkout.css'
 
+//Header component Import
+import Header from "../../common/header/Header";
+
 //Material-Ui Imports
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -31,7 +34,7 @@ import OrderItems from "../../common/orderitems/OrderItems";
 import Snackbar from "@material-ui/core/Snackbar";
 import CloseIcon from '@material-ui/icons/Close';
 import FormHelperText from "@material-ui/core/FormHelperText";
-import Header from "../../common/header/Header";
+import Grid from "@material-ui/core/Grid";
 //Router Import
 import {Redirect} from 'react-router-dom';
 
@@ -106,7 +109,7 @@ class Checkout extends Component {
                                             {
                                                 (this.state.addresses || []).map((address, index) => (
                                                     <GridListTile key={address.id}
-                                                                  className={this.state.selectedAddressId === address.id ? 'grid-list-tile-selected-address' : 'grid-list-tile'}>
+                                                                  className={this.state.selectedAddressId === address.id ? 'grid-list-tile-selected-address' : null}>
                                                         <div className='address-box'>
                                                             <p>{address.flat_building_name}</p>
                                                             <p>{address.locality}</p>
@@ -114,15 +117,19 @@ class Checkout extends Component {
                                                             <p>{address.state.state_name}</p>
                                                             <p>{address.pincode}</p>
                                                         </div>
-                                                        <div className='select-address-icon-container'>
-                                                            <IconButton id={'select-address-button-' + address.id}
-                                                                        className='select-address-icon'
-                                                                        onClick={this.selectAddress}>
-                                                                <CheckCircleIcon
-                                                                    id={'select-address-icon-' + address.id}
-                                                                    className={this.state.selectedAddressId === address.id ? 'display-green-icon' : 'display-grey-icon'}/>
-                                                            </IconButton>
-                                                        </div>
+                                                        <Grid container>
+                                                            <Grid item xs={6} lg={10}></Grid>
+                                                            <Grid item xs={2}>
+                                                                <IconButton
+                                                                    id={'select-address-button-' + address.id}
+                                                                    className='select-address-icon'
+                                                                    onClick={this.selectAddress}>
+                                                                    <CheckCircleIcon
+                                                                        id={'select-address-icon-' + address.id}
+                                                                        className={this.state.selectedAddressId === address.id ? 'display-green-icon' : 'display-grey-icon'}/>
+                                                                </IconButton>
+                                                            </Grid>
+                                                        </Grid>
                                                     </GridListTile>
                                                 ))
                                             }
@@ -234,7 +241,8 @@ class Checkout extends Component {
                                 Summary
                             </Typography>
                             <br/>
-                            <Typography variant='h6' component='h3' color='textSecondary' style={{textTransform:"capitalize"}}>
+                            <Typography variant='h6' component='h3' color='textSecondary'
+                                        style={{textTransform: "capitalize", marginBottom: 15}}>
                                 {this.props.location.state.restaurantName}
                             </Typography>
                             <OrderItems divider='true' orderitems={this.props.location.state.orderItems}
