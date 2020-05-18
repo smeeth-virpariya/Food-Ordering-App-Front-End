@@ -430,8 +430,8 @@ class Details extends Component {
                                                 </div>
                                             </Grid>
                                             <Grid item xs={12}>
-                                                <Button className="checkout" variant="contained" color="primary">
-                                                    <Typography onClick={this.checkoutHandler}>CHECKOUT</Typography>
+                                                <Button className="checkout" variant="contained" color="primary" onClick={this.checkoutHandler}>
+                                                    <Typography>CHECKOUT</Typography>
                                                 </Button>
                                             </Grid>
                                         </Grid>
