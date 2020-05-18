@@ -32,6 +32,7 @@
 }
 
 .restaurant-name {
+
     font-weight: normal;
     font-size: 30px;
     padding-top: 10px;
@@ -134,7 +135,7 @@
 .cart-container {
     padding-left: 150px;
     padding-top: 25px;
-    height: 1000px;
+    height: auto;
     width: 50%;
 }
 
