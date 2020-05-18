@@ -11,7 +11,7 @@ export default function CustomizedSnackBar(props){
         horizontal: 'left',
         }}
         open={props.open}
-        autoHideDuration={1000}
+        autoHideDuration={3000}
         onClose={props.closeHandler}
         message={props.message}
         action={
