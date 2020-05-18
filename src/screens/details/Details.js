@@ -38,6 +38,8 @@ class Details extends Component {
             itemQuantityDecreased: false,
             nonloggedIn: false,
             itemRemovedFromCart: false,
+            itemQuantityIncreased: false,
+            itemAddedFromCart: false,
         }
 
     }
@@ -162,12 +164,37 @@ class Details extends Component {
     }
 
 
+    addAnItemFromCartHandler = (item, index) => {
+
+        console.log(item);
+
+        const itemIndex = this.getIndex(item.name, this.state.orderItems.items, "name");
+
+        var quantity = this.state.orderItems.items[itemIndex].quantity + 1;
+        var priceForAll = this.state.orderItems.items[itemIndex].priceForAll + this.state.orderItems.items[itemIndex].pricePerItem;
+        var itemAdded = this.state.orderItems.items[itemIndex];
+        itemAdded.quantity = quantity;
+        itemAdded.priceForAll = priceForAll;
+        this.setState(item);
+        this.setState({ itemQuantityIncreased: true });
+        var totalAmount = this.state.totalAmount;
+        totalAmount += item.pricePerItem;
+        var totalItems = this.state.totalItems;
+        totalItems += 1;
+
+        this.setState({ totalItems: totalItems });
+        this.setState({ totalAmount: totalAmount });
+    }
+
+
     closeHandler = () => {
         this.setState({ open: false })
         this.setState({ cartEmpty: false })
         this.setState({ nonloggedIn: false })
         this.setState({ itemQuantityDecreased: false })
         this.setState({ itemRemovedFromCart: false })
+        this.setState({ itemAddedFromCart: false })
+        this.setState({ itemQuantityIncreased: false })
     }
 
     checkoutHandler = () => {
@@ -254,7 +281,6 @@ class Details extends Component {
                         </div>
                     </div>
 
-
                     <div className="category-items-cart-container">
                         <div className="category-items-container">
                             {this.state.categories.map(category => (
@@ -262,7 +288,7 @@ class Details extends Component {
                                     color: "grey",
                                     fontWeight: "bolder"
                                 }}>{category.category_name.toUpperCase()}</span> <Divider
-                                        style={{ marginTop: "10px", marginBottom: "10px", width: '90%'}} />
+                                        style={{ marginTop: "10px", marginBottom: "10px", width: '90%' }} />
                                     {category.item_list.map(item => (
                                         <Grid container key={item.id} style={{ marginBottom: 5 }}>
                                             <Grid item xs={1} lg={1}>
@@ -317,7 +343,7 @@ class Details extends Component {
                                         <Grid container>
                                             {
                                                 this.state.orderItems.items !== undefined ?
-                                                    this.state.orderItems.items.map(item => (
+                                                    this.state.orderItems.items.map((item, index) => (
                                                         <Fragment key={item.id}>
                                                             <Grid item xs={2} lg={2}>
                                                                 {item.type === "VEG" ?
@@ -352,7 +378,7 @@ class Details extends Component {
                                                                         style={{ fontWeight: 'bold' }}>{item.quantity}</Typography>
                                                                     <IconButton className='add-remove-button-hover'
                                                                         style={{ display: "flex", padding: 0 }}
-                                                                        onClick={(e) => this.addToCartHandler(e, item.id, item.type, item.name, item.pricePerItem)}>
+                                                                        onClick={this.addAnItemFromCartHandler.bind(this, item, index)}>
                                                                         <AddIcon fontSize='default' style={{
                                                                             color: 'black',
                                                                             fontWeight: "bolder"
@@ -403,7 +429,8 @@ class Details extends Component {
                         message="Please login first!" />
                     <CustomizedSnackbar open={this.state.itemRemovedFromCart} closeHandler={this.closeHandler}
                         message="Item removed from cart!" />
-
+                    <CustomizedSnackbar open={this.state.itemQuantityIncreased} closeHandler={this.closeHandler}
+                        message="Item quantity increased by 1!" />
 
                 </div>
             </div>
