@@ -183,7 +183,6 @@ class Details extends Component {
     }
 
 
-<<<<<<< HEAD
     addAnItemFromCartHandler = (item, index) => {
 
         console.log(item);
@@ -215,15 +214,6 @@ class Details extends Component {
         this.setState({ itemRemovedFromCart: false })
         this.setState({ itemAddedFromCart: false })
         this.setState({ itemQuantityIncreased: false })
-=======
-    //Close handler for snack bar.
-    closeHandler = () => {
-        this.setState({open: false})
-        this.setState({cartEmpty: false})
-        this.setState({nonloggedIn: false})
-        this.setState({itemQuantityDecreased: false})
-        this.setState({itemRemovedFromCart: false})
->>>>>>> upstream/details-page
     }
 
     /**
@@ -321,11 +311,7 @@ class Details extends Component {
                                     color: "grey",
                                     fontWeight: "bolder"
                                 }}>{category.category_name.toUpperCase()}</span> <Divider
-<<<<<<< HEAD
-                                        style={{ marginTop: "10px", marginBottom: "10px", width: '90%' }} />
-=======
                                     style={{marginTop: "10px", marginBottom: "10px", width: '90%'}}/>
->>>>>>> upstream/details-page
                                     {category.item_list.map(item => (
                                         <Grid container key={item.id} style={{marginBottom: 5}}>
                                             <Grid item xs={1} lg={1}>
@@ -416,13 +402,8 @@ class Details extends Component {
                                                                     <Typography
                                                                         style={{fontWeight: 'bold'}}>{item.quantity}</Typography>
                                                                     <IconButton className='add-remove-button-hover'
-<<<<<<< HEAD
                                                                         style={{ display: "flex", padding: 0 }}
                                                                         onClick={this.addAnItemFromCartHandler.bind(this, item, index)}>
-=======
-                                                                                style={{display: "flex", padding: 0}}
-                                                                                onClick={(e) => this.addToCartHandler(e, item.id, item.type, item.name, item.pricePerItem)}>
->>>>>>> upstream/details-page
                                                                         <AddIcon fontSize='default' style={{
                                                                             color: 'black',
                                                                             fontWeight: "bolder"
@@ -472,14 +453,9 @@ class Details extends Component {
                     <CustomizedSnackbar open={this.state.nonloggedIn} closeHandler={this.closeHandler}
                                         message="Please login first!"/>
                     <CustomizedSnackbar open={this.state.itemRemovedFromCart} closeHandler={this.closeHandler}
-<<<<<<< HEAD
                         message="Item removed from cart!" />
                     <CustomizedSnackbar open={this.state.itemQuantityIncreased} closeHandler={this.closeHandler}
                         message="Item quantity increased by 1!" />
-=======
-                                        message="Item removed from cart!"/>
-
->>>>>>> upstream/details-page
 
                 </div>
             </div>
