@@ -68,7 +68,7 @@ class Checkout extends Component {
     }
 
     componentDidMount() {
-        if (sessionStorage.getItem('access-token') !== null) {
+        if (this.props.location.state !== undefined && sessionStorage.getItem('access-token') !== null) {
             this.fetchAddress();
             this.fetchStates();
             this.fetchPayments();
@@ -76,7 +76,7 @@ class Checkout extends Component {
     }
 
     render() {
-        if (this.props.location === undefined || sessionStorage.getItem('access-token') === null) {
+        if (this.props.location.state === undefined || sessionStorage.getItem('access-token') === null) {
             return <Redirect to='/'/>
         }
         return <Fragment>
