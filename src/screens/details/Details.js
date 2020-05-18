@@ -184,9 +184,6 @@ class Details extends Component {
 
 
     addAnItemFromCartHandler = (item, index) => {
-
-        console.log(item);
-
         const itemIndex = this.getIndex(item.name, this.state.orderItems.items, "name");
 
         var quantity = this.state.orderItems.items[itemIndex].quantity + 1;

@@ -336,7 +336,6 @@ class Checkout extends Component {
         if (stateKey === 'pincode') {
             validPincode = this.validatePincode(stateValue);
         }
-        //console.log(this.state.validPincode + ' '+this.validatePincode(stateValue))
         this.setState({
             [stateKey]: stateValue,
             [stateValueRequiredKey]: stateKeyRequiredValue,
