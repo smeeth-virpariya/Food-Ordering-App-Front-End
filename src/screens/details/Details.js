@@ -1,6 +1,13 @@
-import React, { Component, Fragment } from 'react';
+import React, {Component, Fragment} from 'react';
+
+//Import of stylesheet
 import './Details.css';
+
+//Other components import
+import CustomizedSnackbar from '../../common/customizedsnackbar/CustomizedSnackBar'
 import Header from '../../common/header/Header'
+
+//Material UI component imports
 import IconButton from '@material-ui/core/IconButton';
 import Divider from "@material-ui/core/Divider";
 import AddIcon from '@material-ui/icons/Add';
@@ -11,7 +18,6 @@ import Button from '@material-ui/core/Button';
 import Badge from '@material-ui/core/Badge';
 import RemoveIcon from '@material-ui/icons/Remove';
 import Typography from '@material-ui/core/Typography';
-import CustomizedSnackbar from '../../common/customizedsnackbar/CustomizedSnackBar'
 import Grid from "@material-ui/core/Grid";
 
 
@@ -32,7 +38,7 @@ class Details extends Component {
             totalAmount: 0,
             totalItems: 0,
             cartEmpty: false,
-            orderItems: { id: null, items: [], total: 0 },
+            orderItems: {id: null, items: [], total: 0},
             cartItems: [],
             cartItem: {},
             itemQuantityDecreased: false,
@@ -42,15 +48,11 @@ class Details extends Component {
 
     }
 
-
     componentDidMount() {
-
-
         // Get profile 
         let data = null;
         let xhr = new XMLHttpRequest();
         let that = this;
-
 
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
@@ -63,7 +65,7 @@ class Details extends Component {
                     number_customers_rated: JSON.parse(this.responseText).number_customers_rated,
                     locality: JSON.parse(this.responseText).address.locality,
                     categories: JSON.parse(this.responseText).categories,
-                    orderItems: { id: JSON.parse(this.responseText).id },
+                    orderItems: {id: JSON.parse(this.responseText).id},
 
 
                 });
@@ -77,6 +79,7 @@ class Details extends Component {
         xhr.send(data);
     }
 
+    //Function to get the index of the item
     getIndex = (value, arr, prop) => {
         for (let i = 0; i < arr.length; i++) {
             if (arr[i][prop] === value) {
@@ -86,6 +89,14 @@ class Details extends Component {
         return -1; //to handle the case where the value doesn't exist
     }
 
+    /**
+     * This function is called when you add an item to the cart.
+     * @param e - event
+     * @param id - item id
+     * @param type - type (VEG or NON_VEG)
+     * @param name - item name
+     * @param price - price
+     */
     addToCartHandler = (e, id, type, name, price) => {
         var totalAmount = this.state.totalAmount;
         var totalItems = this.state.totalItems;
@@ -99,7 +110,7 @@ class Details extends Component {
         newItem.quantity = 1;
         newItem.priceForAll = price;
 
-        this.setState({ cartItem: newItem });
+        this.setState({cartItem: newItem});
 
         totalAmount += price;
 
@@ -115,21 +126,29 @@ class Details extends Component {
         } else {
 
             this.state.cartItems.push(this.state.cartItem);
-            this.setState({ cartItem: {} });
+            this.setState({cartItem: {}});
 
 
             const orderItems = this.state.orderItems;
             orderItems.items = this.state.cartItems;
-            this.setState({ orderItems: orderItems });
+            this.setState({orderItems: orderItems});
         }
 
-        this.setState({ open: true });
-        this.setState({ totalItems: totalItems });
-        this.setState({ totalAmount: totalAmount });
+        this.setState({open: true});
+        this.setState({totalItems: totalItems});
+        this.setState({totalAmount: totalAmount});
 
 
     }
 
+    /**
+     * This function is called when an item is removed from the cart.
+     * @param e - event
+     * @param id - item id
+     * @param type - type (VEG or NON_VEG)
+     * @param name - item name
+     * @param price - price
+     */
     removeFromCartHandler = (e, id, type, name, price) => {
 
         var index = this.getIndex(name, this.state.orderItems.items, "name");
@@ -141,12 +160,12 @@ class Details extends Component {
             item.quantity = quantity;
             item.priceForAll = priceForAll;
             this.setState(item);
-            this.setState({ itemQuantityDecreased: true });
+            this.setState({itemQuantityDecreased: true});
 
         } else {
 
             this.state.orderItems.items.splice(index, 1);
-            this.setState({ itemRemovedFromCart: true });
+            this.setState({itemRemovedFromCart: true});
 
         }
 
@@ -156,25 +175,29 @@ class Details extends Component {
         var totalItems = this.state.totalItems;
         totalItems -= 1;
 
-        this.setState({ totalItems: totalItems });
-        this.setState({ totalAmount: totalAmount });
+        this.setState({totalItems: totalItems});
+        this.setState({totalAmount: totalAmount});
 
     }
 
 
+    //Close handler for snack bar.
     closeHandler = () => {
-        this.setState({ open: false })
-        this.setState({ cartEmpty: false })
-        this.setState({ nonloggedIn: false })
-        this.setState({ itemQuantityDecreased: false })
-        this.setState({ itemRemovedFromCart: false })
+        this.setState({open: false})
+        this.setState({cartEmpty: false})
+        this.setState({nonloggedIn: false})
+        this.setState({itemQuantityDecreased: false})
+        this.setState({itemRemovedFromCart: false})
     }
 
+    /**
+     * This funciton is called when checkout button is clicked.
+     */
     checkoutHandler = () => {
         if (this.state.totalItems === 0) {
-            this.setState({ cartEmpty: true });
+            this.setState({cartEmpty: true});
         } else if (this.state.totalItems > 0 && sessionStorage.getItem('access-token') === null) {
-            this.setState({ nonloggedIn: true });
+            this.setState({nonloggedIn: true});
         } else {
             this.props.history.push({
                 pathname: '/checkout/',
@@ -184,15 +207,15 @@ class Details extends Component {
                 }
             })
         }
-
     }
 
+    //Function used to capitalize the string
     Capitalize(str) {
         var arr = str.split(" ")
         var pascalCasedString = ""
         arr.map(a => (
-            pascalCasedString += a.charAt(0).toUpperCase() + a.slice(1) + " "
-        )
+                pascalCasedString += a.charAt(0).toUpperCase() + a.slice(1) + " "
+            )
         )
         return pascalCasedString
     }
@@ -201,12 +224,12 @@ class Details extends Component {
     render() {
         return (
 
-            <div><Header baseUrl={this.props.baseUrl} />
+            <div><Header baseUrl={this.props.baseUrl}/>
                 {this.state.text}
                 <div className="main-container-body">
                     <div className="restaurant-details-container">
                         <div className="restaurant-left-container">
-                            <img src={this.state.photo_URL} alt="none" className="restaurant-image" />
+                            <img src={this.state.photo_URL} alt="none" className="restaurant-image"/>
                         </div>
                         <div className="restaurant-right-container">
                             <div style={{
@@ -220,11 +243,12 @@ class Details extends Component {
                                 fontSize: "16px",
                                 paddingBottom: "10px"
                             }}>{this.state.locality}</div>
-                            <div style={{ fontSize: "14px", paddingBottom: "20px" }}>
+                            <div style={{fontSize: "14px", paddingBottom: "20px"}}>
                                 {
                                     this.state.categories.map((category, index) => (
 
-                                        <span key={category.id + "category"}>{category.category_name}{index < this.state.categories.length - 1 ? ", " : " "} </span>
+                                        <span
+                                            key={category.id + "category"}>{category.category_name}{index < this.state.categories.length - 1 ? ", " : " "} </span>
                                     ))
                                 }
                             </div>
@@ -235,7 +259,7 @@ class Details extends Component {
                                         paddingBottom: "3px",
                                         paddingLeft: "2px"
                                     }}></i>{this.state.customer_rating}
-                                    <div style={{ color: "gray", fontSize: "12px" }}>AVERAGE RATING BY</div>
+                                    <div style={{color: "gray", fontSize: "12px"}}>AVERAGE RATING BY</div>
                                     <div style={{
                                         color: "gray",
                                         fontSize: "12px"
@@ -247,8 +271,8 @@ class Details extends Component {
                                         paddingRight: "4px", paddingBottom: "3px",
                                         paddingLeft: "2px"
                                     }}></i>{this.state.average_price}
-                                    <div style={{ color: "gray", fontSize: "12px" }}>AVERAGE COST FOR</div>
-                                    <div style={{ color: "gray", fontSize: "12px" }}>TWO PEOPLE</div>
+                                    <div style={{color: "gray", fontSize: "12px"}}>AVERAGE COST FOR</div>
+                                    <div style={{color: "gray", fontSize: "12px"}}>TWO PEOPLE</div>
                                 </div>
                             </div>
                         </div>
@@ -262,17 +286,17 @@ class Details extends Component {
                                     color: "grey",
                                     fontWeight: "bolder"
                                 }}>{category.category_name.toUpperCase()}</span> <Divider
-                                        style={{ marginTop: "10px", marginBottom: "10px", width: '90%'}} />
+                                    style={{marginTop: "10px", marginBottom: "10px", width: '90%'}}/>
                                     {category.item_list.map(item => (
-                                        <Grid container key={item.id} style={{ marginBottom: 5 }}>
+                                        <Grid container key={item.id} style={{marginBottom: 5}}>
                                             <Grid item xs={1} lg={1}>
                                                 {
                                                     item.item_type === "VEG" ?
                                                         <span className="fa fa-circle" aria-hidden="true"
-                                                            style={{ fontSize: "12px", color: "green" }} />
+                                                              style={{fontSize: "12px", color: "green"}}/>
                                                         :
                                                         <span className="fa fa-circle" aria-hidden="true"
-                                                            style={{ fontSize: "12px", color: "red" }} />
+                                                              style={{fontSize: "12px", color: "red"}}/>
                                                 }
                                             </Grid>
                                             <Grid item xs={5} lg={6}>
@@ -285,15 +309,17 @@ class Details extends Component {
                                                 <div className='pricePerItem'>
                                                     <span>
                                                         <i className="fa fa-inr" aria-hidden="true"></i>
-                                                        <span style={{ paddingLeft: "2px" }}>{item.price.toFixed(2)}</span>
+                                                        <span
+                                                            style={{paddingLeft: "2px"}}>{item.price.toFixed(2)}</span>
                                                     </span>
                                                 </div>
                                             </Grid>
                                             <Grid item xs={1} lg={1}>
                                             </Grid>
                                             <Grid item xs={2} lg={2}>
-                                                <IconButton style={{ padding: 0, float: 'left' }} onClick={(e) => this.addToCartHandler(e, item.id, item.item_type, item.item_name, item.price)}>
-                                                    <AddIcon style={{ padding: 0 }} fontSize='small' />
+                                                <IconButton style={{padding: 0, float: 'left'}}
+                                                            onClick={(e) => this.addToCartHandler(e, item.id, item.item_type, item.item_name, item.price)}>
+                                                    <AddIcon style={{padding: 0}} fontSize='small'/>
                                                 </IconButton>
                                             </Grid>
                                         </Grid>
@@ -305,11 +331,11 @@ class Details extends Component {
                         <div className="cart-container">
                             <Card>
                                 <CardContent>
-                                    <div style={{ fontWeight: "bold" }}>
-                                        <i style={{ paddingRight: "20px" }}>
+                                    <div style={{fontWeight: "bold"}}>
+                                        <i style={{paddingRight: "20px"}}>
                                             <Badge className="badge" badgeContent={this.state.totalItems}
-                                                color="primary" showZero>
-                                                <ShoppingCartIcon />
+                                                   color="primary" showZero>
+                                                <ShoppingCartIcon/>
                                             </Badge>
                                         </i>My Cart
                                     </div>
@@ -322,62 +348,62 @@ class Details extends Component {
                                                             <Grid item xs={2} lg={2}>
                                                                 {item.type === "VEG" ?
                                                                     <span className="fa fa-stop-circle-o"
-                                                                        aria-hidden="true"
-                                                                        style={{
-                                                                            fontSize: "12px",
-                                                                            color: "green",
-                                                                            paddingRight: "12px"
-                                                                        }} /> :
+                                                                          aria-hidden="true"
+                                                                          style={{
+                                                                              fontSize: "12px",
+                                                                              color: "green",
+                                                                              paddingRight: "12px"
+                                                                          }}/> :
                                                                     <span className="fa fa-stop-circle-o"
-                                                                        aria-hidden="true"
-                                                                        style={{
-                                                                            fontSize: "12px",
-                                                                            color: "red",
-                                                                            paddingRight: "12px"
-                                                                        }} />}
+                                                                          aria-hidden="true"
+                                                                          style={{
+                                                                              fontSize: "12px",
+                                                                              color: "red",
+                                                                              paddingRight: "12px"
+                                                                          }}/>}
                                                             </Grid>
                                                             <Grid item xs={3} lg={4}>
                                                                 <Typography>
                                                                     {this.Capitalize(item.name)}
                                                                 </Typography>
                                                             </Grid>
-                                                            <Grid item xs={3} lg={3} style={{ flexWrap: "wrap" }}>
+                                                            <Grid item xs={3} lg={3} style={{flexWrap: "wrap"}}>
                                                                 <div className='add-remove-icon'>
                                                                     <IconButton className='add-remove-button-hover'
-                                                                        style={{ display: "flex", padding: 0 }}
-                                                                        onClick={(e) => this.removeFromCartHandler(e, item.id, item.type, item.name, item.pricePerItem)}><RemoveIcon
-                                                                            fontSize='default'
-                                                                            style={{ color: 'black', fontWeight: "bolder" }} /></IconButton>
+                                                                                style={{display: "flex", padding: 0}}
+                                                                                onClick={(e) => this.removeFromCartHandler(e, item.id, item.type, item.name, item.pricePerItem)}><RemoveIcon
+                                                                        fontSize='default'
+                                                                        style={{color: 'black', fontWeight: "bolder"}}/></IconButton>
                                                                     <Typography
-                                                                        style={{ fontWeight: 'bold' }}>{item.quantity}</Typography>
+                                                                        style={{fontWeight: 'bold'}}>{item.quantity}</Typography>
                                                                     <IconButton className='add-remove-button-hover'
-                                                                        style={{ display: "flex", padding: 0 }}
-                                                                        onClick={(e) => this.addToCartHandler(e, item.id, item.type, item.name, item.pricePerItem)}>
+                                                                                style={{display: "flex", padding: 0}}
+                                                                                onClick={(e) => this.addToCartHandler(e, item.id, item.type, item.name, item.pricePerItem)}>
                                                                         <AddIcon fontSize='default' style={{
                                                                             color: 'black',
                                                                             fontWeight: "bolder"
-                                                                        }} /></IconButton>
+                                                                        }}/></IconButton>
                                                                 </div>
                                                             </Grid>
                                                             <Grid item xs={4} lg={3}>
-                                                                <span style={{ float: 'right' }}>
+                                                                <span style={{float: 'right'}}>
                                                                     <i className="fa fa-inr" aria-hidden="true"></i>
                                                                     <span
-                                                                        style={{ paddingLeft: "2px" }}>{item.priceForAll.toFixed(2)}</span>
+                                                                        style={{paddingLeft: "2px"}}>{item.priceForAll.toFixed(2)}</span>
                                                                 </span>
                                                             </Grid>
                                                         </Fragment>
                                                     )) : null}
                                             <Grid item xs={8} lg={9}>
-                                                <div style={{ marginTop: 15, marginBottom: 15 }}>
-                                                    <span style={{ fontWeight: 'bold' }}>TOTAL AMOUNT</span>
+                                                <div style={{marginTop: 15, marginBottom: 15}}>
+                                                    <span style={{fontWeight: 'bold'}}>TOTAL AMOUNT</span>
                                                 </div>
                                             </Grid>
                                             <Grid item xs={4} lg={3}>
-                                                <div style={{ marginTop: 15, marginBottom: 15 }}>
-                                                    <span style={{ fontWeight: 'bold', float: 'right' }}>
+                                                <div style={{marginTop: 15, marginBottom: 15}}>
+                                                    <span style={{fontWeight: 'bold', float: 'right'}}>
                                                         <i className="fa fa-inr" aria-hidden="true"
-                                                            style={{ paddingRight: "2px" }}></i>{this.state.totalAmount.toFixed(2)}
+                                                           style={{paddingRight: "2px"}}></i>{this.state.totalAmount.toFixed(2)}
                                                     </span>
                                                 </div>
                                             </Grid>
@@ -394,15 +420,15 @@ class Details extends Component {
                         </div>
                     </div>
                     <CustomizedSnackbar open={this.state.open} closeHandler={this.closeHandler}
-                        message="Item added to cart!" />
+                                        message="Item added to cart!"/>
                     <CustomizedSnackbar open={this.state.cartEmpty} closeHandler={this.closeHandler}
-                        message="Please add an item to your cart!" />
+                                        message="Please add an item to your cart!"/>
                     <CustomizedSnackbar open={this.state.itemQuantityDecreased} closeHandler={this.closeHandler}
-                        message="Item quantity decreased by 1!" />
+                                        message="Item quantity decreased by 1!"/>
                     <CustomizedSnackbar open={this.state.nonloggedIn} closeHandler={this.closeHandler}
-                        message="Please login first!" />
+                                        message="Please login first!"/>
                     <CustomizedSnackbar open={this.state.itemRemovedFromCart} closeHandler={this.closeHandler}
-                        message="Item removed from cart!" />
+                                        message="Item removed from cart!"/>
 
 
                 </div>
